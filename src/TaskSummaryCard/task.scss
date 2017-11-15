@@ -1,0 +1,136 @@
+.task{
+  padding:10px 20px 10px 20px;
+
+  &.main-paper{
+    padding-bottom: 20px;
+  }
+
+  .task-title{
+    // font-weight: 700;
+    font-size: 1em;
+  }
+
+  .task-date{
+    font-style: italic;
+    font-size: 0.8em;
+    text-align: right;
+    margin-top: 1px;
+  }
+
+  .task-status{
+    // border: 1px solid #1B7991;
+    border: 2px solid whitesmoke;
+    padding: 1px 4px;
+    // margin-top: 2em;
+    text-align: center;
+  }
+
+  .assigned{
+    font-style: italic;
+    // font-size: 0.8em;
+    text-align: right;
+  }
+
+  .assign-btns {
+      text-align: right;
+  }
+
+  .task-bottom-row {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    // margin-bottom: -10px;
+  }
+
+
+  button.uikit-btn{
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .comment-icon {
+    display: inline-block;
+    background: url(message-square.svg) no-repeat;
+    width: 24px;
+    height: 24px;
+    margin: 0 0.4em -6px -10px;
+  }
+
+  .message-link{
+    display: inline-block;
+
+    // border: 1px solid #1B7991;
+    // padding: 2px 5px 2px 5px;
+
+    &::before {
+      content: ' ';
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 0.4em -6px 0.16em;
+      background-image: url(message-square.svg);
+      background-repeat: no-repeat;
+    }
+
+  }
+
+  .assign-link{
+    display: inline-block;
+    &::before {
+      content: ' ';
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 0.4em -6px 0.16em;
+      background-image: url(user.svg);
+      background-repeat: no-repeat;
+    }
+  }
+
+  .unassign-link{
+    display: inline-block;
+    &::before {
+      content: ' ';
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 0.4em -6px 0.16em;
+      background-image: url(user-minus.svg);
+      background-repeat: no-repeat;
+    }
+  }
+
+  .comment-btn{
+    font-size: 0.8em;
+    padding: 2px;
+    // float: right;
+    min-width: 100px;
+    font-weight: 400;
+  }
+
+  .comment-textarea{
+    margin-bottom: -6px;
+    width: 300px;
+    height: 50px;
+  }
+
+  .view-task-link{
+    display: inline-block;
+
+    &::before {
+      content: ' ';
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 0.4em -6px 0.16em;
+      background-image: url(arrow-right.svg);
+      background-repeat: no-repeat;
+    }
+
+  }
+
+  .task-btns {
+    // border-top: solid 1px #e8e8ee;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+}
