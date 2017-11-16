@@ -2,7 +2,7 @@ import React from 'react'
 import { hashHistory } from 'react-router'
 
 // import { Grid, Row, Col } from 'react-flexbox-grid'
-import * as api from './../../services/api'
+import * as api from './../api'
 import './task.css'
 import Spinner from 'react-spinner-material'
 import Input from '@react-ag-components/input'
@@ -20,14 +20,14 @@ class TaskSummaryCard extends React.Component {
       }
   }
 
-  goToCommentsPage = () =>{
-     hashHistory.push('/tasks/' + this.props.taskid + '/comments' )
-  }
+  // goToCommentsPage = () =>{
+  //    hashHistory.push('/tasks/' + this.props.taskid + '/comments' )
+  // }
 
   goToTaskDetailsPage = (e) =>{
     e.preventDefault()
-    hashHistory.push('/task-page/' + this.props.taskid + '/' )
-
+    // hashHistory.push('/task-page/' + this.props.taskid + '/' )
+    this.props.onChange(this.props.taskid)
     // return (e) => {
     //   e.preventDefault()
     //   this.props.onChange(this.props.taskid )
@@ -110,7 +110,7 @@ class TaskSummaryCard extends React.Component {
 
     return (
       <div className="task uikit-grid main-paper">
-    
+
         <div className="row">
           <div className="col-md-10">
             <div className="task-title"><a href="#" onClick={this.goToTaskDetailsPage}>{this.props.type}</a></div>

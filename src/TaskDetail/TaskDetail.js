@@ -5,7 +5,7 @@ import Input from '@react-ag-components/input'
 import BackButton from '@react-ag-components/back-button'
 import * as api from './../api'
 import './task-detail.css'
-import { Grid, Row, Col } from 'react-flexbox-grid'
+// import { Grid, Row, Col } from 'react-flexbox-grid'
 import LoadableSection from '@react-ag-components/core/lib/LoadableSection'
 import Messages from '@react-ag-components/messages'
 
@@ -67,9 +67,11 @@ class TaskDetail  extends React.Component {
               // this.readTaskDetailsById();
               // this.setStateKeyVal('loading', false)
               let message = 'Task ' + (outcome.name === 'APPROVE' ? 'approved' : 'rejected')
-              this.props.setMessage({success:message})
+
               // APPROVE
-              hashHistory.push('/tasks')
+              // hashHistory.push('/tasks')
+              this.props.onChange(null)
+              this.props.setMessage(message)
          })
      }
   }

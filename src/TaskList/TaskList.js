@@ -21,7 +21,7 @@ class TaskList extends React.Component {
         success:props.success,
         error:props.error,
       }
-      
+
   }
 
   formatDateToString = (millisecs) => {
@@ -126,6 +126,10 @@ class TaskList extends React.Component {
   }
 
 
+  onChange = (id) => {
+    this.props.onChange(id)
+  }
+
   render() {
 
 
@@ -134,7 +138,7 @@ class TaskList extends React.Component {
     return (
             <div className="task-list-page">
 
-            <Messages success={this.state.success} error={this.state.error}/>
+              <Messages success={this.state.success} error={this.state.error}/>
 
              <h1>Tasks</h1>
 
@@ -182,6 +186,7 @@ class TaskList extends React.Component {
                           refreshTasksList={this.readTasksList}
                           statusLabel={task.statusLabel}
                           description={task.description}
+                          onChange={this.onChange}
                         />
                       </li>
                     )

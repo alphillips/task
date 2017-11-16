@@ -1,11 +1,9 @@
-import TaskList from './TaskList/TaskList'
-import TaskDetail from './TaskDetail/TaskDetail'
+import Tasks from './Tasks'
 
 const noDefaultExport = () => {}
 
 export {
-  TaskList,
-  TaskDetail
+  Tasks
 }
 
 export default noDefaultExport
