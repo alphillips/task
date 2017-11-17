@@ -1,44 +1,60 @@
-# header
+# Task
 
-React header component for external web apps
+Task list and details as reusable component
 
-> Note: This header doesn't not yet include the menu or logged in user.
-But it will soon :v:
 
 ## Usage
 
 ### Install
 ```
-npm i @react-ag-components/header --save
+npm i @react-ag-components/task --save
 ```
 ### Use in your project
 ```
-import Header from '@react-ag-components/header'
+import {Tasks} from '@react-ag-components/task'
 ```
-
+Your page should look like this
 ```
-<Header />
+constructor(props) {
+  super(props);
+  this.state = {
+    id:props.params.id || null,
+    success:props.success,
+    error:props.error,
+  }
+}
+
+componentWillReceiveProps(nextProps){
+  this.setState((prevState, props) => ({
+    success:'',
+    id:nextProps.params.id || null
+  }))
+}
+
+handleIdChange = (id) => {
+  hashHistory.push('/tasks/' + (id || ''))
+}
+
+render() {
+  return (
+    <div>
+
+      <Tasks
+        id={this.state.id}
+        onChange={this.handleIdChange}
+      />
+
+    </div>
+  )
+}
 ```
-
-### Properties
-
-| prop        | Type           | Note  |
-| ------------- |:-------------:| -----:|
-| showInbox      | boolean | inbox search visibility |
-| menu     | object      |   {<ul><li>...} |
-| abn | string      |  abn number   |
-| userName | string      |    their logon id, normally their email |
-| name | string      | page heading    |
-| searchArray |  JSON Array     |    array to search on |
-| searchKey |   string   |    "id"|
-| searchDisplayAttributes | array      |    ['id','status','date','destinationCountry'] |
 
 
 ## Contributing
 
 Get the repository
 ```
-git clone https://github.com/alphillips/header.git
+git clone https://github.com/alphillips/task.git
 ```
 
 Update dependencies

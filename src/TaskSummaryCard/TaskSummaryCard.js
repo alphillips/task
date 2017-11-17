@@ -137,7 +137,7 @@ class TaskSummaryCard extends React.Component {
           <div className="col-md-6">
 
             {this.props.hasComments &&
-              <a href="#"className="message-link">{this.props.commentsButtonLabel}</a>
+              <a href="#" className="message-link" onClick={this.goToTaskDetailsPage}>{this.props.commentsButtonLabel}</a>
             }
 
             {/*<button className="uikit-btn uikit-btn--tertiary" onClick={this.goToCommentsPage}>
