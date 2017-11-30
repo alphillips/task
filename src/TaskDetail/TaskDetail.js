@@ -187,8 +187,10 @@ class TaskDetail  extends React.Component {
                 <div className="col-md-3">
                   <div className="task-status">{this.state.task.statusLabel}</div>
                   <div className="task-date">Created on: {this.getCreatedDateDisplayString(this.state.task.createdDate)}</div>
-                  <div className="task-date">Updated on: {this.getCreatedDateDisplayString(this.state.task.updatedDate)}</div>
-                  <div className="task-date">Updated by: {this.state.task.updatedBy}</div>
+                  {
+                    // <div className="task-date">Updated on: {this.getCreatedDateDisplayString(this.state.task.updatedDate)}</div>
+                    // <div className="task-date">Updated by: {this.state.task.updatedBy}</div>
+                  }
                   <div className="task-date">Priority: {this.state.task.priority}</div>
                 </div>
             </div>
