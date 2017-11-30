@@ -106,6 +106,30 @@ class TaskDetail  extends React.Component {
     return   this.formatDateToString(millisecs)
   }
 
+  getCommentDisplayText = (commentJSONStr) => {
+
+    commentJSON = JSON.parse(commentJSONStr)
+
+    if(commentJSON){
+      return commentJSON.comment
+    }
+
+    return  ""
+  }
+
+
+  getCommentCreatedByDisplayText = (commentJSONStr) => {
+    commentJSON = JSON.parse(commentJSONStr)
+
+    if(commentJSON){
+      return commentJSON.createdByUserDisplayName
+    }
+
+    return  ""
+  }
+
+
+
   formatDateToString = (millisecs) => {
     var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
     var d = new Date(millisecs);
@@ -234,10 +258,10 @@ class TaskDetail  extends React.Component {
                 return new Date(a.createDate) - new Date(b.createDate);
               }).map((comment) => (
                 <li key={commentCount++}>
-                  <div className="user">{comment.createdBy}</div>
+                  <div className="user">{this.getCommentCreatedByDisplayText(comment.comment)}</div>
                   <div className="task-date">{this.getCreatedDateDisplayString(comment.createDate)}</div>
                   <div>
-                    {comment.comment}
+                    {this.getCommentDisplayText(comment.comment)}
                   </div>
                 </li>
                 ))
