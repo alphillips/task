@@ -260,10 +260,10 @@ class TaskDetail  extends React.Component {
                 return new Date(a.createDate) - new Date(b.createDate);
               }).map((comment) => (
                 <li key={commentCount++}>
-                  <div className="user">{this.getCommentCreatedByDisplayText(comment.comment)}</div>
+                  <div className="user">{comment.createdBy}</div>
                   <div className="task-date">{this.getCreatedDateDisplayString(comment.createDate)}</div>
                   <div>
-                    {this.getCommentDisplayText(comment.comment)}
+                      {comment.comment}
                   </div>
                 </li>
                 ))
