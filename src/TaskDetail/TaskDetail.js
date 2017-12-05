@@ -223,6 +223,7 @@ class TaskDetail  extends React.Component {
                   multiLine={true}
                   maxlength="1900"
                 />
+                
 
                 <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
                     Add
@@ -248,7 +249,7 @@ class TaskDetail  extends React.Component {
                       }
                     </div>
                   ))
-                  
+
                 }
               </div>
             </div>
