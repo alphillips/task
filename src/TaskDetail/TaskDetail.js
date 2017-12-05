@@ -195,6 +195,7 @@ class TaskDetail  extends React.Component {
                   onKeyPress={this.onCommentKeyPress}
                   rows={2}
                   multiLine={true}
+                  maxLength="1900"
                 />
 
                 <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
