@@ -133,87 +133,82 @@ class TaskSummaryCard extends React.Component {
           </div>
         </div>
 
-        <div className="row task-btns">
-          <div className="col-md-6">
 
+          <div className="row task-btns">
+          {window.IS_STAFF &&
+            <div className="col-md-6">
+
+              {this.props.hasComments &&
+                <a href="#" className="message-link" onClick={this.goToTaskDetailsPage}>{this.props.commentsButtonLabel}</a>
+              }
+
+              {!this.props.hasComments &&
+                <div>
+                  <Input
+                    label="Add a comment"
+                    value={this.state.commentInputText}
+                    onChange={this.onCommentTextChange}
+                    onKeyPress={this.onCommentKeyPress}
+                    rows={2}
+                    multiLine={true}
+                  />
+
+                </div>
+              }
+
+
+            </div>
+          }
+
+
+          {window.IS_STAFF &&
+            <div className="col-md-6 assign-btns">
             {this.props.hasComments &&
-              <a href="#" className="message-link" onClick={this.goToTaskDetailsPage}>{this.props.commentsButtonLabel}</a>
-            }
+              <div>
+                {this.props.assigned==null &&
+                  <a href="#" className="assign-link" onClick={this.assignTaskToMe}>Assign to me</a>
 
-            {/*<button className="uikit-btn uikit-btn--tertiary" onClick={this.goToCommentsPage}>
-               <span className="comment-icon"></span>
-              {this.props.commentsButtonLabel}
-            </button>*/}
+                }
+
+                {this.props.assigned!=null &&
+                  <a href="#"  className="unassign-link" onClick={this.unAssignTaskFromMe}>Unassign</a>
+                }
+              </div>
+            }
+            </div>
+          }
+
+
+        </div>
+
+        {window.IS_STAFF &&
+          <div className="row">
+            <div className="col-md-6">
+              {!this.props.hasComments &&
+                <div>
+                  <button className="uikit-btn uikit-btn--tertiary comment-btn" onClick={this.addComment}>
+                      Add
+                  </button>
+                </div>
+              }
+            </div>
+            <div className="col-md-6 assign-btns">
 
             {!this.props.hasComments &&
               <div>
-                {/*
-                <textarea
-                  className="comment-textarea"
-                  placeholder="Add a comment..."
-                  value={this.state.commentInputText}
-                  onChange={this.onCommentTextChange}
-                  onKeyPress={this.onCommentKeyPress}>
-                </textarea>
-                */}
+                {this.props.assigned==null &&
+                  <a href="#" className="assign-link" onClick={this.assignTaskToMe}>Assign to me</a>
 
-                <Input
-                  label="Add a comment"
-                  value={this.state.commentInputText}
-                  onChange={this.onCommentTextChange}
-                  onKeyPress={this.onCommentKeyPress}
-                  rows={2}
-                  multiLine={true}
-                />
+                }
 
+                {this.props.assigned!=null &&
+                  <a href="#"  className="unassign-link" onClick={this.unAssignTaskFromMe}>Unassign</a>
+                }
               </div>
             }
-
-
-          </div>
-          <div className="col-md-6 assign-btns">
-          {this.props.hasComments &&
-            <div>
-              {this.props.assigned==null &&
-                <a href="#" className="assign-link" onClick={this.assignTaskToMe}>Assign to me</a>
-
-              }
-
-              {this.props.assigned!=null &&
-                <a href="#"  className="unassign-link" onClick={this.unAssignTaskFromMe}>Unassign</a>
-              }
             </div>
-          }
           </div>
-        </div>
-
-
-        <div className="row">
-          <div className="col-md-6">
-            {!this.props.hasComments &&
-              <div>
-                <button className="uikit-btn uikit-btn--tertiary comment-btn" onClick={this.addComment}>
-                    Add
-                </button>
-              </div>
-            }
-          </div>
-          <div className="col-md-6 assign-btns">
-
-          {!this.props.hasComments &&
-            <div>
-              {this.props.assigned==null &&
-                <a href="#" className="assign-link" onClick={this.assignTaskToMe}>Assign to me</a>
-
-              }
-
-              {this.props.assigned!=null &&
-                <a href="#"  className="unassign-link" onClick={this.unAssignTaskFromMe}>Unassign</a>
-              }
-            </div>
-          }
-          </div>
-        </div>
+        }
 
         {/*
         <Row bottom="lg" className="task-bottom-row">
