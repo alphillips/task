@@ -201,78 +201,71 @@ class TaskDetail  extends React.Component {
               </div>
             </div>
 
-            <div className="row">
-              <div className="col-md-6">
+            {window.IS_STAFF &&
+              <div className="row">
+                <div className="col-md-6">
+                  <Input
+                    label="Add a comment"
+                    value={this.state.commentInputText}
+                    onChange={this.onCommentTextChange}
+                    onKeyPress={this.onCommentKeyPress}
+                    rows={2}
+                    multiLine={true}
+                    maxlength="1900"
+                  />
 
-                {/*
-                <textarea
-                  className="comment-textarea comment-detail-textarea"
-                  placeholder="Add a comment..."
-                  value={this.state.commentInputText}
-                  onChange={this.onCommentTextChange}
-                  onKeyPress={this.onCommentKeyPress}>
-                </textarea>
-                */}
 
-                <Input
-                  label="Add a comment"
-                  value={this.state.commentInputText}
-                  onChange={this.onCommentTextChange}
-                  onKeyPress={this.onCommentKeyPress}
-                  rows={2}
-                  multiLine={true}
-                  maxlength="1900"
-                />
-                
+                  <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
+                      Add
+                  </button>
+                </div>
+                <div className="col-md-6 btn-group">
+                  {this.state.task.taskPossibleOutcomes &&
+                   this.state.task.state != 'COMPLETED' &&
+                   this.state.task.taskPossibleOutcomes.sort((a, b)=>{
+                     if(b.name === 'APPROVE') return 1;
+                     return -1;
+                   }).map((outcome) => (
+                      <div key={count++}>
+                        {outcome.name === 'APPROVE' &&
+                          <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
+                          {outcome.name}
+                          </button>
+                        }
+                        {outcome.name !== 'APPROVE' &&
+                          <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
+                          {outcome.name}
+                          </button>
+                        }
+                      </div>
+                    ))
 
-                <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
-                    Add
-                </button>
+                  }
+                </div>
               </div>
-              <div className="col-md-6 btn-group">
-                {this.state.task.taskPossibleOutcomes &&
-                 this.state.task.state != 'COMPLETED' &&
-                 this.state.task.taskPossibleOutcomes.sort((a, b)=>{
-                   if(b.name === 'APPROVE') return 1;
-                   return -1;
-                 }).map((outcome) => (
-                    <div key={count++}>
-                      {outcome.name === 'APPROVE' &&
-                        <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
-                        {outcome.name}
-                        </button>
-                      }
-                      {outcome.name !== 'APPROVE' &&
-                        <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
-                        {outcome.name}
-                        </button>
-                      }
-                    </div>
-                  ))
+            }
 
+            {window.IS_STAFF &&
+              <div className="task-detail-comments">
+                {this.state.comments.length > 0 &&
+                <h2>Comments</h2>
                 }
+                <ul>
+                {this.state.comments.sort((a,b) => {
+                  return new Date(a.createDate) - new Date(b.createDate);
+                }).map((comment) => (
+                  <li key={commentCount++}>
+                    <div className="user">{comment.createdBy}</div>
+                    <div className="task-date">{this.getCreatedDateDisplayString(comment.createDate)}</div>
+                    <div>
+                        {comment.comment}
+                    </div>
+                  </li>
+                  ))
+                }
+                </ul>
               </div>
-            </div>
-
-            <div className="task-detail-comments">
-              {this.state.comments.length > 0 &&
-              <h2>Comments</h2>
-              }
-              <ul>
-              {this.state.comments.sort((a,b) => {
-                return new Date(a.createDate) - new Date(b.createDate);
-              }).map((comment) => (
-                <li key={commentCount++}>
-                  <div className="user">{comment.createdBy}</div>
-                  <div className="task-date">{this.getCreatedDateDisplayString(comment.createDate)}</div>
-                  <div>
-                      {comment.comment}
-                  </div>
-                </li>
-                ))
-              }
-              </ul>
-            </div>
+            }
 
           </div>
         }
