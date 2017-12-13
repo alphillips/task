@@ -106,6 +106,30 @@ class TaskDetail  extends React.Component {
     return   this.formatDateToString(millisecs)
   }
 
+  getCommentDisplayText = (commentJSONStr) => {
+
+    commentJSON = JSON.parse(commentJSONStr)
+
+    if(commentJSON){
+      return commentJSON.comment
+    }
+
+    return  ""
+  }
+
+
+  getCommentCreatedByDisplayText = (commentJSONStr) => {
+    commentJSON = JSON.parse(commentJSONStr)
+
+    if(commentJSON){
+      return commentJSON.createdByUserDisplayName
+    }
+
+    return  ""
+  }
+
+
+
   formatDateToString = (millisecs) => {
     var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
     var d = new Date(millisecs);
@@ -163,8 +187,10 @@ class TaskDetail  extends React.Component {
                 <div className="col-md-3">
                   <div className="task-status">{this.state.task.statusLabel}</div>
                   <div className="task-date">Created on: {this.getCreatedDateDisplayString(this.state.task.createdDate)}</div>
-                  <div className="task-date">Updated on: {this.getCreatedDateDisplayString(this.state.task.updatedDate)}</div>
-                  <div className="task-date">Updated by: {this.state.task.updatedBy}</div>
+                  {
+                    // <div className="task-date">Updated on: {this.getCreatedDateDisplayString(this.state.task.updatedDate)}</div>
+                    // <div className="task-date">Updated by: {this.state.task.updatedBy}</div>
+                  }
                   <div className="task-date">Priority: {this.state.task.priority}</div>
                 </div>
             </div>
@@ -195,8 +221,9 @@ class TaskDetail  extends React.Component {
                   onKeyPress={this.onCommentKeyPress}
                   rows={2}
                   multiLine={true}
-                  maxLength="1900"
+                  maxlength="1900"
                 />
+                
 
                 <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
                     Add
@@ -222,6 +249,7 @@ class TaskDetail  extends React.Component {
                       }
                     </div>
                   ))
+
                 }
               </div>
             </div>
@@ -238,7 +266,7 @@ class TaskDetail  extends React.Component {
                   <div className="user">{comment.createdBy}</div>
                   <div className="task-date">{this.getCreatedDateDisplayString(comment.createDate)}</div>
                   <div>
-                    {comment.comment}
+                      {comment.comment}
                   </div>
                 </li>
                 ))
