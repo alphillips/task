@@ -42,7 +42,7 @@ class Tasksx extends React.Component {
 
         {!this.state.id &&
           <div>
-          <Messages success={this.state.success}/>
+        
             <TaskList onChange={this.onTaskClick}/>
           </div>
         }
