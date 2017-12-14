@@ -201,24 +201,26 @@ class TaskDetail  extends React.Component {
               </div>
             </div>
 
-            {window.IS_STAFF &&
+
               <div className="row">
-                <div className="col-md-6">
-                  <Input
-                    label="Add a comment"
-                    value={this.state.commentInputText}
-                    onChange={this.onCommentTextChange}
-                    onKeyPress={this.onCommentKeyPress}
-                    rows={2}
-                    multiLine={true}
-                    maxlength="1900"
-                  />
+                {window.IS_STAFF &&
+                  <div className="col-md-6">
+                    <Input
+                      label="Add a comment"
+                      value={this.state.commentInputText}
+                      onChange={this.onCommentTextChange}
+                      onKeyPress={this.onCommentKeyPress}
+                      rows={2}
+                      multiLine={true}
+                      maxlength="1900"
+                    />
 
 
-                  <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
-                      Add
-                  </button>
-                </div>
+                    <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
+                        Add
+                    </button>
+                  </div>
+                }
                 <div className="col-md-6 btn-group">
                   {this.state.task.taskPossibleOutcomes &&
                    this.state.task.state != 'COMPLETED' &&
@@ -243,7 +245,7 @@ class TaskDetail  extends React.Component {
                   }
                 </div>
               </div>
-            }
+
 
             {window.IS_STAFF &&
               <div className="task-detail-comments">
