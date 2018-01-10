@@ -43,7 +43,13 @@ class Tasksx extends React.Component {
         {!this.state.id &&
           <div>
           <Messages success={this.state.success}/>
-            <TaskList onChange={this.onTaskClick}/>
+            <TaskList
+              onChange={this.onTaskClick}
+              showSearch={this.props.showSearch}
+              assignedToUser={this.props.assignedToUser}
+              taskCount={this.props.taskCount}
+              heading={this.props.heading}
+            />
           </div>
         }
 

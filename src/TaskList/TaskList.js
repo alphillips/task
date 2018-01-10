@@ -24,6 +24,10 @@ class TaskList extends React.Component {
 
   }
 
+  componentDidMount () {
+      this.readTasksList()
+  }
+
   formatDateToString = (millisecs) => {
     var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
     var d = new Date(millisecs);
@@ -91,17 +95,35 @@ class TaskList extends React.Component {
 
   readTasksList = () => {
 
-       this.setStateKeyVal('loading', true)
+       this.setState({
+         loading:true
+       })
 
       api.fetchUserTasksList().then((data) =>{
-           this.setStateKeyVal('tasks', data)
-           this.setStateKeyVal('loading', false)
+
+        if(this.props.assignedToUser){
+          data = data.filter(d => {
+            if(d.taskAssignees){
+              if(d.taskAssignees[0] && d.taskAssignees[0].assignedToUser === this.props.assignedToUser){
+                return true
+              }
+            }
+            return false
+          })
+        }
+
+        if(this.props.taskCount){
+          this.props.taskCount(data.length)
+        }
+
+        this.setState({
+          tasks: data,
+          loading:false
+        })
       })
   }
 
-  componentDidMount () {
-      this.readTasksList()
-  }
+
 
   calculateCommentsButtonLabel = (task) => {
 
@@ -140,10 +162,11 @@ class TaskList extends React.Component {
 
               <Messages success={this.state.success} error={this.state.error}/>
 
-             <h1>Tasks</h1>
+             <h1>{this.props.heading || 'Tasks'}</h1>
 
              <LoadableSection>
 
+             {this.props.showSearch !== false &&
              <div>
              <div className="task uikit-grid">
                <div className="row">
@@ -166,7 +189,7 @@ class TaskList extends React.Component {
                </div>
              </div>
              </div>
-
+            }
 
 
              <ul className="task-list">
