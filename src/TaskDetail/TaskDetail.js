@@ -108,7 +108,7 @@ class TaskDetail  extends React.Component {
 
   getCommentDisplayText = (commentJSONStr) => {
 
-    commentJSON = JSON.parse(commentJSONStr)
+    let commentJSON = JSON.parse(commentJSONStr)
 
     if(commentJSON){
       return commentJSON.comment
@@ -119,7 +119,7 @@ class TaskDetail  extends React.Component {
 
 
   getCommentCreatedByDisplayText = (commentJSONStr) => {
-    commentJSON = JSON.parse(commentJSONStr)
+    let commentJSON = JSON.parse(commentJSONStr)
 
     if(commentJSON){
       return commentJSON.createdByUserDisplayName
