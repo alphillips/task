@@ -36,3 +36,7 @@
     .task-detail .task-detail-comments ul li .task-date {
       display: inline-block;
       float: right; }
+      
+      .wordwrap {
+        word-wrap: break-word;
+      }

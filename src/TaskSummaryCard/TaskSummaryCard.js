@@ -151,6 +151,7 @@ class TaskSummaryCard extends React.Component {
                     onKeyPress={this.onCommentKeyPress}
                     rows={2}
                     multiLine={true}
+                    maxlength="1900"
                   />
 
                 </div>
