@@ -104,7 +104,7 @@ class TaskList extends React.Component {
         if(this.props.assignedToUser){
           data = data.filter(d => {
             if(d.taskAssignees){
-              if(d.taskAssignees[0] && d.taskAssignees[0].assignedToUser === this.props.assignedToUser){
+              if(d.taskAssignees[0] && d.taskAssignees[0].assignedToUser.toLowerCase() === this.props.assignedToUser.toLowerCase()){
                 return true
               }
             }
