@@ -6,7 +6,7 @@ import TaskList from './TaskList/TaskList'
 import TaskDetail from './TaskDetail/TaskDetail'
 import Messages from '@react-ag-components/messages'
 
-class Tasksx extends React.Component {
+class Tasks extends React.Component {
 
   constructor(props) {
     super(props);
@@ -68,4 +68,4 @@ class Tasksx extends React.Component {
   }
 }
 
-export default Tasksx
+export default Tasks

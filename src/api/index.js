@@ -37,3 +37,46 @@ export function performSearchByTitleKeyword(titleSearchKeyword) {
 
        return get('/task-service-rest/api/taskservice/v1/tasks/search/'+titleSearchKeyword)
 }
+
+
+export function createNewCorrespondence(payload) {
+       return post('/message-rest-ui/api/v1/mail/task/new', payload);
+}
+
+export function getAllCorrespondences(serviceRequestId) {
+       return get('/service-request-data-service-rs-ui/api/v1/servicerequest/correspondence/'+serviceRequestId)
+}
+
+
+//mail
+const URL_BASE2 = '/message-rest-ui/api/'
+const URL_BASE3 = '/inbox-rest-ui/api/'
+
+export function getMail(id){
+  return get(URL_BASE2 + 'v1/mail/thread/' + id)
+}
+export function getArchived(){
+  return get(URL_BASE2 + 'v1/mail/archive')
+}
+export function getMails(){
+  return get(URL_BASE3 + 'v1/all')
+}
+export function getUnreadCount(){
+  return get(URL_BASE3 + 'v1/all/count')
+}
+export function getMailFromAll(id){
+  return get(URL_BASE3 + 'v1/notification/' + id)
+}
+export function setArchive(statusBody){
+  return put(URL_BASE2 + 'v1/mail/archive/status', statusBody)
+}
+export function sendMail(mail){
+  return post(URL_BASE2 + 'v1/mail/reply', mail)
+}
+//send it one by one and create the array output at the end
+export function sendFile(file){
+  return post(URL_BASE2 + 'v1/mail/new/attachments', file)
+}
+export function getMailAttachment(id){
+  return get(URL_BASE2 + 'v1/mail/attachment/download/' + id)
+}
