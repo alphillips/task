@@ -128,11 +128,11 @@ class TaskList extends React.Component {
   calculateCommentsButtonLabel = (task) => {
 
      if(task.commentsCount>0) {
-       return 'Comments ('+task.commentsCount+')'
+       return 'Staff notes ('+task.commentsCount+')'
      }else if(task.commentsCount==0 && task.state == "COMPLETED"){
        return ""
      }else if(task.commentsCount==0 && task.state != "COMPLETED"){
-      return "Comment"
+      return "Staff note"
      }
   }
 

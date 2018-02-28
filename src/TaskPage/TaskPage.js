@@ -24,12 +24,6 @@ class TaskPage extends React.Component {
 
   render() {
     return (
-  //    <div>
-        // <Tasks
-        //   id={this.state.id}
-        //   onChange={this.handleIdChange}
-        // />
-
         <div>
           {!this.state.id &&
 
@@ -42,8 +36,6 @@ class TaskPage extends React.Component {
           }
 
         </div>
-
-  //    </div>
     )
   }
 }

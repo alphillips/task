@@ -1,7 +1,6 @@
 import React from 'react'
 import { hashHistory } from 'react-router'
 
-// import { Grid, Row, Col } from 'react-flexbox-grid'
 import * as api from './../api'
 import './task.css'
 import Spinner from 'react-spinner-material'
@@ -20,19 +19,9 @@ class TaskSummaryCard extends React.Component {
       }
   }
 
-  // goToCommentsPage = () =>{
-  //    hashHistory.push('/tasks/' + this.props.taskid + '/comments' )
-  // }
-
   goToTaskDetailsPage = (e) =>{
     e.preventDefault()
-    // hashHistory.push('/task-page/' + this.props.taskid + '/' )
     this.props.onChange(this.props.taskid)
-    // return (e) => {
-    //   e.preventDefault()
-    //   this.props.onChange(this.props.taskid )
-    // }
-
   }
 
   onTaskClick = (id) => {
@@ -41,8 +30,6 @@ class TaskSummaryCard extends React.Component {
       this.props.onChange(id)
     }
   }
-
-
 
   assignTaskToMe = (e) =>{
     e.preventDefault()
@@ -59,21 +46,19 @@ class TaskSummaryCard extends React.Component {
   unAssignTaskFromMe = (e) =>{
     e.preventDefault()
 
-
-        if( this.props.taskid ){
-
+    if( this.props.taskid ){
               var payload= { type:"UNASSIGN_A_TASK" }
               api.performTaskAction(this.props.taskid, payload ).then((data) =>{
                 if(this.props.refreshTasksList){
                   this.props.refreshTasksList()
                 }
             })
-        }
+    }
 
   }
 
   addComment = () => {
-    if( this.props.taskid &&  this.state.commentInputText != ''){
+    if( this.props.taskid &&  this.state.commentInputText && this.state.commentInputText.trim().length>0){
         //this.setStateKeyVal('loading',true)
         var payload = {comment: this.state.commentInputText }
         api.addComment(this.props.taskid, payload ).then((data) =>{
@@ -102,12 +87,6 @@ class TaskSummaryCard extends React.Component {
 
   render() {
 
-    // const comments = this.props.comments
-    // let commentsLabel = 'Comment'
-    // if (comments && comments.length > 0){
-    //   commentsLabel = comments.length + ' Comments ('+comments.length+')'
-    // }
-
     return (
       <div className="task uikit-grid main-paper">
 
@@ -133,11 +112,9 @@ class TaskSummaryCard extends React.Component {
           </div>
         </div>
 
-
-          <div className="row task-btns">
+        <div className="row task-btns">
           {window.IS_STAFF &&
             <div className="col-md-6">
-
               {this.props.hasComments &&
                 <a href="#" className="message-link" onClick={this.goToTaskDetailsPage}>{this.props.commentsButtonLabel}</a>
               }
@@ -145,7 +122,7 @@ class TaskSummaryCard extends React.Component {
               {!this.props.hasComments &&
                 <div>
                   <Input
-                    label="Add a comment"
+                    label="Add a staff note"
                     value={this.state.commentInputText}
                     onChange={this.onCommentTextChange}
                     onKeyPress={this.onCommentKeyPress}
@@ -156,8 +133,6 @@ class TaskSummaryCard extends React.Component {
 
                 </div>
               }
-
-
             </div>
           }
 
@@ -210,41 +185,6 @@ class TaskSummaryCard extends React.Component {
             </div>
           </div>
         }
-
-        {/*
-        <Row bottom="lg" className="task-bottom-row">
-          <Col xs={4} sm={4} lg={3} >
-              <button className="uikit-btn uikit-btn--tertiary" onClick={this.goToCommentsPage}>
-                 <span className="comment-icon"></span>
-                {this.props.commentsButtonLabel}
-              </button>
-          </Col>
-          <Col xs={4} sm={4} lg={3} >
-              <button className="uikit-btn uikit-btn--tertiary" onClick={this.goToTaskDetailsPage}>
-                 View
-              </button>
-          </Col>
-          <Col xs={4} sm={4} lg={3} >
-              {this.props.assigned==null &&
-                <button className="uikit-btn uikit-btn--tertiary" onClick={this.assignTaskToMe}>
-                   Assign to me
-                </button>
-              }
-
-              {this.props.assigned!=null &&
-                <button className="uikit-btn uikit-btn--tertiary" onClick={this.unAssignTaskFromMe}>
-                   Unassign
-                </button>
-              }
-
-          </Col>
-          <Col xs={0} sm={0} lg={3} >
-            { this.props.assigned!=null &&
-               <div className="assigned">Assigned to: {this.props.assigned}</div>
-             }
-          </Col>
-        </Row>
-        */}
 
       </div>
     )

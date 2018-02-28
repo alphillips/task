@@ -9,6 +9,25 @@ import './task-detail.css'
 import LoadableSection from '@react-ag-components/core/lib/LoadableSection'
 import Messages from '@react-ag-components/messages'
 
+import TaskCorrespondences from './../TaskCorrespondences/TaskCorrespondences'
+import TaskComments from './../TaskComments/TaskComments'
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import { Link } from "react-router";
+import moment from 'moment'
+
+const style = {
+  height: 100,
+  width: 100,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+const style2 = {
+  margin: 12,
+};
+
 class TaskDetail  extends React.Component {
 
   constructor(props) {
@@ -20,7 +39,7 @@ class TaskDetail  extends React.Component {
         newcomment:[],
         loading:false
       }
-    //  this.taskid = props.params.taskid || null
+
       this.taskid = props.taskid || null
   }
 
@@ -35,19 +54,17 @@ class TaskDetail  extends React.Component {
   componentDidMount() {
 
       this.readTaskDetailsById()
-      { //this.readComments()
-      }
   }
 
   readTaskDetailsById = () => {
 
-      this.setStateKeyVal('loading',true)
+      this.setState({loading : true})
 
-      if(this.props.taskid){
+      if(this.props.taskid) {
             api.fetchTaskDetailsById(this.props.taskid).then((data) => {
-                this.setStateKeyVal('task', data)
-                this.setStateKeyVal('comments', data.comments==null?[]:data.comments)
-                this.setStateKeyVal('loading', false)
+              this.setState({ task : data})
+              this.setState({ comments : data.comments==null?[]:data.comments})
+              this.setState({ loading : false})
           })
       }
   }
@@ -57,11 +74,10 @@ class TaskDetail  extends React.Component {
 
   performApproveOrRejectTaskAction = (outcome) => {
 
-      console.log(outcome)
 
        if( this.props.taskid &&   outcome){
-           this.setStateKeyVal('loading', true)
-           this.setStateKeyVal('task', [])
+           this.setState({ loading : true});
+           this.setState({ task :  [] });
            var payload= {value: outcome.name, type:"APPROVE_OR_REJECT" }
            api.performTaskAction(this.props.taskid, payload ).then((data) =>{
               // this.readTaskDetailsById();
@@ -78,56 +94,9 @@ class TaskDetail  extends React.Component {
 
 
 
-
-  readComments = () => {
-      if(this.props.taskid) {
-          //this.setStateKeyVal('loading', true)
-          api.fetchComments(this.props.taskid).then((data) =>{
-                this.setStateKeyVal('comments', data)
-            //    this.setStateKeyVal('loading', false)
-        })
-      }
-  }
-
-  addComment = () => {
-
-       if( this.props.taskid &&   this.state.commentInputText){
-           //this.setStateKeyVal('loading',true)
-           var payload = {comment: this.state.commentInputText }
-           api.addComment(this.props.taskid, payload ).then((data) =>{
-               this.setStateKeyVal('commentInputText',[])
-               this.readComments()
-            //   this.setStateKeyVal('loading',false)
-         })
-     }
-  }
-
   getCreatedDateDisplayString = (millisecs) => {
     return   this.formatDateToString(millisecs)
   }
-
-  getCommentDisplayText = (commentJSONStr) => {
-
-    let commentJSON = JSON.parse(commentJSONStr)
-
-    if(commentJSON){
-      return commentJSON.comment
-    }
-
-    return  ""
-  }
-
-
-  getCommentCreatedByDisplayText = (commentJSONStr) => {
-    let commentJSON = JSON.parse(commentJSONStr)
-
-    if(commentJSON){
-      return commentJSON.createdByUserDisplayName
-    }
-
-    return  ""
-  }
-
 
 
   formatDateToString = (millisecs) => {
@@ -142,25 +111,22 @@ class TaskDetail  extends React.Component {
 
 
 
-  setStateKeyVal = (key,val) => {
-        this.setState((prevState, props) => ({
-            [key]: val
-        }))
-  }
-
-  onCommentKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      // Do code here
-      //ev.preventDefault();
-      this.addComment()
-    }
-  }
-
-  onCommentTextChange = (e) => {
-  //  let val = e.target.value
+  callbackCloseParentTask = () => {
     this.setState((prevState, props) => ({
-      commentInputText:e
-    }))
+      messagesSectionOpened : true
+    }));
+  };
+
+  callbackOpenParentTask = () => {
+    this.setState((prevState, props) => ({
+      messagesSectionOpened : false
+    }));
+  };
+
+  callbackShowMessage = (type, msg) => {
+    this.setState((prevState, props) => ({
+        [type]:msg
+     }));
   }
 
   render() {
@@ -172,107 +138,86 @@ class TaskDetail  extends React.Component {
 
       <div className="task-detail">
 
-      <BackButton />
 
-      <Messages />
+       <Messages success={this.state.success}  error={this.state.error}/>
+
+       {  !this.state.messagesSectionOpened  &&
+           <BackButton />
+       }
+
+
+
 
       <LoadableSection>
 
-     { this.state.loading==false &&
-          <div className="task uikit-grid">
-            <div className="row">
-                <div className="col-md-9">
-                  <h2 className="uikit-display-2">{this.state.task.title}</h2>
-                </div>
-                <div className="col-md-3">
-                  <div className="task-status">{this.state.task.statusLabel}</div>
-                  <div className="task-date">Created on: {this.getCreatedDateDisplayString(this.state.task.createdDate)}</div>
-                  {
-                    // <div className="task-date">Updated on: {this.getCreatedDateDisplayString(this.state.task.updatedDate)}</div>
-                    // <div className="task-date">Updated by: {this.state.task.updatedBy}</div>
-                  }
-                  <div className="task-date">Priority: {this.state.task.priority}</div>
-                </div>
-            </div>
-
-            <div className="row task-detail-body">
-              <div className="col-md-12">
-                <div dangerouslySetInnerHTML={{__html: this.state.task.payloadHtml}}></div>
-              </div>
-            </div>
-
-
-              <div className="row">
-                {window.IS_STAFF &&
-                  <div className="col-md-6">
-                    <Input
-                      label="Add a comment"
-                      value={this.state.commentInputText}
-                      onChange={this.onCommentTextChange}
-                      onKeyPress={this.onCommentKeyPress}
-                      rows={2}
-                      multiLine={true}
-                      maxlength="1900"
-                    />
-
-
-                    <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.addComment}>
-                        Add
-                    </button>
-                  </div>
-                }
-                <div className="col-md-6 btn-group">
-                  {this.state.task.taskPossibleOutcomes &&
-                   this.state.task.state != 'COMPLETED' &&
-                   this.state.task.taskPossibleOutcomes.sort((a, b)=>{
-                     if(b.name === 'APPROVE') return 1;
-                     return -1;
-                   }).map((outcome) => (
-                      <div key={count++}>
-                        {outcome.name === 'APPROVE' &&
-                          <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
-                          {outcome.name}
-                          </button>
-                        }
-                        {outcome.name !== 'APPROVE' &&
-                          <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
-                          {outcome.name}
-                          </button>
-                        }
-                      </div>
-                    ))
-
-                  }
-                </div>
-              </div>
-
-
-            {window.IS_STAFF &&
-              <div className="task-detail-comments">
-                {this.state.comments.length > 0 &&
-                <h2>Comments</h2>
-                }
-                <ul>
-                {this.state.comments.sort((a,b) => {
-                  return new Date(a.createDate) - new Date(b.createDate);
-                }).map((comment) => (
-                  <li key={commentCount++}>
-                    <div className="user">{comment.createdBy}</div>
-                    <div className="task-date">{this.getCreatedDateDisplayString(comment.createDate)}</div>
-                    <div>
-                        {comment.comment}
+            {  !this.state.messagesSectionOpened  &&
+                  <div className="task uikit-grid">
+                    <div className="row">
+                        <div className="col-md-9">
+                          <h2 className="uikit-display-2">{this.state.task.title}</h2>
+                        </div>
+                        <div className="col-md-3">
+                          <div className="task-status">{this.state.task.statusLabel}</div>
+                          <div className="task-date">Created on: {this.getCreatedDateDisplayString(this.state.task.createdDate)}</div>
+                          <div className="task-date">Priority: {this.state.task.priority}</div>
+                        </div>
                     </div>
-                  </li>
-                  ))
-                }
-                </ul>
-              </div>
-            }
+                  </div>
+           }
 
-          </div>
-        }
+          {  !this.state.messagesSectionOpened  &&
+
+          <div className="task uikit-grid">
+
+                      <div className="row task-detail-body">
+                        <div className="col-md-12" style={{'backgroundColor': '#fafafa', 'padding':'20px'}}>
+                          <div dangerouslySetInnerHTML={{__html: this.state.task.payloadHtml}}></div>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-md-7"></div>
+                        <div className="col-md-5 btn-group">
+                          { this.state.task.taskPossibleOutcomes &&
+                            this.state.task.state != 'COMPLETED' &&
+                            this.state.task.taskPossibleOutcomes.sort((a, b)=>{
+                              if(b.name === 'APPROVE') return 1;
+                              return -1;
+                           }).map((outcome) => (
+                              <div key={count++} style={{float: 'left'}}>
+                                {outcome.name === 'APPROVE' &&
+                                  <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
+                                  {outcome.name}
+                                  </button>
+                                }
+                                {outcome.name !== 'APPROVE' &&
+                                  <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
+                                  {outcome.name}
+                                  </button>
+                                }
+                              </div>
+                            ))
+                          }
+                        </div>
+                      </div>
+
+                    </div>
+                 }
+
 
         </LoadableSection>
+
+
+
+        { window.IS_STAFF && this.state.task && this.state.task.serviceRequestId &&  this.state.task.serviceRequestId.length>0 &&
+          <TaskCorrespondences task={this.state.task} serviceRequestId={this.state.task.serviceRequestId}  callbackOpenParentTask={this.callbackOpenParentTask}  callbackCloseParentTask={this.callbackCloseParentTask}  callbackShowMessage={this.callbackShowMessage} />
+        }
+
+
+        { window.IS_STAFF && this.state.task &&  !this.state.messagesSectionOpened  &&
+          <TaskComments task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId} callbackShowMessage={this.callbackShowMessage}/>
+        }
+
 
      </div>
 
