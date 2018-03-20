@@ -116,10 +116,16 @@ class TaskSummaryCard extends React.Component {
           {window.IS_STAFF &&
             <div className="col-md-6">
               {this.props.hasComments &&
-                <a href="#" className="message-link" onClick={this.goToTaskDetailsPage}>{this.props.commentsButtonLabel}</a>
+                    <a href="#" className="message-link" onClick={this.goToTaskDetailsPage}>{this.props.commentsButtonLabel}</a>
               }
 
-              {!this.props.hasComments &&
+              {this.props.hasExternalMessages &&
+                  <span>&nbsp;  <a href="#" className="mail-link" onClick={this.goToTaskDetailsPage}>{this.props.externalMessagesButtonLabel}</a> </span>
+              }
+
+
+
+              {!this.props.hasComments && !this.props.taskCommpleted &&
                 <div>
                   <Input
                     label="Add a staff note"
@@ -137,7 +143,7 @@ class TaskSummaryCard extends React.Component {
           }
 
 
-          {window.IS_STAFF &&
+          {window.IS_STAFF && !this.props.taskCommpleted &&
             <div className="col-md-6 assign-btns">
             {this.props.hasComments &&
               <div>
@@ -157,7 +163,7 @@ class TaskSummaryCard extends React.Component {
 
         </div>
 
-        {window.IS_STAFF &&
+        {window.IS_STAFF && !this.props.taskCommpleted &&
           <div className="row">
             <div className="col-md-6">
               {!this.props.hasComments &&

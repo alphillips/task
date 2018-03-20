@@ -62,6 +62,22 @@
     }
   }
 
+
+  .comment-link{
+    display: inline-block;
+
+    &::before {
+      content: ' ';
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 0.4em -6px 0.16em;
+      background-image: url(message-square.svg);
+      background-repeat: no-repeat;
+    }
+
+  }
+
   .wordwrap {
     word-wrap: break-word;
   }

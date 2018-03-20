@@ -1,9 +1,9 @@
-import Tasks from './Tasks'
+import TaskUIComponent from './TaskUIComponent'
 
 const noDefaultExport = () => {}
 
 export {
-  Tasks
+  TaskUIComponent
 }
 
 export default noDefaultExport

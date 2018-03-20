@@ -1,21 +1,28 @@
 import React from 'react'
-// import { Link,hashHistory } from 'react-router'
+
 import TaskSummaryCard from './../TaskSummaryCard'
 import Input from '@react-ag-components/input'
 import * as api from './../api'
 import './task-list.css'
-// import { Grid, Row, Col } from 'react-flexbox-grid'
-// import Spinner from 'react-spinner-material'
-// import Messages from '@react-ag-components/messages'
+
 import Messages from '@react-ag-components/messages'
 import LoadableSection from '@react-ag-components/core/lib/LoadableSection'
+import MenuItem from 'material-ui/MenuItem'
+import SelectField from "material-ui/SelectField";
+import { hashHistory } from "react-router";
+
+const searchOptions = [
+  { value: "ASSIGNED", label: "Pending Tasks" },
+  { value: "COMPLETED", label: "Completed Tasks" }
+];
 
 class TaskList extends React.Component {
 
   constructor(props) {
       super(props)
       this.state = {
-        searchKeyword:'',
+        searchTypeCode :  props.searchTypeCode || "ASSIGNED",
+        searchKeyword: props.searchKeyword || null,
         tasks:[],
         loading:false,
         success:props.success,
@@ -25,8 +32,18 @@ class TaskList extends React.Component {
   }
 
   componentDidMount () {
-      this.readTasksList()
+
+      if(this.props.searchKeyword){
+        this.setState({searchKeyword: this.props.searchKeyword})
+      }
+
+      if(this.state.searchTypeCode &&  this.state.searchKeyword)  {
+          this.searchTasksByKeywordsInTitle();
+      }else {
+          this.readTasksList();
+      }
   }
+
 
   formatDateToString = (millisecs) => {
     var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -63,13 +80,6 @@ class TaskList extends React.Component {
       this.setState((prevState, props) => ({
         [field]: value
       }))
-
-      if(value.length>3){
-          //do search by searchKeyword && refresh the list of tasks
-        //  this.searchTasksByKeywordsInTitle(value)
-      }else if(value.length == 0){
-          this.readTasksList()
-      }
     }
   }
 
@@ -77,17 +87,20 @@ class TaskList extends React.Component {
       this.setStateKeyVal('tasks', [])
 
       if(!this.state.searchKeyword){
-            this.readTasksList()
+            this.readTasksList();
+            let url = "tasks/state/"+this.state.searchTypeCode;
+            hashHistory.push(url);
       }else{
-            this.search()
+            this.search();
+            let url = "tasks/state/"+this.state.searchTypeCode+"/keyword/"+this.state.searchKeyword;
+            hashHistory.push(url);
       }
   }
 
   search = () =>{
-
     this.setStateKeyVal('loading', true)
 
-    api.performSearchByTitleKeyword(this.state.searchKeyword).then((data) =>{
+    api.performSearchByTitleKeyword(this.state.searchKeyword, this.state.searchTypeCode).then((data) =>{
       this.setStateKeyVal('tasks', data)
       this.setStateKeyVal('loading', false)
     })
@@ -99,7 +112,7 @@ class TaskList extends React.Component {
          loading:true
        })
 
-      api.fetchUserTasksList().then((data) =>{
+      api.fetchUserTasksList(this.state.searchTypeCode).then((data) =>{
 
         if(this.props.assignedToUser){
           data = data.filter(d => {
@@ -127,19 +140,37 @@ class TaskList extends React.Component {
 
   calculateCommentsButtonLabel = (task) => {
 
-     if(task.commentsCount>0) {
-       return 'Staff notes ('+task.commentsCount+')'
-     }else if(task.commentsCount==0 && task.state == "COMPLETED"){
+     if(task.taskCustomAttributes.taskCommentsCount>0) {
+       return 'Staff notes ('+task.taskCustomAttributes.taskCommentsCount+')'
+     }else if(task.taskCustomAttributes.taskCommentsCount==0 && task.state == "COMPLETED"){
        return ""
-     }else if(task.commentsCount==0 && task.state != "COMPLETED"){
+     }else if(task.taskCustomAttributes.taskCommentsCount==0 && task.state != "COMPLETED"){
       return "Staff note"
      }
   }
 
-  hasComments = (task) => {
-    return task.commentsCount>0
+  calculateExternalMessagesButtonLabel = (task) => {
+
+     if(task.taskCustomAttributes.taskExternalMessagesCount>0) {
+       return 'External messages ('+task.taskCustomAttributes.taskExternalMessagesCount+')'
+     }else if(task.taskCustomAttributes.taskExternalMessagesCount==0 && task.state == "COMPLETED"){
+       return ""
+     }else if(task.taskCustomAttributes.taskExternalMessagesCount==0 && task.state != "COMPLETED"){
+      return "External message"
+     }
   }
 
+  hasComments = (task) => {
+    return task.taskCustomAttributes.taskCommentsCount>0
+  }
+
+  hasExternalMessages = (task) => {
+    return task.taskCustomAttributes.taskExternalMessagesCount>0
+  }
+
+  taskCommpleted = (task) => {
+    return task.state == "COMPLETED";
+  }
 
   setStateKeyVal = (key,val) => {
         this.setState((prevState, props) => ({
@@ -152,15 +183,35 @@ class TaskList extends React.Component {
     this.props.onChange(id)
   }
 
+  setSearchTypeCode = (event, index) => {
+    this.setState((prevState, props) => ({
+      searchTypeCode: searchOptions[index].value,
+      searchTypeLabel: searchOptions[index].label,
+      searchTypeIndex: index,
+      tasks: null,
+      validationMessages: null,
+      selectFieldClassName: "medium-width"
+    }));
+
+    if(searchOptions[index].label === "Client Name") {
+      this.setState((prevState, props) => ({
+        selectFieldClassName: "small-width"
+      }));
+    }
+  };
+
   render() {
 
-
+    const selectFieldStyle = {
+      width: "100%",
+      'color':'#999'
+    };
   let taskCount = 0
 
     return (
             <div className="task-list-page">
 
-              <Messages success={this.state.success} error={this.state.error}/>
+             <Messages success={this.state.success} error={this.state.error}/>
 
              <h1>{this.props.heading || 'Tasks'}</h1>
 
@@ -170,14 +221,29 @@ class TaskList extends React.Component {
              <div>
              <div className="task uikit-grid">
                <div className="row">
-                 <div className="col-md-10">
+
+                 <div className="col-md-3">
+                         <SelectField
+                          floatingLabelText="Search in....."
+                          onChange={this.setSearchTypeCode}
+                          value={this.state.searchTypeCode}
+                          style={selectFieldStyle}
+                          floatingLabelStyle={selectFieldStyle}
+                          className="search custom-width"
+                        >
+                          {searchOptions.map((searchOption) =>
+                            <MenuItem key={searchOption.value} value={searchOption.value} primaryText={searchOption.label} />
+                          )}
+                        </SelectField>
+                 </div>
+                 <div className="col-md-7">
 
                            <Input
-                             label={"Search tasks"}
+                             label={"keyword"}
                              id="search"
                              value={this.state.searchKeyword}
                              onChange={this.onSearchFieldChange('searchKeyword')}
-                             placeholder="Search tasks..."
+                             placeholder="keyword"
                            />
 
                  </div>
@@ -197,15 +263,19 @@ class TaskList extends React.Component {
                  this.state.tasks.map((task) => (
                       <li key={taskCount++}>
                         <TaskSummaryCard
+                          task={task}
                           type={task.title}
                           createdDate={ this.getCreatedDateDisplayString(task.createdDate)}
                           lastUpdatedDate={ this.getLastUpdatedDateDisplayString(task.lastUpdatedDate)}
                           updatedBy={task.updatedBy}
                           priority= {task.priority}
-                          assigned= {task.taskAssignees && task.taskAssignees[0].assignedToUser}
+                          assigned= {task.taskCustomAttributes.taskAssignees && task.taskCustomAttributes.taskAssignees[0]}
                           taskid={task.taskId}
                           commentsButtonLabel = {this.calculateCommentsButtonLabel(task)}
+                          externalMessagesButtonLabel = {this.calculateExternalMessagesButtonLabel(task)}
                           hasComments={this.hasComments(task)}
+                          hasExternalMessages={this.hasExternalMessages(task)}
+                          taskCommpleted={this.taskCommpleted(task)}
                           refreshTasksList={this.readTasksList}
                           statusLabel={task.statusLabel}
                           description={task.description}

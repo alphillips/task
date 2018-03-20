@@ -73,6 +73,24 @@
 
   }
 
+  .mail-link{
+    display: inline-block;
+
+    // border: 1px solid #1B7991;
+    // padding: 2px 5px 2px 5px;
+
+    &::before {
+      content: ' ';
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 0.4em -6px 0.16em;
+      background-image: url(mail.svg);
+      background-repeat: no-repeat;
+    }
+
+  }
+
   .assign-link{
     display: inline-block;
     &::before {

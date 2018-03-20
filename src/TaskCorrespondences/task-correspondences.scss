@@ -1,6 +1,24 @@
 $inbox-unread: #1B7991;
 $inbox-border: darken(whitesmoke, 20%);
 
+.mail-link{
+  display: inline-block;
+
+  // border: 1px solid #1B7991;
+  // padding: 2px 5px 2px 5px;
+
+  &::before {
+    content: ' ';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 0 0.4em -6px 0.16em;
+    background-image: url(mail.svg);
+    background-repeat: no-repeat;
+  }
+
+}
+
 .nexdoc-inbox {
   position: relative;
 
@@ -107,6 +125,8 @@ $inbox-border: darken(whitesmoke, 20%);
       position: relative!important;
       cursor: pointer;
     }
+
+
 
     .unread {
       position: relative;

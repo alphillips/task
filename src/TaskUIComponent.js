@@ -6,7 +6,7 @@ import TaskList from './TaskList/TaskList'
 import TaskDetail from './TaskDetail/TaskDetail'
 import Messages from '@react-ag-components/messages'
 
-class Tasks extends React.Component {
+class TaskUIComponent extends React.Component {
 
   constructor(props) {
     super(props);
@@ -42,13 +42,15 @@ class Tasks extends React.Component {
 
         {!this.state.id &&
           <div>
-          <Messages success={this.state.success}/>
+
             <TaskList
               onChange={this.onTaskClick}
               showSearch={this.props.showSearch}
               assignedToUser={this.props.assignedToUser}
               taskCount={this.props.taskCount}
               heading={this.props.heading}
+              searchTypeCode = {this.props.searchTypeCode}
+              searchKeyword = {this.props.searchKeyword}
             />
           </div>
         }
@@ -68,4 +70,4 @@ class Tasks extends React.Component {
   }
 }
 
-export default Tasks
+export default TaskUIComponent

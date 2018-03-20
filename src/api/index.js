@@ -3,9 +3,14 @@ const URL_BASE = (process.env.API_HOST || '') + '/api/'
 import {get, post, put, del, formPost} from '@react-ag-components/core/lib/api'
 
 
-export function fetchUserTasksList() {
+export function fetchUserTasksList(state) {
       // return get(URL_BASE + 'v1/user/context')
-       return get('/task-service-rest/api/taskservice/v1/tasks')
+       if(state && state.trim().length>0){
+         return get('/task-service-rest/api/taskservice/v1/tasks/state/'+state);
+       }else {
+         return get('/task-service-rest/api/taskservice/v1/tasks');
+       }
+
 }
 
 export function fetchTaskDetailsById(taskid) {
@@ -33,9 +38,9 @@ export function performTaskAction(taskid, action) {
        return put('/task-service-rest/api/taskservice/v1/tasks/'+taskid+'/action', action)
 }
 
-export function performSearchByTitleKeyword(titleSearchKeyword) {
+export function performSearchByTitleKeyword(titleSearchKeyword, state) {
 
-       return get('/task-service-rest/api/taskservice/v1/tasks/search/'+titleSearchKeyword)
+       return get('/task-service-rest/api/taskservice/v1/tasks/search/'+titleSearchKeyword+'/state/'+state)
 }
 
 
