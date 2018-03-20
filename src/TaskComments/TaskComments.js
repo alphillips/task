@@ -51,7 +51,9 @@ class TaskComments  extends React.Component {
   }
 
   componentDidMount() {
-        this.setState({comments :  (this.state.task==null || this.state.task.comments==null)?[]: this.state.task.comments})  ;
+        this.setState({comments :  (this.state.task==null || this.state.task.comments==null)?[]: this.state.task.comments,
+                       addCommentSectionVisible : (this.state.task==null || this.state.task.state==null || this.state.task.state=="COMPLETED")? false: true
+                      })  ;
 
   }
 
@@ -155,21 +157,21 @@ class TaskComments  extends React.Component {
 
     return (
 
-      <div className="task-detail">
+      <div>
 
         <div style={{border : 'solid 0px #e8e8ee'}} className=" uikit-grid">
-          <div style={{padding : '1em'}} className=" uikit-grid">
+          <div style={{padding : '0em'}} className=" uikit-grid">
 
               <div className='row'>
                 <div className='col-md-6'>
-                      <span style={{'fontSize' : '1.4em', 'fontWeight' : 'bold'}}>Staff Notes ({this.state.comments && this.state.comments.length})</span> <span className="editicon"/>
+                      <span style={{'fontSize' : '1.4em', 'fontWeight' : 'bold'}}>Staff Notes  <span className="comment-link"/> ({this.state.comments && this.state.comments.length})</span>
                 </div>
                 <div className='col-md-6'></div>
               </div>
 
               <br/>
 
-              { this.state.addCommentSectionVisible && this.state.comments && this.state.comments.length>0 &&
+              { this.state.comments && this.state.comments.length>0 &&
                 <div className="task-detail-comments">
                   <ul>
                   {this.state.comments.sort((a,b) => {
@@ -188,9 +190,9 @@ class TaskComments  extends React.Component {
                 </div>
               }
 
-              { this.state.addCommentSectionVisible &&
 
 
+              { this.state.addCommentSectionVisible  &&
                 <div className='row' >
                     <div className='col-md-6' >
                         <Input
@@ -209,8 +211,8 @@ class TaskComments  extends React.Component {
                     </div>
                     <div className='col-md-6'> </div>
                 </div>
-
               }
+
 
             </div>
         </div>

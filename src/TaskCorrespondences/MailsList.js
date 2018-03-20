@@ -44,6 +44,7 @@ class MailsList  extends React.Component {
       this.serviceRequestId = props.serviceRequestId || null
   }
 
+
   onChange = (field) => {
     return (value) => {
       this.setState((prevState, props) => ({
@@ -52,24 +53,11 @@ class MailsList  extends React.Component {
     }
   }
 
-  componentDidMount() {
-  }
-
 
   getCreatedDateDisplayString = (millisecs) => {
     return   this.formatDateToString(millisecs)
   }
 
-  // getCommentDisplayText = (commentJSONStr) => {
-  //
-  //   let commentJSON = JSON.parse(commentJSONStr)
-  //
-  //   if(commentJSON){
-  //     return commentJSON.comment
-  //   }
-  //
-  //   return  ""
-  // }
 
   epochSecondToDate = epochSecond => {
     var eps = epochSecond * 1000;
@@ -92,6 +80,7 @@ class MailsList  extends React.Component {
     this.props.callbackCloseParentTask();
   };
 
+
   callbackCloseSelf = () => {
     this.setState((prevState, props) => ({
       showMail: false
@@ -99,6 +88,7 @@ class MailsList  extends React.Component {
 
     this.props.callbackOpenParentTask();
   };
+
 
   callbackSetMessage = (type,msg) => {
     this.setState((prevState, props) => ({
@@ -109,8 +99,7 @@ class MailsList  extends React.Component {
   }
 
 
-
-    readAllCorrespondenceThreads = () => {
+  readAllCorrespondenceThreads = () => {
 
         this.setState({loading :true})
 
@@ -135,6 +124,9 @@ class MailsList  extends React.Component {
                  this.setState({ messageSubject: '', messageText: '' })
                  this.props.callbackShowMessage('success', 'New message created')
                  this.readAllCorrespondenceThreads();
+
+                 var payload= { type:"ADD_NEW_EXTERNAL_MESSAGE"  }
+                 api.performTaskAction(this.props.taskid, payload );
            })
        }
     }
@@ -169,7 +161,7 @@ class MailsList  extends React.Component {
          {!this.state.showMail &&
           <div style={{'paddingTop' : '0em'}}>
 
-           <span style={{'fontSize' : '1.4em', 'fontWeight' : 'bold'}}  className="notesicon">External Messages ({this.state.messageThreads && this.state.messageThreads.length})</span> <span></span>
+           <span style={{'fontSize' : '1.4em', 'fontWeight' : 'bold'}}  className="notesicon">External Messages  <span className="mail-link"/> <span>({this.state.messageThreads && this.state.messageThreads.length})</span>  </span>
 
           {   this.state.messageThreads !=null &&  this.state.messageThreads.length > 0 && (
 
@@ -219,35 +211,37 @@ class MailsList  extends React.Component {
                 </div>
               )}
 
-              <div className="task uikit-grid">
-                 <div className="row">
-                   <div className="col-md-6">
-                       <Input
-                         label="Subject"
-                         value={this.state.messageSubject}
-                         onChange={this.onChange('messageSubject')}
-                         rows={1}
-                         multiLine={false}
-                         maxlength="200"
-                         id="messageSubject"
+             {     !(this.props.task.state ==null ||  this.props.task.state =="COMPLETED") &&
 
-                       />
-                       <Input
-                         label="Message"
-                         value={this.state.messageText}
-                         onChange={this.onChange('messageText')}
-                         rows={2}
-                         multiLine={true}
-                         maxlength="1900"
-                         id="messageText"
-                       />
-                       <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.createNewMessageThread}>
-                           Create
-                       </button>
+                <div className="task uikit-grid">
+                   <div className="row">
+                     <div className="col-md-6">
+                         <Input
+                           label="Subject"
+                           value={this.state.messageSubject}
+                           onChange={this.onChange('messageSubject')}
+                           rows={1}
+                           multiLine={true}
+                           maxlength="300"
+                           id="messageSubject"
+                         />
+                         <Input
+                           label="Message"
+                           value={this.state.messageText}
+                           onChange={this.onChange('messageText')}
+                           rows={2}
+                           multiLine={true}
+                           maxlength="10000"
+                           id="messageText"
+                         />
+                         <button className="uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn" onClick={this.createNewMessageThread}>
+                             Create
+                         </button>
+                    </div>
+                    <div className="col-md-6"></div>
                   </div>
-                  <div className="col-md-6"></div>
-                </div>
-            </div>
+              </div>
+           }
 
            </div>
          }

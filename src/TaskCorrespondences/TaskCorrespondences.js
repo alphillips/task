@@ -75,7 +75,8 @@ class TaskCorrespondences  extends React.Component {
         mailsListNode = (
           <MailsList task={this.props.task} messageThreads={this.state.messageThreads} serviceRequestId={this.props.serviceRequestId}
                      callbackCloseSelf={this.callbackCloseSelf} callbackOpenParentTask={this.props.callbackOpenParentTask}
-                     callbackCloseParentTask={this.props.callbackCloseParentTask} callbackShowMessage={this.props.callbackShowMessage}/>
+                     callbackCloseParentTask={this.props.callbackCloseParentTask} callbackShowMessage={this.props.callbackShowMessage}
+                     taskid={this.props.taskid}/>
         )
     }
 

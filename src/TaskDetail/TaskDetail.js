@@ -14,7 +14,9 @@ import TaskComments from './../TaskComments/TaskComments'
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from "react-router";
-import moment from 'moment'
+import moment from 'moment';
+import Modal from 'react-aria-modal';
+import Dialog from 'material-ui/Dialog';
 
 const style = {
   height: 100,
@@ -71,25 +73,45 @@ class TaskDetail  extends React.Component {
 
 
 
+  handleTaskActionButtonClick = (outcome) => {
+
+      this.setState((prevState, props) => ({
+        showModal: true,
+        taskActionReason:'',
+        outcome : outcome,
+        taskActionReasonNotSupplied : false
+      }))
+  }
+
+  handleTaskAction = () => {
+
+       if(this.state.taskActionReason && this.state.taskActionReason.trim().length>0 && this.state.outcome){
+          this.performApproveOrRejectTaskAction(this.state.outcome);
+          this.setState({showModal:false, outcome: null});
+       }else {
+         this.setState({taskActionReasonNotSupplied:true});
+       }
+  }
+
+
 
   performApproveOrRejectTaskAction = (outcome) => {
 
+     if( this.props.taskid &&   outcome){
+         this.setState({ loading : true});
+         this.setState({ task :  [] });
+         var payload= {value: outcome.name, type:"APPROVE_OR_REJECT" , actionReason: this.state.taskActionReason }
+         api.performTaskAction(this.props.taskid, payload ).then((data) =>{
+            // this.readTaskDetailsById();
+            // this.setStateKeyVal('loading', false)
+            let message = 'Task ' + (outcome.name === 'APPROVE' ? 'approved' : 'rejected')
 
-       if( this.props.taskid &&   outcome){
-           this.setState({ loading : true});
-           this.setState({ task :  [] });
-           var payload= {value: outcome.name, type:"APPROVE_OR_REJECT" }
-           api.performTaskAction(this.props.taskid, payload ).then((data) =>{
-              // this.readTaskDetailsById();
-              // this.setStateKeyVal('loading', false)
-              let message = 'Task ' + (outcome.name === 'APPROVE' ? 'approved' : 'rejected')
-
-              // APPROVE
-              // hashHistory.push('/tasks')
-              this.props.onChange(null)
-              this.props.setMessage(message)
-         })
-     }
+            // APPROVE
+            // hashHistory.push('/tasks')
+            this.props.onChange(null)
+            this.props.setMessage(message)
+       })
+   }
   }
 
 
@@ -129,6 +151,13 @@ class TaskDetail  extends React.Component {
      }));
   }
 
+  cancelDisable = () => {
+    this.setState((prevState, props) => ({
+      showModal: false
+    }))
+  }
+
+
   render() {
 
     let count = 0
@@ -167,7 +196,7 @@ class TaskDetail  extends React.Component {
 
           {  !this.state.messagesSectionOpened  &&
 
-          <div className="task uikit-grid">
+                <div className="task uikit-grid">
 
                       <div className="row task-detail-body">
                         <div className="col-md-12" style={{'backgroundColor': '#fafafa', 'padding':'20px'}}>
@@ -191,7 +220,7 @@ class TaskDetail  extends React.Component {
                                   </button>
                                 }
                                 {outcome.name !== 'APPROVE' &&
-                                  <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
+                                  <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.handleTaskActionButtonClick( outcome )}>
                                   {outcome.name}
                                   </button>
                                 }
@@ -210,13 +239,64 @@ class TaskDetail  extends React.Component {
 
 
         { window.IS_STAFF && this.state.task && this.state.task.serviceRequestId &&  this.state.task.serviceRequestId.length>0 &&
-          <TaskCorrespondences task={this.state.task} serviceRequestId={this.state.task.serviceRequestId}  callbackOpenParentTask={this.callbackOpenParentTask}  callbackCloseParentTask={this.callbackCloseParentTask}  callbackShowMessage={this.callbackShowMessage} />
+          <TaskCorrespondences task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId}  callbackOpenParentTask={this.callbackOpenParentTask}  callbackCloseParentTask={this.callbackCloseParentTask}  callbackShowMessage={this.callbackShowMessage} />
         }
 
 
         { window.IS_STAFF && this.state.task &&  !this.state.messagesSectionOpened  &&
           <TaskComments task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId} callbackShowMessage={this.callbackShowMessage}/>
         }
+
+
+        {/*this.state.showModal &&
+          <Modal
+            titleText="Reject"
+            onExit={this.cancelDisable}
+            verticallyCenter={true}
+            getApplicationNode={this.getApplicationNode}
+
+            focusDialog="true">
+            <div style={{backgroundColor: '#e8e8ee'}}>
+              <h3>Reject task ?</h3>
+              { this.state.taskActionReasonNotSupplied &&
+                <p> Reason required *  </p>
+              }
+              <div className="btn-group">
+                <button className="uikit-btn uikit-btn--tertiary main-btn" onClick={this.cancelDisable}>No</button>
+                <button className="uikit-btn " onClick={this.handleTaskAction}>Yes</button>
+              </div>
+            </div>
+          </Modal>
+          */
+        }
+
+
+                  <Dialog
+                      title="Please provide a reason for your decision before this action can be executed!"
+                      modal={true}
+                      open={this.state.showModal}
+                      onRequestClose={this.cancelDisable}
+                    >
+                    { this.state.taskActionReasonNotSupplied &&
+                      <p style={{color: 'red'}}> Please provide the reason for your decision </p>
+
+                    }
+                    <Input
+                      label="Reason * "
+                      value={this.state.taskActionReason}
+                      onChange={this.onChange('taskActionReason')}
+                      rows={2}
+                      multiLine={true}
+                      maxlength="1900"
+                      id="taskActionReason"
+                    />
+
+                    <div className="btn-group">
+                      <button className="uikit-btn " onClick={this.handleTaskAction}>SUBMIT</button>
+                      <button className="uikit-btn uikit-btn--tertiary main-btn" onClick={this.cancelDisable}>CANCEL</button>
+
+                    </div>
+                    </Dialog>
 
 
      </div>

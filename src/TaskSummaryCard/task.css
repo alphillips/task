@@ -1,84 +1,116 @@
 .task {
   padding: 10px 20px 10px 20px; }
-  .task.main-paper {
-    padding-bottom: 20px; }
-  .task .task-title {
-    font-size: 1em; }
-  .task .task-date {
-    font-style: italic;
-    font-size: 0.8em;
-    text-align: right;
-    margin-top: 1px; }
-  .task .task-status {
-    border: 2px solid whitesmoke;
-    padding: 1px 4px;
-    text-align: center; }
-  .task .assigned {
-    font-style: italic;
-    text-align: right; }
-  .task .assign-btns {
-    text-align: right; }
-  .task .task-bottom-row {
-    margin-top: 2em;
-    margin-bottom: 1em; }
-  .task button.uikit-btn {
-    margin-top: 0;
-    margin-bottom: 0; }
-  .task .comment-icon {
-    display: inline-block;
-    background: url(message-square.svg) no-repeat;
-    width: 24px;
-    height: 24px;
-    margin: 0 0.4em -6px -10px; }
-  .task .message-link {
-    display: inline-block; }
-    .task .message-link::before {
-      content: ' ';
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin: 0 0.4em -6px 0.16em;
-      background-image: url(message-square.svg);
-      background-repeat: no-repeat; }
-  .task .assign-link {
-    display: inline-block; }
-    .task .assign-link::before {
-      content: ' ';
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin: 0 0.4em -6px 0.16em;
-      background-image: url(user.svg);
-      background-repeat: no-repeat; }
-  .task .unassign-link {
-    display: inline-block; }
-    .task .unassign-link::before {
-      content: ' ';
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin: 0 0.4em -6px 0.16em;
-      background-image: url(user-minus.svg);
-      background-repeat: no-repeat; }
-  .task .comment-btn {
-    font-size: 0.8em;
-    padding: 2px;
-    min-width: 100px;
-    font-weight: 400; }
-  .task .comment-textarea {
-    margin-bottom: -6px;
-    width: 300px;
-    height: 50px; }
-  .task .view-task-link {
-    display: inline-block; }
-    .task .view-task-link::before {
-      content: ' ';
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin: 0 0.4em -6px 0.16em;
-      background-image: url(arrow-right.svg);
-      background-repeat: no-repeat; }
-  .task .task-btns {
-    margin-top: 10px;
-    padding-top: 10px; }
+
+.task.main-paper {
+  padding-bottom: 20px; }
+
+.task .task-title {
+  font-size: 1em; }
+
+.task .task-date {
+  font-style: italic;
+  font-size: 0.8em;
+  text-align: right;
+  margin-top: 1px; }
+
+.task .task-status {
+  border: 2px solid whitesmoke;
+  padding: 1px 4px;
+  text-align: center; }
+
+.task .assigned {
+  font-style: italic;
+  text-align: right; }
+
+.task .assign-btns {
+  text-align: right; }
+
+.task .task-bottom-row {
+  margin-top: 2em;
+  margin-bottom: 1em; }
+
+.task button.uikit-btn {
+  margin-top: 0;
+  margin-bottom: 0; }
+
+.task .comment-icon {
+  display: inline-block;
+  background: url(message-square.svg) no-repeat;
+  width: 24px;
+  height: 24px;
+  margin: 0 0.4em -6px -10px; }
+
+.task .message-link {
+  display: inline-block; }
+
+.task .message-link::before {
+  content: ' ';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 0.4em -6px 0.16em;
+  background-image: url(message-square.svg);
+  background-repeat: no-repeat; }
+
+.task .mail-link {
+  display: inline-block; }
+
+.task .mail-link::before {
+  content: ' ';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 0.4em -6px 0.16em;
+  background-image: url(mail.svg);
+  background-repeat: no-repeat; }
+
+.task .assign-link {
+  display: inline-block; }
+
+.task .assign-link::before {
+  content: ' ';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 0.4em -6px 0.16em;
+  background-image: url(user.svg);
+  background-repeat: no-repeat; }
+
+.task .unassign-link {
+  display: inline-block; }
+
+.task .unassign-link::before {
+  content: ' ';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 0.4em -6px 0.16em;
+  background-image: url(user-minus.svg);
+  background-repeat: no-repeat; }
+
+.task .comment-btn {
+  font-size: 0.8em;
+  padding: 2px;
+  min-width: 100px;
+  font-weight: 400; }
+
+.task .comment-textarea {
+  margin-bottom: -6px;
+  width: 300px;
+  height: 50px; }
+
+.task .view-task-link {
+  display: inline-block; }
+
+.task .view-task-link::before {
+  content: ' ';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 0.4em -6px 0.16em;
+  background-image: url(arrow-right.svg);
+  background-repeat: no-repeat; }
+
+.task .task-btns {
+  margin-top: 10px;
+  padding-top: 10px; }
