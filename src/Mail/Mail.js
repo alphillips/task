@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import Dropzone from "react-dropzone";
 import Messages from "@react-ag-components/messages";
 import moment from "moment";
+import Paper from 'material-ui/Paper';
 
 import "./mail.css";
 
@@ -100,6 +101,14 @@ class Mail extends React.Component {
   };
 
   handleSend = () => {
+
+    //check if message is keyed in
+    if(!this.state.html || this.state.html.trim().length==0){
+      this.setState({ error : "Please key in a text to send "});
+      //   this.props.callbackCloseSelf();
+      return;
+    }
+
     let reply = {};
 
     reply.subject =
@@ -253,18 +262,15 @@ class Mail extends React.Component {
   render() {
     return (
       <div>
-          <a
-            className="back-button uikit-direction-link uikit-direction-link--left"
-            onClick={this.onClose}
-            href="#"
-          >
-            {" "}
-            Back{" "}
+          <Messages success={this.state.success}  error={this.state.error}/>
+          <a className="back-button uikit-direction-link uikit-direction-link--left"
+             onClick={this.onClose}
+             href="#">
+             {" "}  Back{" "}
           </a>
 
-
-      <div>
-       <span style={{'fontSize' : '1.2em', 'fontWeight' : 'bold'}} >{this.props.subject}</span>
+      <div style={{'padding-top' :'1em'}} >
+        <span style={{'fontSize' : '1.2em', 'fontWeight' : 'bold'}} >{this.props.subject}</span>
       </div>
 
         <div
@@ -275,7 +281,9 @@ class Mail extends React.Component {
               : "nexdoc-mail-container"
           }
         >
+
           <div className="nexdoc-mail">
+          <Paper zDepth={1}>
             <textarea
               value={this.state.html}
               onChange={this.handleReplyContent}
@@ -283,8 +291,10 @@ class Mail extends React.Component {
                 this.state.replyState ? "reply-area reply" : "reply-area"
               }
             />
+          </Paper>
 
             {this.state.showAttach && (
+              <Paper zDepth={1}>
               <div>
                 <Dropzone
                   onDrop={this.onDrop.bind(this)}
@@ -316,10 +326,12 @@ class Mail extends React.Component {
                   </aside>
                 )}
               </div>
+              </Paper>
             )}
 
             {this.state.mails &&
               this.state.mails.map(reply => (
+              <Paper zDepth={1}>
                 <div key={reply.messageId} style={{backgroundColor : '#fafafa'}}>
                   <div className="mail-from">
                     From: <span className="text-normal">{reply.fromParty}</span>
@@ -436,6 +448,8 @@ class Mail extends React.Component {
 
                 </div>
 
+
+               </Paper>
               ))}
           </div>
         </div>

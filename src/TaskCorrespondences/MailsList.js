@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react'
 import { hashHistory } from 'react-router'
 
 import Input from '@react-ag-components/input'
@@ -121,14 +122,24 @@ class MailsList  extends React.Component {
              }
 
              api.createNewCorrespondence(payload ).then((data) =>{
-                 this.setState({ messageSubject: '', messageText: '' })
-                 this.props.callbackShowMessage('success', 'New message created')
-                 this.readAllCorrespondenceThreads();
 
+                 this.props.callbackShowMessage('success', "New external message  '"+ this.state.messageSubject +"' created");
+                 this.props.callbackShowMessage('error', '');
+
+                 this.setState({ messageSubject: "", messageText: "" });
+                 this.readAllCorrespondenceThreads();
                  var payload= { type:"ADD_NEW_EXTERNAL_MESSAGE"  }
                  api.performTaskAction(this.props.taskid, payload );
+                 window.scrollTo(0, 0);
+                 this.refs.messageText.state.value = "";
+                 this.refs.messageSubject.state.value = "";
            })
+       } else {
+           this.props.callbackShowMessage('error', "Subject and Message are required to create a new external message ");
+           this.props.callbackShowMessage('success', '');
+           window.scrollTo(0, 0);
        }
+
     }
 
     onClose = () => {
@@ -159,13 +170,13 @@ class MailsList  extends React.Component {
       <div className="task-detail"  >
 
          {!this.state.showMail &&
-          <div style={{'paddingTop' : '0em'}}>
+          <div style={{'paddingTop' : '1em'}}>
 
-           <span style={{'fontSize' : '1.4em', 'fontWeight' : 'bold'}}  className="notesicon">External Messages  <span className="mail-link"/> <span>({this.state.messageThreads && this.state.messageThreads.length})</span>  </span>
+           <span style={{'fontSize' : '1.2em', 'fontWeight' : 'bold'}}  className="notesicon">External Messages  <span className="mail-link"/> <span>({this.state.messageThreads && this.state.messageThreads.length})</span>  </span>
 
           {   this.state.messageThreads !=null &&  this.state.messageThreads.length > 0 && (
 
-              <div className="  nexdoc-inbox">
+              <div className="  nexdoc-inbox" style={{'paddingTop' : '1.2em'}}>
                 <div className="inbox">
                   <PathwayList>
                     { this.state.messageThreads.map(mail => (
@@ -213,7 +224,7 @@ class MailsList  extends React.Component {
 
              {     !(this.props.task.state ==null ||  this.props.task.state =="COMPLETED") &&
 
-                <div className="task uikit-grid">
+                <div className="uikit-grid">
                    <div className="row">
                      <div className="col-md-6">
                          <Input
@@ -224,8 +235,9 @@ class MailsList  extends React.Component {
                            multiLine={true}
                            maxlength="300"
                            id="messageSubject"
+                           ref="messageSubject"
                          />
-                         <Input
+                         <Input ref="messageText"
                            label="Message"
                            value={this.state.messageText}
                            onChange={this.onChange('messageText')}

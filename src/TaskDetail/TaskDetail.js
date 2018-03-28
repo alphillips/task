@@ -39,7 +39,8 @@ class TaskDetail  extends React.Component {
         selectedAction:'',
         comments:[],
         newcomment:[],
-        loading:false
+        loading:false,
+        showMore: false,
       }
 
       this.taskid = props.taskid || null
@@ -157,6 +158,29 @@ class TaskDetail  extends React.Component {
     }))
   }
 
+  chooseDisplayLabel = (taskStatusLabel) => {
+
+       if(taskStatusLabel == 'APPROVED') {
+         return "approved-status";
+       }else if(taskStatusLabel == 'REJECTED'){
+         return "rejected-status";
+       }else {
+         return "task-status";
+       }
+  }
+
+  toggleShowMore = (e) => {
+    e.preventDefault();
+    if(this.state.showMore){
+      this.setState((prevState, props) => ({
+        showMore: false
+      }))
+    }else {
+      this.setState((prevState, props) => ({
+        showMore: true
+      }))
+    }
+  }
 
   render() {
 
@@ -168,10 +192,13 @@ class TaskDetail  extends React.Component {
       <div className="task-detail">
 
 
-       <Messages success={this.state.success}  error={this.state.error}/>
+
 
        {  !this.state.messagesSectionOpened  &&
-           <BackButton />
+          <div>
+            <Messages success={this.state.success}  error={this.state.error}/>
+            <BackButton />
+          </div>
        }
 
 
@@ -182,24 +209,42 @@ class TaskDetail  extends React.Component {
             {  !this.state.messagesSectionOpened  &&
                   <div className="task uikit-grid">
                     <div className="row">
-                        <div className="col-md-9">
+                        <div className="col-md-8">
                           <h2 className="uikit-display-2">{this.state.task.title}</h2>
                         </div>
-                        <div className="col-md-3">
-                          <div className="task-status">{this.state.task.statusLabel}</div>
-                          <div className="task-date">Created on: {this.getCreatedDateDisplayString(this.state.task.createdDate)}</div>
-                          <div className="task-date">Priority: {this.state.task.priority}</div>
+                        <div className="col-md-4">
+                          <div className={this.chooseDisplayLabel(this.state.task.statusLabel)}>{this.state.task.statusLabel}</div>
+                          <div className="task-date"><strong>Priority</strong>: {this.state.task.priority}</div>
+                          <div className="task-date"><strong>Created on</strong>: {this.getCreatedDateDisplayString(this.state.task.createdDate)}</div>
+                          <div className="task-date"><strong>Last updated on</strong>: {this.getCreatedDateDisplayString(this.state.task.updatedDate)}</div>
                         </div>
                     </div>
+
+
+
+                    {  window.IS_STAFF && this.state.task.state =="COMPLETED" && this.state.showMore &&
+                    <div className="row">
+                       <div className="col-md-12">
+                         <div className="task-date"><strong>Last updated by</strong>: {this.state.task.updatedBy}</div>
+                         <div className="task-date"><strong>Task action outcome </strong>: {this.state.task.statusLabel}</div>
+                         <div className="task-date"><strong>Task action  reason </strong> : {this.state.task.taskCustomAttributes.taskActionReason == null ? ' Nill ' : ''}  </div>
+                         <div className="task-date"> {this.state.task.taskCustomAttributes.taskActionReason} </div>
+                       </div>
+                    </div>
+                    }
+
+                    { window.IS_STAFF  && this.state.task.state =="COMPLETED" &&
+                      <div className="task-date"> <a href="#" onClick={this.toggleShowMore} title={!this.state.showMore ?   " Show more " : " hide "} > {!this.state.showMore ?   " (+) ": " (-) "}</a></div>
+                    }
                   </div>
            }
 
-          {  !this.state.messagesSectionOpened  &&
+           {  !this.state.messagesSectionOpened  &&
 
                 <div className="task uikit-grid">
 
                       <div className="row task-detail-body">
-                        <div className="col-md-12" style={{'backgroundColor': '#fafafa', 'padding':'20px'}}>
+                        <div className="col-md-12" style={{'backgroundColor': '#fafafa', 'padding-left':'20px', 'padding-right':'20px', }}>
                           <div dangerouslySetInnerHTML={{__html: this.state.task.payloadHtml}}></div>
                         </div>
                       </div>
@@ -230,6 +275,7 @@ class TaskDetail  extends React.Component {
                         </div>
                       </div>
 
+
                     </div>
                  }
 
@@ -238,66 +284,42 @@ class TaskDetail  extends React.Component {
 
 
 
-        { window.IS_STAFF && this.state.task && this.state.task.serviceRequestId &&  this.state.task.serviceRequestId.length>0 &&
-          <TaskCorrespondences task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId}  callbackOpenParentTask={this.callbackOpenParentTask}  callbackCloseParentTask={this.callbackCloseParentTask}  callbackShowMessage={this.callbackShowMessage} />
-        }
+          { window.IS_STAFF && this.state.task && this.state.task.serviceRequestId &&  this.state.task.serviceRequestId.length>0 &&
+            <TaskCorrespondences task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId}  callbackOpenParentTask={this.callbackOpenParentTask}  callbackCloseParentTask={this.callbackCloseParentTask}  callbackShowMessage={this.callbackShowMessage} />
+          }
 
 
-        { window.IS_STAFF && this.state.task &&  !this.state.messagesSectionOpened  &&
-          <TaskComments task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId} callbackShowMessage={this.callbackShowMessage}/>
-        }
+          { window.IS_STAFF && this.state.task &&  !this.state.messagesSectionOpened  &&
+            <TaskComments task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId} callbackShowMessage={this.callbackShowMessage}/>
+          }
 
 
-        {/*this.state.showModal &&
-          <Modal
-            titleText="Reject"
-            onExit={this.cancelDisable}
-            verticallyCenter={true}
-            getApplicationNode={this.getApplicationNode}
+          <Dialog
+              title="Please provide a reason for your decision before this action can be executed"
+              modal={true}
+              open={this.state.showModal}
+              onRequestClose={this.cancelDisable}
+            >
+            { this.state.taskActionReasonNotSupplied &&
+              <p style={{color: 'red'}}> Please provide the reason for your decision </p>
 
-            focusDialog="true">
-            <div style={{backgroundColor: '#e8e8ee'}}>
-              <h3>Reject task ?</h3>
-              { this.state.taskActionReasonNotSupplied &&
-                <p> Reason required *  </p>
-              }
-              <div className="btn-group">
-                <button className="uikit-btn uikit-btn--tertiary main-btn" onClick={this.cancelDisable}>No</button>
-                <button className="uikit-btn " onClick={this.handleTaskAction}>Yes</button>
-              </div>
+            }
+            <Input
+              label="Reason"
+              value={this.state.taskActionReason}
+              onChange={this.onChange('taskActionReason')}
+              rows={2}
+              multiLine={true}
+              maxlength="1900"
+              id="taskActionReason"
+            />
+
+            <div className="btn-group">
+              <button className="uikit-btn " onClick={this.handleTaskAction}>SUBMIT</button>
+              <button className="uikit-btn uikit-btn--tertiary main-btn" onClick={this.cancelDisable}>CANCEL</button>
+
             </div>
-          </Modal>
-          */
-        }
-
-
-                  <Dialog
-                      title="Please provide a reason for your decision before this action can be executed!"
-                      modal={true}
-                      open={this.state.showModal}
-                      onRequestClose={this.cancelDisable}
-                    >
-                    { this.state.taskActionReasonNotSupplied &&
-                      <p style={{color: 'red'}}> Please provide the reason for your decision </p>
-
-                    }
-                    <Input
-                      label="Reason * "
-                      value={this.state.taskActionReason}
-                      onChange={this.onChange('taskActionReason')}
-                      rows={2}
-                      multiLine={true}
-                      maxlength="1900"
-                      id="taskActionReason"
-                    />
-
-                    <div className="btn-group">
-                      <button className="uikit-btn " onClick={this.handleTaskAction}>SUBMIT</button>
-                      <button className="uikit-btn uikit-btn--tertiary main-btn" onClick={this.cancelDisable}>CANCEL</button>
-
-                    </div>
-                    </Dialog>
-
+          </Dialog>
 
      </div>
 

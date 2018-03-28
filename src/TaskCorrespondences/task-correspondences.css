@@ -1,148 +1,125 @@
 .mail-link {
   display: inline-block; }
-
-.mail-link::before {
-  content: ' ';
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin: 0 0.4em -6px 0.16em;
-  background-image: url(mail.svg);
-  background-repeat: no-repeat; }
+  .mail-link::before {
+    content: ' ';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 0 0.4em -6px 0.16em;
+    background-image: url(mail.svg);
+    background-repeat: no-repeat; }
 
 .nexdoc-inbox {
   position: relative; }
-
-.nexdoc-inbox .btn-archived {
-  display: block;
-  right: 0;
-  position: absolute;
-  top: 39px;
-  background-color: white;
-  cursor: pointer;
-  border: 0;
-  opacity: 0.6;
-  font: 11px system-ui; }
-
-.nexdoc-inbox .btn-archived::before {
-  background-image: url("./archived.svg");
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin: 0 .4em -8px 0;
-  background-repeat: no-repeat;
-  background-size: auto 22px;
-  pointer-events: none;
-  content: ''; }
-
-.nexdoc-inbox .btn-archived:hover {
-  color: #333;
-  opacity: 0.9;
-  background-color: transparent; }
-
-.nexdoc-inbox .inbox {
-  padding-bottom: 10px; }
-
-@media screen and (min-width: 992px) {
+  .nexdoc-inbox .btn-archived {
+    display: block;
+    right: 0;
+    position: absolute;
+    top: 39px;
+    background-color: white;
+    cursor: pointer;
+    border: 0;
+    opacity: 0.6;
+    font: 11px system-ui; }
+    .nexdoc-inbox .btn-archived::before {
+      background-image: url("./archived.svg");
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 .4em -8px 0;
+      background-repeat: no-repeat;
+      background-size: auto 22px;
+      pointer-events: none;
+      content: ''; }
+    .nexdoc-inbox .btn-archived:hover {
+      color: #333;
+      opacity: 0.9;
+      background-color: transparent; }
   .nexdoc-inbox .inbox {
-    padding-bottom: 0; } }
-
-.nexdoc-inbox .inbox a {
-  width: 87% !important;
-  padding: 1em 1.5em !important; }
-
-@media screen and (min-width: 992px) {
-  .nexdoc-inbox .inbox a {
-    width: 94.3% !important; } }
-
-.nexdoc-inbox .inbox a:after {
-  display: none; }
-
-.nexdoc-inbox .inbox span {
-  display: block;
-  margin-bottom: 0 !important; }
-
-.nexdoc-inbox .inbox .inbox-date {
-  position: absolute;
-  right: 24px;
-  top: 38%;
-  opacity: 0.7;
-  font-size: 90%; }
-
-.nexdoc-inbox .inbox .inbox-attachment {
-  position: absolute;
-  right: 24px;
-  top: 60%;
-  opacity: 0.7; }
-
-.nexdoc-inbox .inbox .inbox-attachment::before {
-  content: " ";
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin: 0 .4em -8px 0;
-  background-repeat: no-repeat;
-  background-size: auto 15px;
-  pointer-events: none;
-  background-image: url("./attach.svg"); }
-
-.nexdoc-inbox .inbox .inbox-archive {
-  position: absolute;
-  right: 24px;
-  top: 20px;
-  background-image: url("./archive.svg");
-  border: 0;
-  background-color: transparent;
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin: 0 .4em -8px 0;
-  background-repeat: no-repeat;
-  background-size: auto 15px;
-  content: '';
-  opacity: 0.7;
-  z-index: 100;
-  cursor: pointer; }
-
-.nexdoc-inbox .inbox .inbox-archive:hover {
-  opacity: 1; }
-
-.nexdoc-inbox .inbox .inbox-listing {
-  border-color: #c2c2c2 !important;
-  position: relative !important;
-  cursor: pointer; }
-
-.nexdoc-inbox .inbox .unread {
-  position: relative; }
-
-.nexdoc-inbox .inbox .unread .border-unread {
-  height: 98%;
-  background-color: #1B7991;
-  width: 5px;
-  position: absolute;
-  top: 1px;
-  content: '';
-  z-index: 100; }
-
-.nexdoc-inbox .inbox .unread .inbox-subject {
-  font-weight: 600;
-  width: 80%;
-  color: #1B7991; }
-
-.nexdoc-inbox .inbox .unread .inbox-date {
-  color: #1B7991;
-  opacity: 1; }
-
-.nexdoc-inbox .inbox .inbox-body {
-  margin-bottom: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 80%;
-  white-space: nowrap;
-  opacity: 0.7; }
-
-.nexdoc-inbox .inbox.archived .inbox-archive {
-  background-image: url("./unarchive.svg"); }
-
-.nexdoc-inbox .inbox.archived .border-unread {
-  display: none; }
+    padding-bottom: 10px; }
+    @media screen and (min-width: 992px) {
+      .nexdoc-inbox .inbox {
+        padding-bottom: 0; } }
+    .nexdoc-inbox .inbox a {
+      width: 87% !important;
+      padding: 1em 1.5em !important; }
+      @media screen and (min-width: 992px) {
+        .nexdoc-inbox .inbox a {
+          width: 94.3% !important; } }
+      .nexdoc-inbox .inbox a:after {
+        display: none; }
+    .nexdoc-inbox .inbox span {
+      display: block;
+      margin-bottom: 0 !important; }
+    .nexdoc-inbox .inbox .inbox-date {
+      position: absolute;
+      right: 24px;
+      top: 38%;
+      opacity: 0.7;
+      font-size: 90%; }
+    .nexdoc-inbox .inbox .inbox-attachment {
+      position: absolute;
+      right: 24px;
+      top: 60%;
+      opacity: 0.7; }
+      .nexdoc-inbox .inbox .inbox-attachment::before {
+        content: " ";
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin: 0 .4em -8px 0;
+        background-repeat: no-repeat;
+        background-size: auto 15px;
+        pointer-events: none;
+        background-image: url("./attach.svg"); }
+    .nexdoc-inbox .inbox .inbox-archive {
+      position: absolute;
+      right: 24px;
+      top: 20px;
+      background-image: url("./archive.svg");
+      border: 0;
+      background-color: transparent;
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 .4em -8px 0;
+      background-repeat: no-repeat;
+      background-size: auto 15px;
+      content: '';
+      opacity: 0.7;
+      z-index: 100;
+      cursor: pointer; }
+      .nexdoc-inbox .inbox .inbox-archive:hover {
+        opacity: 1; }
+    .nexdoc-inbox .inbox .inbox-listing {
+      border-color: #c2c2c2 !important;
+      position: relative !important;
+      cursor: pointer; }
+    .nexdoc-inbox .inbox .unread {
+      position: relative; }
+      .nexdoc-inbox .inbox .unread .border-unread {
+        height: 98%;
+        background-color: #1B7991;
+        width: 5px;
+        position: absolute;
+        top: 1px;
+        content: '';
+        z-index: 100; }
+      .nexdoc-inbox .inbox .unread .inbox-subject {
+        font-weight: 600;
+        width: 80%;
+        color: #1B7991; }
+      .nexdoc-inbox .inbox .unread .inbox-date {
+        color: #1B7991;
+        opacity: 1; }
+    .nexdoc-inbox .inbox .inbox-body {
+      margin-bottom: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 80%;
+      white-space: nowrap;
+      opacity: 0.7; }
+  .nexdoc-inbox .inbox.archived .inbox-archive {
+    background-image: url("./unarchive.svg"); }
+  .nexdoc-inbox .inbox.archived .border-unread {
+    display: none; }
