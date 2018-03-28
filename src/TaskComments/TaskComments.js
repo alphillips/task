@@ -160,11 +160,11 @@ class TaskComments  extends React.Component {
       <div>
 
         <div style={{border : 'solid 0px #e8e8ee'}} className=" uikit-grid">
-          <div style={{padding : '0em'}} className=" uikit-grid">
+          <div style={{paddingTop : '1em'}}>
 
               <div className='row'>
                 <div className='col-md-6'>
-                      <span style={{'fontSize' : '1.4em', 'fontWeight' : 'bold'}}>Staff Notes  <span className="comment-link"/> ({this.state.comments && this.state.comments.length})</span>
+                      <span style={{'fontSize' : '1.2em', 'fontWeight' : 'bold'}}>Staff Notes  <span className="comment-link"/> ({this.state.comments && this.state.comments.length})</span>
                 </div>
                 <div className='col-md-6'></div>
               </div>

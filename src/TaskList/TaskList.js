@@ -200,12 +200,19 @@ class TaskList extends React.Component {
     }
   };
 
+    onEnter = () => {
+          this.searchTasksByKeywordsInTitle();
+    }
+
+
   render() {
 
     const selectFieldStyle = {
       width: "100%",
       'color':'#999'
     };
+
+
   let taskCount = 0
 
     return (
@@ -230,6 +237,7 @@ class TaskList extends React.Component {
                           style={selectFieldStyle}
                           floatingLabelStyle={selectFieldStyle}
                           className="search custom-width"
+                             onEnter={this.onEnter}
                         >
                           {searchOptions.map((searchOption) =>
                             <MenuItem key={searchOption.value} value={searchOption.value} primaryText={searchOption.label} />
@@ -244,6 +252,7 @@ class TaskList extends React.Component {
                              value={this.state.searchKeyword}
                              onChange={this.onSearchFieldChange('searchKeyword')}
                              placeholder="keyword"
+                             onEnter={this.onEnter}
                            />
 
                  </div>
@@ -266,7 +275,7 @@ class TaskList extends React.Component {
                           task={task}
                           type={task.title}
                           createdDate={ this.getCreatedDateDisplayString(task.createdDate)}
-                          lastUpdatedDate={ this.getLastUpdatedDateDisplayString(task.lastUpdatedDate)}
+                          lastUpdatedDate={ this.getLastUpdatedDateDisplayString(task.updatedDate)}
                           updatedBy={task.updatedBy}
                           priority= {task.priority}
                           assigned= {task.taskCustomAttributes.taskAssignees && task.taskCustomAttributes.taskAssignees[0]}

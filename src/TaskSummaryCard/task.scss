@@ -151,4 +151,39 @@
     margin-top: 10px;
     padding-top: 10px;
   }
+
+  .approved-status {
+    border: 3px solid #3dbd93;
+    padding: 1px 4px;
+    background-color: none;
+    text-align: center;
+  }
+
+  .accredit-pending {
+    border: 3px solid #ebccd1;
+    padding: 1px 4px;
+    background-color: #f2dede;
+    text-align: center;
+  }
+
+  .disabled-status {
+    border: 3px solid #faebcc;
+    padding: 1px 4px;
+    background-color: #fcf8e3;
+    text-align: center;
+  }
+
+  .rejected-status {
+    border: 3px solid #f44271;
+    padding: 1px 4px;
+    // margin-top: 2em;
+    text-align: center;
+  }
+
+  .accredit-accredited {
+    border: 2px solid #048940;
+    padding: 1px 4px;
+    // margin-top: 2em;
+    text-align: center;
+  }
 }

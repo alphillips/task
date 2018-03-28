@@ -85,6 +85,32 @@ class TaskSummaryCard extends React.Component {
   }
 
 
+  chooseDisplayLabel = (taskStatusLabel) => {
+
+       if(taskStatusLabel == 'APPROVED') {
+         return "approved-status";
+       }else if(taskStatusLabel == 'REJECTED'){
+         return "rejected-status";
+       }else {
+         return "task-status";
+       }
+  }
+
+  toggleShowMore = (e) => {
+    e.preventDefault();
+    if(this.state.showMore){
+      this.setState((prevState, props) => ({
+        showMore: false
+      }))
+    }else {
+      this.setState((prevState, props) => ({
+        showMore: true
+      }))
+    }
+  }
+
+
+
   render() {
 
     return (
@@ -95,15 +121,16 @@ class TaskSummaryCard extends React.Component {
             <div className="task-title"><a href="#" onClick={this.goToTaskDetailsPage}>{this.props.type}</a></div>
           </div>
           <div className="col-md-2">
-            <div className="task-status">{this.props.statusLabel}</div>
+            <div className={this.chooseDisplayLabel(this.props.statusLabel)}>{this.props.statusLabel}</div>
           </div>
         </div>
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-md-6">
             {this.props.description}
           </div>
-          <div className="col-md-3">
+          <div className="col-md-6">
             <div className="task-date">{this.props.createdDate}</div>
+            <div className="task-date">{this.props.lastUpdatedDate}</div>
             {this.props.assigned &&
               <div className="task-date">
                 Assigned: {this.props.assigned}
@@ -111,6 +138,7 @@ class TaskSummaryCard extends React.Component {
             }
           </div>
         </div>
+
 
         <div className="row task-btns">
           {window.IS_STAFF &&

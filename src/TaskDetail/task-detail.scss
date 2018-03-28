@@ -14,7 +14,6 @@
 
     // border-bottom: solid 1px #e8e8ee;
     margin-bottom: 2em;
-    margin-top: 2em;
     border-top: solid 1px #e8e8ee;
     padding-top: 1em;
 
@@ -125,4 +124,16 @@
 
 .underlay.has-entered {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.taskApproved {
+
+}
+
+.showMore-ArrowUp {
+  background-image: url("./arrow-up-circle.svg");
+}
+
+.showMore-ArrowDown {
+  background-image: url("./arrow-down-circle.svg");
 }
