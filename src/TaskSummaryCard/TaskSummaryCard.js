@@ -12,6 +12,7 @@ class TaskSummaryCard extends React.Component {
 
   constructor(props) {
       super(props)
+      console.log(props);
       this.state = {
         comments:props.comments || [],
         taskid:props.taskid || null,
@@ -37,7 +38,9 @@ class TaskSummaryCard extends React.Component {
               var payload= { type:"ASSIGN_TO_SOMEONE" }
               api.performTaskAction(this.props.taskid, payload ).then((data) =>{
                 if(this.props.refreshTasksList){
-                  this.props.refreshTasksList()
+                  console.log("this.props.searchKeyword : "+ this.props.searchKeyword);
+                  console.log("this.props.searchTypeCode : "+ this.props.searchTypeCode);
+                  this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
                 }
             })
         }
@@ -50,7 +53,9 @@ class TaskSummaryCard extends React.Component {
               var payload= { type:"UNASSIGN_A_TASK" }
               api.performTaskAction(this.props.taskid, payload ).then((data) =>{
                 if(this.props.refreshTasksList){
-                  this.props.refreshTasksList()
+                  console.log("this.props.searchKeyword : "+ this.props.searchKeyword);
+                  console.log("this.props.searchTypeCode : "+ this.props.searchTypeCode);
+                  this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
                 }
             })
     }
@@ -63,7 +68,9 @@ class TaskSummaryCard extends React.Component {
         var payload = {comment: this.state.commentInputText }
         api.addComment(this.props.taskid, payload ).then((data) =>{
           if(this.props.refreshTasksList){
-            this.props.refreshTasksList()
+            console.log("this.props.searchKeyword : "+ this.props.searchKeyword);
+            console.log("this.props.searchTypeCode : "+ this.props.searchTypeCode);
+            this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
           }
       })
     }
@@ -180,7 +187,7 @@ class TaskSummaryCard extends React.Component {
 
                 }
 
-                {this.props.assigned!=null &&
+                {this.props.assigned!=null && this.props.task.taskCustomAttributes.taskAssignees && this.props.task.taskCustomAttributes.taskAssignees[0] === this.props.task.currentUserId &&
                   <a href="#"  className="unassign-link" onClick={this.unAssignTaskFromMe}>Unassign</a>
                 }
               </div>
@@ -211,7 +218,7 @@ class TaskSummaryCard extends React.Component {
 
                 }
 
-                {this.props.assigned!=null &&
+                {this.props.assigned!=null  && this.props.task.taskCustomAttributes.taskAssignees && this.props.task.taskCustomAttributes.taskAssignees[0] === this.props.task.currentUserId &&
                   <a href="#"  className="unassign-link" onClick={this.unAssignTaskFromMe}>Unassign</a>
                 }
               </div>
