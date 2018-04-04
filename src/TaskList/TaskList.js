@@ -32,18 +32,22 @@ class TaskList extends React.Component {
   }
 
   componentDidMount () {
-
-      if(this.props.searchKeyword){
+      if(this.props.searchKeyword && this.props.searchKeyword){
         this.setState({searchKeyword: this.props.searchKeyword})
       }
 
-      if(this.state.searchTypeCode &&  this.state.searchKeyword)  {
+      this.refreshTasksList(this.state.searchKeyword , this.state.searchTypeCode );
+  }
+
+
+  refreshTasksList = (searchKeyword, searchTypeCode) => {
+
+      if(searchTypeCode &&  searchKeyword)  {
           this.searchTasksByKeywordsInTitle();
       }else {
           this.readTasksList();
       }
   }
-
 
   formatDateToString = (millisecs) => {
     var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -103,6 +107,7 @@ class TaskList extends React.Component {
     api.performSearchByTitleKeyword(this.state.searchKeyword, this.state.searchTypeCode).then((data) =>{
       this.setStateKeyVal('tasks', data)
       this.setStateKeyVal('loading', false)
+      this.prepareTasksRelatedMessage(data);
     })
   }
 
@@ -133,10 +138,24 @@ class TaskList extends React.Component {
           tasks: data,
           loading:false
         })
+
+        this.prepareTasksRelatedMessage(data);
       })
   }
 
+  prepareTasksRelatedMessage = (tasks) => {
+    let message = null;
 
+    if(tasks !=null && tasks.length>25 ){
+      message = "   Showing the first 25 results ";
+    }else if(tasks !=null && tasks.length>0 && tasks.length<=25 ){
+      message = "  Showing "+tasks.length+" results ";
+    }else if(tasks ==null || tasks.length==0){
+      message = "  Showing 0 results ";
+    }
+
+    this.setState({tasksSearchResultMessage  : message});
+  }
 
   calculateCommentsButtonLabel = (task) => {
 
@@ -266,6 +285,10 @@ class TaskList extends React.Component {
              </div>
             }
 
+            { this.state.tasksSearchResultMessage!=null &&
+                    <div style={{ paddingBottom:"10px"}}> {this.state.tasksSearchResultMessage} </div>
+            }
+
 
              <ul className="task-list">
                { this.state.tasks &&
@@ -285,10 +308,12 @@ class TaskList extends React.Component {
                           hasComments={this.hasComments(task)}
                           hasExternalMessages={this.hasExternalMessages(task)}
                           taskCommpleted={this.taskCommpleted(task)}
-                          refreshTasksList={this.readTasksList}
+                          refreshTasksList={this.refreshTasksList}
                           statusLabel={task.statusLabel}
                           description={task.description}
                           onChange={this.onChange}
+                          searchKeyword = {this.props.searchKeyword}
+                          searchTypeCode = {this.props.searchTypeCode}
                         />
                       </li>
                     )
