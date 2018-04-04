@@ -146,12 +146,10 @@ class TaskList extends React.Component {
   prepareTasksRelatedMessage = (tasks) => {
     let message = null;
 
-    if(tasks !=null && tasks.length>25 ){
+    if(tasks !=null && tasks.length==25 ){
       message = "   Showing the first 25 results ";
-    }else if(tasks !=null && tasks.length>0 && tasks.length<=25 ){
+    }else if(tasks !=null){
       message = "  Showing "+tasks.length+" results ";
-    }else if(tasks ==null || tasks.length==0){
-      message = "  Showing 0 results ";
     }
 
     this.setState({tasksSearchResultMessage  : message});
