@@ -150,6 +150,8 @@ class TaskList extends React.Component {
       message = "   Showing the first 25 results ";
     }else if(tasks !=null){
       message = "  Showing "+tasks.length+" results ";
+    }else {
+        message = "  Showing 0 results ";
     }
 
     this.setState({tasksSearchResultMessage  : message});
@@ -209,6 +211,8 @@ class TaskList extends React.Component {
       validationMessages: null,
       selectFieldClassName: "medium-width"
     }));
+
+    this.prepareTasksRelatedMessage();
 
     if(searchOptions[index].label === "Client Name") {
       this.setState((prevState, props) => ({
