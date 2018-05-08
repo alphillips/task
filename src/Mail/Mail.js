@@ -261,7 +261,7 @@ class Mail extends React.Component {
 
   render() {
     return (
-      <div className="task-page-mail-container">
+      <div>
           <Messages success={this.state.success}  error={this.state.error}/>
           <a className="back-button uikit-direction-link uikit-direction-link--left"
              onClick={this.onClose}
