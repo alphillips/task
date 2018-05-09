@@ -13,7 +13,6 @@ class TaskSummaryCard extends React.Component {
 
   constructor(props) {
       super(props)
-      console.log(props);
       this.state = {
         comments:props.comments || [],
         taskid:props.taskid || null,
@@ -41,8 +40,6 @@ class TaskSummaryCard extends React.Component {
               var payload= { type:"ASSIGN_TO_ME" }
               api.performTaskAction(this.props.taskid, payload ).then((data) =>{
                 if(this.props.refreshTasksList){
-                  console.log("this.props.searchKeyword : "+ this.props.searchKeyword);
-                  console.log("this.props.searchTypeCode : "+ this.props.searchTypeCode);
                   this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
                 }
             })
@@ -52,10 +49,8 @@ class TaskSummaryCard extends React.Component {
   showAssignModal = (e) =>{
      if(this.refs.root) {
     e.preventDefault();
-    console.log(this.props.taskAssigneeGroups);
     //var data =["GRAZ-ND-HELPDESK", "NEXDOC.INTEGRATION.TEST.INTERNAL.USER", "NOON ALEXANDRA", "NEXDOC REGISTRATIONS2", "VILLACA KLAUS", "NEXDOC HELPDESK2", "NEXDOC HELPDESK1", "TALLURI SUBRAMANYAM"];
     api.fetchEmployeesByGroupName(this.props.taskAssigneeGroups).then((data) =>{
-    //    console.log(data);
          this.setState({assignModalOpen: true});
          this.setState({assignees: data});
      });
@@ -75,8 +70,6 @@ class TaskSummaryCard extends React.Component {
               var payload= { type:"UNASSIGN_A_TASK" }
               api.performTaskAction(this.props.taskid, payload ).then((data) =>{
                 if(this.props.refreshTasksList){
-                  console.log("this.props.searchKeyword : "+ this.props.searchKeyword);
-                  console.log("this.props.searchTypeCode : "+ this.props.searchTypeCode);
                   this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
                 }
             })
@@ -90,8 +83,6 @@ class TaskSummaryCard extends React.Component {
         var payload = {comment: this.state.commentInputText }
         api.addComment(this.props.taskid, payload ).then((data) =>{
           if(this.props.refreshTasksList){
-            console.log("this.props.searchKeyword : "+ this.props.searchKeyword);
-            console.log("this.props.searchTypeCode : "+ this.props.searchTypeCode);
             this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
           }
       })
@@ -100,14 +91,11 @@ class TaskSummaryCard extends React.Component {
 
   onCommentKeyPress = (e) => {
     if (e.key === 'Enter') {
-      // Do code here
-      //ev.preventDefault();
       this.addComment()
     }
   }
 
   onCommentTextChange = (e) => {
-  //  let val = e.target.value
     this.setState((prevState, props) => ({
       commentInputText: e
     }))

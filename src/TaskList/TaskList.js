@@ -36,7 +36,6 @@ class TaskList extends React.Component {
         searchTypeCode :  props.searchTypeCode || "ASSIGNED",
         searchKeyword: props.searchKeyword || null,
         tasks:[],
-        loading:false,
         success:props.success,
         error:props.error,
       }
@@ -51,8 +50,7 @@ class TaskList extends React.Component {
      if(this.props.searchTypeCode && this.props.searchTypeCode.includes("DATE")){
        this.setStateKeyVal('searchDate', this.props.searchKeyword  );
      }
-      console.log(this.props.searchKeyword);
-      console.log(this.props.searchTypeCode);
+
 
       this.refreshTasksList(this.state.searchKeyword , this.state.searchTypeCode );
 
@@ -126,18 +124,13 @@ class TaskList extends React.Component {
   }
 
   search = () =>{
-    this.setStateKeyVal('loading', true)
-
     api.performSearchByTitleKeyword(this.state.searchKeyword, this.state.searchTypeCode).then((data) =>{
       this.setStateKeyVal('tasks', data)
-      this.setStateKeyVal('loading', false)
       this.prepareTasksRelatedMessage(data);
     })
   }
 
   searchByDate = () =>{
-    this.setStateKeyVal('loading', true);
-
     let state;
     let searchType;
 
@@ -157,14 +150,9 @@ class TaskList extends React.Component {
       searchType = "SEARCH_FOR_TASKS_COMPLETED_BEFORE_SUPPLIED_DATE";
     }
 
-    // var payload = {
-    //   taskState : state,
-    //   createdDate : this.state.searchDate,
-    //   searchType :  searchType
-    // }
     api.getTasksBySearch(state, searchType, this.state.searchDate ).then((data) =>{
       this.setStateKeyVal('tasks', data)
-      this.setStateKeyVal('loading', false)
+
       this.prepareTasksRelatedMessage(data);
 
       let url = "tasks/state/"+this.state.searchTypeCode+"/keyword/"+this.state.searchDate;
@@ -175,10 +163,6 @@ class TaskList extends React.Component {
   }
 
   readTasksList = () => {
-
-       this.setState({
-         loading:true
-       })
 
       api.fetchUserTasksList(this.state.searchTypeCode).then((data) =>{
 
@@ -198,8 +182,7 @@ class TaskList extends React.Component {
         }
 
         this.setState({
-          tasks: data,
-          loading:false
+          tasks: data
         })
 
         this.prepareTasksRelatedMessage(data);
@@ -298,7 +281,7 @@ class TaskList extends React.Component {
           searchType :  "SEARCH_FOR_TASKS_CREATED_BEFORE_SUPPLIED_DATE"
         }
         api.getTasksBySearch(payload).then((data) =>{
-            console.log(data);
+
         })
     };
 
@@ -323,9 +306,6 @@ class TaskList extends React.Component {
      showAssignModal = (assigneeGroups, taskTitle, taskId) =>{
          return (e) => {
              e.preventDefault();
-             console.log(assigneeGroups);
-             console.log(taskTitle);
-             console.log(taskId);
 
              //var data =["GRAZ-ND-HELPDESK", "NEXDOC.INTEGRATION.TEST.INTERNAL.USER", "NOON ALEXANDRA", "NEXDOC REGISTRATIONS2", "VILLACA KLAUS", "NEXDOC HELPDESK2", "NEXDOC HELPDESK1", "TALLURI SUBRAMANYAM"];
              api.fetchEmployeesByGroupName(assigneeGroups).then((data) =>{
@@ -347,7 +327,7 @@ class TaskList extends React.Component {
      }
 
    handleAssigneeChange = (event, index, value) => {
-     console.log(value);
+
      this.setState({selectedAssignee : value})
 
    };

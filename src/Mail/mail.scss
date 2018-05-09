@@ -4,6 +4,7 @@ $darker-grey: darken(#ddd, 10%);
 $background-grey: lighten(whitesmoke, 2%);
 $notification-info: darken(#00C2ED, 15%);
 
+.mailWrapper{
 .nexdoc-mail-container {
   padding-top: 1.6em;
   &.reply {
@@ -246,4 +247,6 @@ $notification-info: darken(#00C2ED, 15%);
 
 .back-button {
 	margin-top: 1em;
+}
+
 }
