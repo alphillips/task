@@ -262,7 +262,7 @@ class Mail extends React.Component {
 
   render() {
     return (
-      <div className="mailWrapper">
+      <div className="mail-wrapper">
           <Messages success={this.state.success}  error={this.state.error}/>
           <a className="back-button uikit-direction-link uikit-direction-link--left"
              onClick={this.onClose}
