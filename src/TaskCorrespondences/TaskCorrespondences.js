@@ -13,7 +13,8 @@ import { Link } from "react-router";
 
 
 
-import Mail from "./../Mail";
+//import Mail from "./../Mail";
+import Mail from "@react-ag-components/inbox/lib/Mail";
 import MailsList from "./MailsList";
 
 

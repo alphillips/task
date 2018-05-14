@@ -19,8 +19,8 @@ import PathwayList from "@react-ag-components/pathway-list";
 
 import moment from "moment";
 
-import Mail from "./../Mail";
-
+// import Mail from "./../Mail";
+import Mail from "@react-ag-components/inbox/lib/Mail";
 
 const style = {
   height: 100,
