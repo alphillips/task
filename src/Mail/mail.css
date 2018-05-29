@@ -1,65 +1,66 @@
-.nexdoc-mail-container {
+.mail-wrapper .nexdoc-mail-container {
   padding-top: 1.6em; }
-  .nexdoc-mail-container.reply {
+  .mail-wrapper .nexdoc-mail-container.reply {
     padding-top: 50px;
     margin-top: 1.6em;
     background-color: #fafafa; }
 
-.nexdoc-mail {
+.mail-wrapper .nexdoc-mail {
   position: relative;
   padding: 20px; }
-  .nexdoc-mail.reply {
+  .mail-wrapper .nexdoc-mail.reply {
     border-top: 1px solid #c4c4c4; }
-    .nexdoc-mail.reply .btn-archive, .nexdoc-mail.reply .btn-unarchive {
+    .mail-wrapper .nexdoc-mail.reply .btn-archive, .mail-wrapper .nexdoc-mail.reply .btn-unarchive {
       top: 163px; }
-  .nexdoc-mail span {
+  .mail-wrapper .nexdoc-mail span {
     max-width: none !important; }
-  .nexdoc-mail p {
+  .mail-wrapper .nexdoc-mail p {
     max-width: none !important;
     margin: 0 !important; }
-  .nexdoc-mail .reply-area {
+  .mail-wrapper .nexdoc-mail .reply-area {
     height: 150px;
     border: 1px solid #ddd;
     font-size: 90%;
     display: none;
     overflow: scroll; }
-    .nexdoc-mail .reply-area.reply {
+    .mail-wrapper .nexdoc-mail .reply-area.reply {
       display: block;
       background-color: white;
       width: 97%;
       resize: none; }
-  .nexdoc-mail .file-drop-zone {
+  .mail-wrapper .nexdoc-mail .file-drop-zone {
     margin-top: 10px;
     background-color: white; }
-  .nexdoc-mail .mail-from, .nexdoc-mail .mail-subject-container {
+  .mail-wrapper .nexdoc-mail .mail-from, .mail-wrapper .nexdoc-mail .mail-subject-container {
     border-bottom: 1px solid #ddd;
     padding: 1em;
     font-weight: bold;
     font-size: 90%; }
-  .nexdoc-mail .text-normal {
+  .mail-wrapper .nexdoc-mail .text-normal {
     font-weight: normal; }
-    .nexdoc-mail .text-normal div {
+    .mail-wrapper .nexdoc-mail .text-normal div {
       display: inline-block; }
-    .nexdoc-mail .text-normal .mail-attachment {
+    .mail-wrapper .nexdoc-mail .text-normal .mail-attachment {
       margin-left: 5px; }
-  .nexdoc-mail .mail-date {
+  .mail-wrapper .nexdoc-mail .mail-date {
     display: block;
     font-weight: bold;
     padding-top: 1em; }
-  .nexdoc-mail .mail-body-container {
+  .mail-wrapper .nexdoc-mail .mail-body-container {
     padding: 1em;
     padding-bottom: 0;
     font-size: 90%;
-    margin-bottom: 1em; }
-    .nexdoc-mail .mail-body-container .mail-body p, .nexdoc-mail .mail-body-container .mail-body span {
+    margin-bottom: 1em;
+    white-space: pre-line; }
+    .mail-wrapper .nexdoc-mail .mail-body-container .mail-body p, .mail-wrapper .nexdoc-mail .mail-body-container .mail-body span {
       margin-bottom: 1em; }
-  .nexdoc-mail .mail-icon, .nexdoc-mail .btn-archive, .nexdoc-mail .btn-reply-action, .nexdoc-mail .btn-unarchive, .nexdoc-mail .btn-reply, .nexdoc-mail .btn-attach, .nexdoc-mail .action-history {
+  .mail-wrapper .nexdoc-mail .mail-icon, .mail-wrapper .nexdoc-mail .btn-archive, .mail-wrapper .nexdoc-mail .btn-reply-action, .mail-wrapper .nexdoc-mail .btn-unarchive, .mail-wrapper .nexdoc-mail .btn-reply, .mail-wrapper .nexdoc-mail .btn-attach, .mail-wrapper .nexdoc-mail .action-history {
     display: block;
     padding: 10px 15px;
     background-color: #fafafa;
     cursor: pointer;
     border: 0; }
-    .nexdoc-mail .mail-icon::before, .nexdoc-mail .btn-archive::before, .nexdoc-mail .btn-reply-action::before, .nexdoc-mail .btn-unarchive::before, .nexdoc-mail .btn-reply::before, .nexdoc-mail .btn-attach::before, .nexdoc-mail .action-history::before {
+    .mail-wrapper .nexdoc-mail .mail-icon::before, .mail-wrapper .nexdoc-mail .btn-archive::before, .mail-wrapper .nexdoc-mail .btn-reply-action::before, .mail-wrapper .nexdoc-mail .btn-unarchive::before, .mail-wrapper .nexdoc-mail .btn-reply::before, .mail-wrapper .nexdoc-mail .btn-attach::before, .mail-wrapper .nexdoc-mail .action-history::before {
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -68,69 +69,69 @@
       background-size: auto 18px;
       pointer-events: none;
       content: ''; }
-    .nexdoc-mail .mail-icon:hover, .nexdoc-mail .btn-archive:hover, .nexdoc-mail .btn-reply-action:hover, .nexdoc-mail .btn-unarchive:hover, .nexdoc-mail .btn-reply:hover, .nexdoc-mail .btn-attach:hover, .nexdoc-mail .action-history:hover {
+    .mail-wrapper .nexdoc-mail .mail-icon:hover, .mail-wrapper .nexdoc-mail .btn-archive:hover, .mail-wrapper .nexdoc-mail .btn-reply-action:hover, .mail-wrapper .nexdoc-mail .btn-unarchive:hover, .mail-wrapper .nexdoc-mail .btn-reply:hover, .mail-wrapper .nexdoc-mail .btn-attach:hover, .mail-wrapper .nexdoc-mail .action-history:hover {
       color: #333;
       opacity: 0.7; }
-  .nexdoc-mail .btn-archive, .nexdoc-mail .btn-reply-action, .nexdoc-mail .btn-unarchive {
+  .mail-wrapper .nexdoc-mail .btn-archive, .mail-wrapper .nexdoc-mail .btn-reply-action, .mail-wrapper .nexdoc-mail .btn-unarchive {
     right: 0;
     position: absolute;
     top: 10px;
     display: inline-block;
     opacity: 0.8; }
-  .nexdoc-mail .btn-archive {
+  .mail-wrapper .nexdoc-mail .btn-archive {
     right: 10px;
     top: -43px;
     background-color: white; }
-    .nexdoc-mail .btn-archive::before {
+    .mail-wrapper .nexdoc-mail .btn-archive::before {
       background-image: url("./archive.svg"); }
-  .nexdoc-mail .btn-unarchive {
+  .mail-wrapper .nexdoc-mail .btn-unarchive {
     right: 10px;
     top: -43px;
     background-color: white; }
-    .nexdoc-mail .btn-unarchive::before {
+    .mail-wrapper .nexdoc-mail .btn-unarchive::before {
       background-image: url("./unarchive.svg"); }
-  .nexdoc-mail .btn-reply-action.reply {
+  .mail-wrapper .nexdoc-mail .btn-reply-action.reply {
     right: 21px;
     top: 28px;
     background-color: #fafafa; }
-    .nexdoc-mail .btn-reply-action.reply::before {
+    .mail-wrapper .nexdoc-mail .btn-reply-action.reply::before {
       background-image: url("./reply.svg"); }
-  .nexdoc-mail .btn-reply-action.send {
+  .mail-wrapper .nexdoc-mail .btn-reply-action.send {
     right: 210px;
     top: -28px; }
-    .nexdoc-mail .btn-reply-action.send::before {
+    .mail-wrapper .nexdoc-mail .btn-reply-action.send::before {
       background-image: url("./send.svg"); }
-  .nexdoc-mail .btn-reply-action.discard {
+  .mail-wrapper .nexdoc-mail .btn-reply-action.discard {
     right: 10px;
     top: -28px; }
-  .nexdoc-mail .btn-reply-action.attach {
+  .mail-wrapper .nexdoc-mail .btn-reply-action.attach {
     right: 90px;
     top: -28px; }
-    .nexdoc-mail .btn-reply-action.attach::before {
+    .mail-wrapper .nexdoc-mail .btn-reply-action.attach::before {
       background-image: url("./attach.svg"); }
-  .nexdoc-mail .btn-reply {
+  .mail-wrapper .nexdoc-mail .btn-reply {
     padding-left: 0;
     opacity: 0.8;
     display: inline; }
-    .nexdoc-mail .btn-reply::before {
+    .mail-wrapper .nexdoc-mail .btn-reply::before {
       background-image: url("./reply.svg"); }
-  .nexdoc-mail .btn-attach {
+  .mail-wrapper .nexdoc-mail .btn-attach {
     display: inline;
     opacity: 0.8; }
-    .nexdoc-mail .btn-attach::before {
+    .mail-wrapper .nexdoc-mail .btn-attach::before {
       background-image: url("./attach.svg"); }
-  .nexdoc-mail .action-history {
+  .mail-wrapper .nexdoc-mail .action-history {
     display: block;
     opacity: 0.8;
     padding-left: 0;
     border-bottom: 1px solid #1B7991; }
-    .nexdoc-mail .action-history::before {
+    .mail-wrapper .nexdoc-mail .action-history::before {
       background-image: url("./caret-down.svg");
       margin: 0 0.4em -6px 0 !important; }
 
-.attach-files ul li {
+.mail-wrapper .attach-files ul li {
   display: relative; }
-  .attach-files ul li::after {
+  .mail-wrapper .attach-files ul li::after {
     content: '';
     background-image: url("close.svg");
     display: inline-block;
@@ -142,13 +143,13 @@
     cursor: pointer;
     margin-left: 5px; }
 
-.mail-attachment {
+.mail-wrapper .mail-attachment {
   cursor: pointer;
   border: 0;
   background-color: inherit;
   padding: 5px;
   margin-left: 1em; }
-  .mail-attachment::before {
+  .mail-wrapper .mail-attachment::before {
     content: '';
     background-image: url("file.svg");
     display: inline-block;
@@ -158,8 +159,8 @@
     background-repeat: no-repeat;
     background-size: auto 18px;
     cursor: pointer; }
-  .mail-attachment:hover {
+  .mail-wrapper .mail-attachment:hover {
     background-color: white; }
 
-.back-button {
+.mail-wrapper .back-button {
   margin-top: 1em; }

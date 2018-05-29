@@ -3,11 +3,14 @@ const URL_BASE = (process.env.API_HOST || '') + '/api/'
 import {get, post, put, del, formPost} from '@react-ag-components/core/lib/api'
 
 
+
 export function fetchUserTasksList(state) {
       // return get(URL_BASE + 'v1/user/context')
-       if(state && state.trim().length>0){
-         return get('/task-service-rest/api/taskservice/v1/tasks/state/'+state);
-       }else {
+       if(state && state.trim().length>0 && state==="ASSIGNEDTOME"){
+         return get('/task-service-rest/api/taskservice/v1/tasks/state/ASSIGNED/assignedtome');
+       } else if(state && state.trim().length>0){
+          return get('/task-service-rest/api/taskservice/v1/tasks/state/'+state);
+        }else {
          return get('/task-service-rest/api/taskservice/v1/tasks');
        }
 
@@ -43,6 +46,24 @@ export function performSearchByTitleKeyword(titleSearchKeyword, state) {
        return get('/task-service-rest/api/taskservice/v1/tasks/search/'+titleSearchKeyword+'/state/'+state)
 }
 
+export function getTasksAssignedToMe(state) {
+      return get('/task-service-rest/api/taskservice/v1/tasks/state/'+state+'/assignedtome');
+       //return get('/task-service-rest/api/taskservice/v1/tasks/search/'+titleSearchKeyword+'/state/'+state)
+}
+
+// export function getTasksBySearch(payload) {
+//        return get('/task-service-rest/api/taskservice/v1/tasks/search', payload);
+//       //return put('/task-service-rest/api/taskservice/v1/tasks/search', payload);
+//        //return get('/task-service-rest/api/taskservice/v1/tasks/search/'+titleSearchKeyword+'/state/'+state)
+// }
+
+export function getTasksBySearch(taskState, searchType, searchKey) {
+       return get('/task-service-rest/api/taskservice/v1/tasks/search/type/'+searchType+'/key/'+searchKey );
+}
+
+export function getTasksByQuickLink(quickLinkType) {
+       return get('/task-service-rest/api/taskservice/v1/tasks/quickLink/type/'+quickLinkType);
+}
 
 export function createNewCorrespondence(payload) {
        return post('/message-rest-ui/api/v1/mail/task/new', payload);
@@ -52,6 +73,13 @@ export function getAllCorrespondences(serviceRequestId) {
        return get('/service-request-data-service-rs-ui/api/v1/servicerequest/correspondence/'+serviceRequestId)
 }
 
+export function fetchEmployeesByGroupName(groupName) {
+      // return get(URL_BASE + 'v1/user/context')
+       //if(groupName && groupName.trim().length>0){
+         return get('task-service-rest/api/identityservice/internal/v1/groupname/'+groupName+'/employees');
+       //}
+
+}
 
 //mail
 const URL_BASE2 = '/message-rest-ui/api/'

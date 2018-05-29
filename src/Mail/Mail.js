@@ -7,6 +7,7 @@ import moment from "moment";
 import Paper from 'material-ui/Paper';
 
 import "./mail.css";
+//import "@react-ag-component/lib/Inbox/mail.css";
 
 class Mail extends React.Component {
   constructor(props) {
@@ -261,7 +262,7 @@ class Mail extends React.Component {
 
   render() {
     return (
-      <div className="task-page-mail-container">
+      <div className="mail-wrapper">
           <Messages success={this.state.success}  error={this.state.error}/>
           <a className="back-button uikit-direction-link uikit-direction-link--left"
              onClick={this.onClose}
