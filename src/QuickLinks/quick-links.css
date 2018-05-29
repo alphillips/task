@@ -1,0 +1,16 @@
+.task-list-page {
+  padding-bottom: 20px; }
+  .task-list-page ul.task-list {
+    padding-left: 1px; }
+    .task-list-page ul.task-list li {
+      list-style: none;
+      padding-bottom: 0;
+      margin-bottom: 40px;
+      border-radius: 4px; }
+  .task-list-page .link-sort-filter-task {
+    display: inline-block;
+    margin-bottom: 1em; }
+  .task-list-page #task-list-search-btn {
+    min-width: 100px;
+    height: 40px;
+    padding: 1px; }

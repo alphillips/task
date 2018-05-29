@@ -16,6 +16,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 
+import QuickLinks from './../QuickLinks/QuickLinks';
+import SvgIcon from 'material-ui/SvgIcon';
 
 const searchOptions = [
   { value: "ASSIGNEDTOME",label: "Assigned to me" },
@@ -27,6 +29,7 @@ const searchOptions = [
   { value: "DATE_ASSIGNED_BEFORE",   label: "Pending - Received Before", type : "date" }
 
 ];
+
 
 class TaskList extends React.Component {
 
@@ -157,10 +160,10 @@ class TaskList extends React.Component {
 
       let url = "tasks/state/"+this.state.searchTypeCode+"/keyword/"+this.state.searchDate;
       hashHistory.push(url);
-
     })
 
   }
+
 
   readTasksList = () => {
 
@@ -351,6 +354,13 @@ class TaskList extends React.Component {
 
    };
 
+   toggleQuickLink =()=>{
+     return(e) => {
+       e.preventDefault();
+       let quickLinkShowState = !this.state.showQuickLinks;
+       this.setState({showQuickLinks: quickLinkShowState });
+     }
+   }
  //   rect = (props)=> {
  //       const {ctx, x, y, width, height} = props;
  //       ctx.fillRect(x, y, width, height);
@@ -388,18 +398,36 @@ class TaskList extends React.Component {
   let taskCount = 0
 
     return (
-            <div className="task-list-page">
+            <div className="task-list-page uikit-grid">
 
              <Messages success={this.state.success} error={this.state.error}/>
 
-             <h1>{this.props.heading || 'Tasks'}</h1>
+             {this.state.showQuickLinks &&
+               <QuickLinks />
+             }
+
+
+
+             <div className="row">
+                <div className="col-md-11">  <h1>{this.props.heading || 'Tasks'}</h1> </div>
+                <div className="col-md-1">
+                  {
+                     // <a href="#" onClick={this.toggleQuickLink()}>Quick Links</a>
+                     // <SvgIcon>
+                     //   <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z" />
+                     // </SvgIcon>
+                  }
+                </div>
+             </div>
 
              <LoadableSection>
+
+
 
              {this.props.showSearch !== false &&
              <div>
 
-             <div className="task uikit-grid">
+             <div className="task">
 
                <div className="row">
 
@@ -456,7 +484,6 @@ class TaskList extends React.Component {
             { this.state.tasksSearchResultMessage!=null &&
                     <div style={{ paddingBottom:"10px"}}> {this.state.tasksSearchResultMessage} </div>
             }
-
 
              <ul className="task-list">
                { this.state.tasks &&

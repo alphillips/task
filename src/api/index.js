@@ -59,9 +59,10 @@ export function getTasksAssignedToMe(state) {
 
 export function getTasksBySearch(taskState, searchType, searchKey) {
        return get('/task-service-rest/api/taskservice/v1/tasks/search/type/'+searchType+'/key/'+searchKey );
-       //return get('/task-service-rest/api/taskservice/v1/tasks/state/'+taskState+'/search/type/'+searchType+'/'+searchKey );
-       //return put('/task-service-rest/api/taskservice/v1/tasks/search', payload);
-       //return get('/task-service-rest/api/taskservice/v1/tasks/search/'+titleSearchKeyword+'/state/'+state)
+}
+
+export function getTasksByQuickLink(quickLinkType) {
+       return get('/task-service-rest/api/taskservice/v1/tasks/quickLink/type/'+quickLinkType);
 }
 
 export function createNewCorrespondence(payload) {
