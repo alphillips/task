@@ -76,7 +76,7 @@ export function getAllCorrespondences(serviceRequestId) {
 export function fetchEmployeesByGroupName(groupName) {
       // return get(URL_BASE + 'v1/user/context')
        //if(groupName && groupName.trim().length>0){
-         return get('task-service-rest/api/identityservice/internal/v1/groupname/'+groupName+'/employees');
+         return get('/task-service-rest/api/identityservice/internal/v1/groupname/'+groupName+'/employees');
        //}
 
 }
