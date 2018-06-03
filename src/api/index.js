@@ -62,7 +62,7 @@ export function getTasksBySearch(taskState, searchType, searchKey) {
 }
 
 export function getTasksByQuickLink(quickLinkType) {
-       return get('/task-service-rest/api/taskservice/v1/tasks/quickLink/type/'+quickLinkType);
+       return get('/task-service-rest/api/taskservice/v1/tasks/quicklink/'+quickLinkType);
 }
 
 export function createNewCorrespondence(payload) {

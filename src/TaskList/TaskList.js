@@ -22,11 +22,11 @@ import SvgIcon from 'material-ui/SvgIcon';
 const searchOptions = [
   { value: "ASSIGNEDTOME",label: "Assigned to me" },
   { value: "COMPLETED",   label: "Completed" , type : "text"  },
-  { value: "DATE_COMPLETED_AFTER",  label: "Completed After" , type : "date" },
-  { value: "DATE_COMPLETED_BEFORE",  label: "Completed Before", type : "date"  },
+  { value: "DATE_COMPLETED_AFTER",  label: "Completed On or After" , type : "date" },
+  { value: "DATE_COMPLETED_BEFORE",  label: "Completed On or Before", type : "date"  },
   { value: "ASSIGNED",    label: "Pending" , type : "text" },
-  { value: "DATE_ASSIGNED_AFTER",   label: "Pending - Received After", type : "date" },
-  { value: "DATE_ASSIGNED_BEFORE",   label: "Pending - Received Before", type : "date" }
+  { value: "DATE_ASSIGNED_AFTER",   label: "Pending - Received On or After", type : "date" },
+  { value: "DATE_ASSIGNED_BEFORE",   label: "Pending - Received On or Before", type : "date" }
 
 ];
 
@@ -192,18 +192,22 @@ class TaskList extends React.Component {
       })
   }
 
-  prepareTasksRelatedMessage = (tasks) => {
+  prepareTasksRelatedMessage = (tasks, quicklinkTypeLabel) => {
     let message = null;
-
-    if(tasks !=null && tasks.length==25 ){
-      message = "   Showing the first 25 results ";
-    }else if(tasks !=null){
-      message = "  Showing "+tasks.length+" results ";
-    }else {
-        message = "  Showing 0 results ";
+    let quickLinkMessageTxt = "";
+    if( quicklinkTypeLabel &&  quicklinkTypeLabel.length>0){
+       quickLinkMessageTxt = " ( Quick links / "+quicklinkTypeLabel +" ) ";
     }
 
-    this.setState({tasksSearchResultMessage  : message});
+    if(tasks !=null && tasks.length==25 ){
+       message = " Showing the first 25 results "+ quickLinkMessageTxt ;
+     }else if(tasks !=null){
+       message = " Showing "+tasks.length+" results "+ quickLinkMessageTxt ;
+     }else {
+         message = "  Showing 0 results "+ quickLinkMessageTxt ;
+     }
+
+     this.setState({tasksSearchResultMessage  : message});
   }
 
   calculateCommentsButtonLabel = (task) => {
@@ -361,6 +365,14 @@ class TaskList extends React.Component {
        this.setState({showQuickLinks: quickLinkShowState });
      }
    }
+
+    setTaskDataOnParent =(data)=> {
+      //return(e)=>{
+        this.setStateKeyVal('tasks', data);
+      //}
+    }
+
+
  //   rect = (props)=> {
  //       const {ctx, x, y, width, height} = props;
  //       ctx.fillRect(x, y, width, height);
@@ -403,21 +415,24 @@ class TaskList extends React.Component {
              <Messages success={this.state.success} error={this.state.error}/>
 
              {this.state.showQuickLinks &&
-               <QuickLinks />
+               <QuickLinks setTaskDataOnParent={this.setTaskDataOnParent} prepareTasksRelatedMessage={this.prepareTasksRelatedMessage} toggleQuickLink={this.toggleQuickLink}/>
              }
 
 
 
              <div className="row">
                 <div className="col-md-11">  <h1>{this.props.heading || 'Tasks'}</h1> </div>
-                <div className="col-md-1">
-                  {
-                     // <a href="#" onClick={this.toggleQuickLink()}>Quick Links</a>
-                     // <SvgIcon>
-                     //   <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z" />
-                     // </SvgIcon>
+                 {!this.state.showQuickLinks &&
+                    <div className="col-md-1">
+                         <a href="#" onClick={this.toggleQuickLink()}>Quick Links</a>
+                    {
+                       // <SvgIcon>
+                       //     <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z" />
+                       //   </SvgIcon>
+                       }
+                      </div>
                   }
-                </div>
+
              </div>
 
              <LoadableSection>
