@@ -51,6 +51,7 @@ class TaskUIComponent extends React.Component {
               heading={this.props.heading}
               searchTypeCode = {this.props.searchTypeCode}
               searchKeyword = {this.props.searchKeyword}
+              quickLinkType = {this.props.quickLinkType}
             />
           </div>
         }

@@ -18,11 +18,11 @@ const styles = {
 };
 
 const quickLinksOptions_Pending = [
-  { value: "TASKS_CREATED_TODAY",  label: "received today" },
-  { value: "TASKS_CREATED_THIS_WEEK",   label: "received this week" },
-  { value: "TASKS_CREATED_LAST_WEEK", label: "received last week" },
-  { value: "TASKS_CREATED_THIS_MONTH",  label: "received this month"  },
-  { value: "TASKS_CREATED_LAST_MONTH",    label: "received last month" }
+  { value: "TASKS_CREATED_TODAY",  label: "pending - received today" },
+  { value: "TASKS_CREATED_THIS_WEEK",   label: "pending - received this week" },
+  { value: "TASKS_CREATED_LAST_WEEK", label: "pending - received last week" },
+  { value: "TASKS_CREATED_THIS_MONTH",  label: "pending - received this month"  },
+  { value: "TASKS_CREATED_LAST_MONTH",    label: "pending - received last month" }
 ];
 const quickLinksOptions_Completed = [
   { value: "TASKS_COMPLETED_TODAY",  label: "completed today" },
@@ -37,55 +37,65 @@ class QuickLinks extends React.Component {
   constructor(props) {
       super(props);
       this.setState((prevState, props) => ({
-      showQuicklinks : true
-      }))
+        showQuicklinks : true
+      }));
   }
 
   componentDidMount () {
+      if (this.props.launchQuickLinkType && this.props.launchQuickLinkType.length>0) {
+          this.openQuicklink( this.props.launchQuickLinkType);
+      }
   }
 
-  handleRequestDelete=(value) =>{
-    return (e) => {
-      e.preventDefault();
-      alert('You clicked the delete button. '+value);
-    }
+  componentWillReceiveProps(nextProps){
+    // if (nextProps.launchQuickLinkType && nextProps.launchQuickLinkType.length>0) {
+    //     this.openQuicklink( nextProps.launchQuickLinkType);
+    // }
+    // console.log("componentWillReceiveProps : ");
+    // console.log(nextProps);
+  }
+
+
+  quicklinkPrint() {
+    console.log("PRINT");
   }
 
   handleClick=(value)=> {
     return(e)=>{
       e.preventDefault();
-      alert('You clicked the '+value);
       this.openQuicklink(value);
     }
   }
 
+  extractQuickLinkLabelByType = (quickLinkType) =>{
+
+      let quickLinkLabelObject = quickLinksOptions_Pending.filter(function( obj ) {
+            return obj.value == quickLinkType;
+      });
+
+      if(quickLinkLabelObject == null || quickLinkLabelObject== undefined || quickLinkLabelObject.length==0 ){
+            quickLinkLabelObject = quickLinksOptions_Completed.filter(function( obj ) {
+                          return obj.value == quickLinkType;
+            });
+      }
+
+      if(quickLinkLabelObject == null || quickLinkLabelObject == [] || quickLinkLabelObject.length==0){
+            return quickLinkType;
+      }
+
+      return quickLinkLabelObject[0].label;
+  }
 
   openQuicklink = (quickLinkType) =>{
 
-    api.getTasksByQuickLink(quickLinkType ).then((data) =>{
-      this.setStateKeyVal('tasks', data)
+      let quickLinkLabel = this.extractQuickLinkLabelByType(quickLinkType);
 
-      this.prepareTasksRelatedMessage(data);
-
-      let url = "tasks/quickLink/type/"+quickLinkType;
-      hashHistory.push(url);
-
-    })
-  }
-
-
-  prepareTasksRelatedMessage = (tasks) => {
-    let message = null;
-
-    if(tasks !=null && tasks.length==25 ){
-      message = "   Showing the first 25 results ";
-    }else if(tasks !=null){
-      message = "  Showing "+tasks.length+" results ";
-    }else {
-        message = "  Showing 0 results ";
-    }
-
-    this.setState({tasksSearchResultMessage  : message});
+      api.getTasksByQuickLink(quickLinkType ).then((data) =>{
+            this.props.prepareTasksRelatedMessage(data, quickLinkLabel);
+            this.props.setTaskDataOnParent(data);
+            let url = "tasks/quickLink/"+quickLinkType;
+            hashHistory.push(url);
+      })
   }
 
 
@@ -106,18 +116,24 @@ class QuickLinks extends React.Component {
                            backgroundColor={cyan50}
                            onClick={this.handleClick(quickLink.value)}
                            style={styles.chip}>
-                            <a href="#" onClick={this.handleClick(quickLink.value)}> {quickLink.label}</a>
+                            <a href="#" > {quickLink.label}</a>
                          </Chip>
                        )}
                        {quickLinksOptions_Completed.map((quickLink) =>
                           <Chip
                             onClick={this.handleClick(quickLink.value)}
                             style={styles.chip}>
-                             <a href="#" onClick={this.handleClick(quickLink.value)}> {quickLink.label}</a>
+                             <a href="#"> {quickLink.label}</a>
                           </Chip>
                         )}
                     </div>
+
                    </div>
+
+                  <div className="row">
+                    <div className="col-md-11"></div>
+                    <div className="col-md-1">   <a href="#" onClick={this.props.toggleQuickLink()}>close</a> </div>
+                  </div>
 
             </div>
     );

@@ -23,59 +23,66 @@ class TaskSummaryCard extends React.Component {
   }
 
   goToTaskDetailsPage = (e) =>{
-    e.preventDefault()
+    e.preventDefault();
     this.props.onChange(this.props.taskid)
   }
 
   onTaskClick = (id) => {
     return (e) => {
-      e.preventDefault()
+      e.preventDefault();
       this.props.onChange(id)
     }
   }
-
+/*
   assignTaskToMe = (e) =>{
-    e.preventDefault()
-        if( this.props.taskid ){
-              var payload= { type:"ASSIGN_TO_ME" }
-              api.performTaskAction(this.props.taskid, payload ).then((data) =>{
-                if(this.props.refreshTasksList){
-                  this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
-                }
-            })
-        }
+
+    return(e) => {
+          e.preventDefault();
+          if( this.props.taskid ){
+                var payload= { type:"ASSIGN_TO_ME" }
+                api.performTaskAction(this.props.taskid, payload ).then((data) =>{
+                  if(this.props.refreshTasksList){
+                    this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode, this.props.quickLinkType)
+                  }
+              })
+          }
+      }
+  }
+*/
+
+  showAssignModal = () =>{
+
+      return(e)=>{
+        if(this.refs.root) {
+           e.preventDefault();
+           //var data =["GRAZ-ND-HELPDESK", "NEXDOC.INTEGRATION.TEST.INTERNAL.USER", "NOON ALEXANDRA", "NEXDOC REGISTRATIONS2", "VILLACA KLAUS", "NEXDOC HELPDESK2", "NEXDOC HELPDESK1", "TALLURI SUBRAMANYAM"];
+           api.fetchEmployeesByGroupName(this.props.taskAssigneeGroups).then((data) =>{
+                this.setState({assignModalOpen: true});
+                this.setState({assignees: data});
+            });
+         }
+      }
   }
 
-  showAssignModal = (e) =>{
-     if(this.refs.root) {
-    e.preventDefault();
-    //var data =["GRAZ-ND-HELPDESK", "NEXDOC.INTEGRATION.TEST.INTERNAL.USER", "NOON ALEXANDRA", "NEXDOC REGISTRATIONS2", "VILLACA KLAUS", "NEXDOC HELPDESK2", "NEXDOC HELPDESK1", "TALLURI SUBRAMANYAM"];
-    api.fetchEmployeesByGroupName(this.props.taskAssigneeGroups).then((data) =>{
-         this.setState({assignModalOpen: true});
-         this.setState({assignees: data});
-     });
- }
-
-  }
-
-  hideAssignModal = (e) =>{
-    e.preventDefault();
-    this.setState({assignModalOpen: false});
+  hideAssignModal = () =>{
+    return(e)=>{
+        e.preventDefault();
+        this.setState({assignModalOpen: false});
+    }
   }
 
   unAssignTaskFromMe = (e) =>{
-    e.preventDefault()
+        e.preventDefault();
+        if( this.props.taskid ){
+                  var payload= { type:"UNASSIGN_A_TASK" }
+                  api.performTaskAction(this.props.taskid, payload ).then((data) =>{
+                    if(this.props.refreshTasksList){
+                      this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode, this.props.quickLinkType);
+                    }
+                })
+        }
+   }
 
-    if( this.props.taskid ){
-              var payload= { type:"UNASSIGN_A_TASK" }
-              api.performTaskAction(this.props.taskid, payload ).then((data) =>{
-                if(this.props.refreshTasksList){
-                  this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
-                }
-            })
-    }
-
-  }
 
   addComment = () => {
     if( this.props.taskid &&  this.state.commentInputText && this.state.commentInputText.trim().length>0){
@@ -83,7 +90,7 @@ class TaskSummaryCard extends React.Component {
         var payload = {comment: this.state.commentInputText }
         api.addComment(this.props.taskid, payload ).then((data) =>{
           if(this.props.refreshTasksList){
-            this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode)
+            this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode, this.props.quickLinkType)
           }
       })
     }
