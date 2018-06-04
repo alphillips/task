@@ -39,63 +39,64 @@ class QuickLinks extends React.Component {
       this.setState((prevState, props) => ({
         showQuicklinks : true
       }));
-      console.log(props);
   }
 
   componentDidMount () {
+      if (this.props.launchQuickLinkType && this.props.launchQuickLinkType.length>0) {
+          this.openQuicklink( this.props.launchQuickLinkType);
+      }
   }
 
-  handleRequestDelete=(value) =>{
-    return (e) => {
-      e.preventDefault();
-      alert('You clicked the delete button. '+value);
-    }
+  componentWillReceiveProps(nextProps){
+    // if (nextProps.launchQuickLinkType && nextProps.launchQuickLinkType.length>0) {
+    //     this.openQuicklink( nextProps.launchQuickLinkType);
+    // }
+    // console.log("componentWillReceiveProps : ");
+    // console.log(nextProps);
+  }
+
+
+  quicklinkPrint() {
+    console.log("PRINT");
   }
 
   handleClick=(value)=> {
     return(e)=>{
       e.preventDefault();
-    //  alert('You clicked the '+value);
       this.openQuicklink(value);
     }
   }
 
   extractQuickLinkLabelByType = (quickLinkType) =>{
 
-    let quickLinkLabelObject = quickLinksOptions_Pending.filter(function( obj ) {
-                  return obj.value == quickLinkType;
-    });
+      let quickLinkLabelObject = quickLinksOptions_Pending.filter(function( obj ) {
+            return obj.value == quickLinkType;
+      });
 
-    if(quickLinkLabelObject == null || quickLinkLabelObject== undefined || quickLinkLabelObject.length==0 ){
-          quickLinkLabelObject = quickLinksOptions_Completed.filter(function( obj ) {
-                        return obj.value == quickLinkType;
-          });
-    }
+      if(quickLinkLabelObject == null || quickLinkLabelObject== undefined || quickLinkLabelObject.length==0 ){
+            quickLinkLabelObject = quickLinksOptions_Completed.filter(function( obj ) {
+                          return obj.value == quickLinkType;
+            });
+      }
 
-    if(quickLinkLabelObject == null || quickLinkLabelObject == [] || quickLinkLabelObject.length==0){
-      return quickLinkType;
-    }
-    console.log(quickLinkLabelObject);
-    return quickLinkLabelObject[0].label;
+      if(quickLinkLabelObject == null || quickLinkLabelObject == [] || quickLinkLabelObject.length==0){
+            return quickLinkType;
+      }
+
+      return quickLinkLabelObject[0].label;
   }
 
   openQuicklink = (quickLinkType) =>{
 
-    let quickLinkLabel = this.extractQuickLinkLabelByType(quickLinkType);
+      let quickLinkLabel = this.extractQuickLinkLabelByType(quickLinkType);
 
-    api.getTasksByQuickLink(quickLinkType ).then((data) =>{
-    //  this.setStateKeyVal('tasks', data);
-
-      this.props.prepareTasksRelatedMessage(data, quickLinkLabel);
-      this.props.setTaskDataOnParent(data);
-      let url = "tasks/quickLink/"+quickLinkType;
-      hashHistory.push(url);
-
-    })
+      api.getTasksByQuickLink(quickLinkType ).then((data) =>{
+            this.props.prepareTasksRelatedMessage(data, quickLinkLabel);
+            this.props.setTaskDataOnParent(data);
+            let url = "tasks/quickLink/"+quickLinkType;
+            hashHistory.push(url);
+      })
   }
-
-
-
 
 
   render() {

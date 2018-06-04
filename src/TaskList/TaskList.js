@@ -38,6 +38,7 @@ class TaskList extends React.Component {
       this.state = {
         searchTypeCode :  props.searchTypeCode || "ASSIGNED",
         searchKeyword: props.searchKeyword || null,
+        quickLinkType: props.quickLinkType || null,
         tasks:[],
         success:props.success,
         error:props.error,
@@ -46,28 +47,34 @@ class TaskList extends React.Component {
   }
 
   componentDidMount () {
-      if(this.props.searchKeyword && this.props.searchKeyword){
+     if(this.props.searchKeyword && this.props.searchKeyword){
         this.setState({searchKeyword: this.props.searchKeyword})
-      }
-
-     if(this.props.searchTypeCode && this.props.searchTypeCode.includes("DATE")){
-       this.setStateKeyVal('searchDate', this.props.searchKeyword  );
      }
 
+     if(this.props.searchTypeCode && this.props.searchTypeCode.includes("DATE")){
+        this.setStateKeyVal('searchDate', this.props.searchKeyword  );
+     }
 
-      this.refreshTasksList(this.state.searchKeyword , this.state.searchTypeCode );
+     if(this.props.quickLinkType && this.props.quickLinkType.length>0){
+        this.setStateKeyVal('quickLinkType' , this.props.quickLinkType );
+     }
+
+     this.refreshTasksList(this.state.searchKeyword , this.state.searchTypeCode , this.state.quickLinkType);
 
   }
 
 
-  refreshTasksList = (searchKeyword, searchTypeCode) => {
 
-      if(searchTypeCode &&  (searchTypeCode=="COMPLETED" || searchTypeCode=="ASSIGNED" ) && searchKeyword)  {
+  refreshTasksList = (searchKeyword, searchTypeCode, quickLinkType) => {
+      if(quickLinkType && quickLinkType.length>0){
+         this.setState({showQuickLinks: true , launchQuickLinkType : quickLinkType});
+         this.quicklinksRef.openQuicklink(quickLinkType);
+      } else if(searchTypeCode &&  (searchTypeCode=="COMPLETED" || searchTypeCode=="ASSIGNED" ) && searchKeyword)  {
           this.searchTasksByKeywordsInTitle();
       }else if(searchTypeCode &&  (searchTypeCode=="COMPLETED" || searchTypeCode=="ASSIGNED" ||  searchTypeCode=="ASSIGNEDTOME") && !searchKeyword) {
           this.readTasksList();
       }else {
-        this.searchByDate();
+          this.searchByDate();
       }
   }
 
@@ -244,35 +251,29 @@ class TaskList extends React.Component {
     return task.state == "COMPLETED";
   }
 
-  setStateKeyVal = (key,val) => {
-        this.setState((prevState, props) => ({
-            [key]: val
-        }))
-  }
+    setStateKeyVal = (key,val) => {
+          this.setState((prevState, props) => ({
+              [key]: val
+          }))
+    }
 
 
-  onChange = (id) => {
-    this.props.onChange(id)
-  }
+    onChange = (id) => {
+          this.props.onChange(id)
+    }
 
-  setSearchTypeCode = (event, index) => {
-    this.setState((prevState, props) => ({
-      searchTypeCode: searchOptions[index].value,
-      searchTypeLabel: searchOptions[index].label,
-      searchTypeIndex: index,
-      tasks: null,
-      validationMessages: null,
-      selectFieldClassName: "medium-width"
-    }));
+    setSearchTypeCode = (event, index) => {
+          this.setState((prevState, props) => ({
+            searchTypeCode: searchOptions[index].value,
+            searchTypeLabel: searchOptions[index].label,
+            searchTypeIndex: index,
+            tasks: null,
+            validationMessages: null,
+            selectFieldClassName: "medium-width"
+          }));
 
-    this.prepareTasksRelatedMessage();
-
-    // if(searchOptions[index].label === "Client Name") {
-    //   this.setState((prevState, props) => ({
-    //     selectFieldClassName: "small-width"
-    //   }));
-    // }
-  };
+          this.prepareTasksRelatedMessage();
+    };
 
     onEnter = () => {
           this.searchTasksByKeywordsInTitle();
@@ -281,25 +282,27 @@ class TaskList extends React.Component {
 
 
     doAdvancedSearch = () => {
-        let createdDate = new Date(2018, 2, 3)
-        var payload = {
-          taskState : "ASSIGNED",
-          createdDate : createdDate,
-          searchType :  "SEARCH_FOR_TASKS_CREATED_BEFORE_SUPPLIED_DATE"
-        }
-        api.getTasksBySearch(payload).then((data) =>{
+          let createdDate = new Date(2018, 2, 3)
+          var payload = {
+            taskState : "ASSIGNED",
+            createdDate : createdDate,
+            searchType :  "SEARCH_FOR_TASKS_CREATED_BEFORE_SUPPLIED_DATE"
+          }
+          api.getTasksBySearch(payload).then((data) =>{
 
-        })
+          })
     };
 
 
      isMatchingSearchOptionFound = (searchType , fieldType) => {
-       for(let i=0; i<searchOptions.length; i++){
-           if(searchOptions[i].value == searchType && searchOptions[i].type == fieldType ){
-              return true;
-           }
-       }
-         return false;
+
+           for(let i=0; i<searchOptions.length; i++) {
+               if(searchOptions[i].value == searchType && searchOptions[i].type == fieldType ){
+                  return true;
+               }
+            }
+
+            return false;
      };
 
 
@@ -311,16 +314,14 @@ class TaskList extends React.Component {
 
 
      showAssignModal = (assigneeGroups, taskTitle, taskId) =>{
-         return (e) => {
-             e.preventDefault();
-
-             //var data =["GRAZ-ND-HELPDESK", "NEXDOC.INTEGRATION.TEST.INTERNAL.USER", "NOON ALEXANDRA", "NEXDOC REGISTRATIONS2", "VILLACA KLAUS", "NEXDOC HELPDESK2", "NEXDOC HELPDESK1", "TALLURI SUBRAMANYAM"];
-             api.fetchEmployeesByGroupName(assigneeGroups).then((data) =>{
-                  this.setState({assignModalOpen: true});
-                  this.setState({assignees: data});
-                  this.setState({assignTaskTitle: taskTitle , assignTaskId : taskId});
-              });
-          }
+             return (e) => {
+                 e.preventDefault();
+                 api.fetchEmployeesByGroupName(assigneeGroups).then((data) =>{
+                      this.setState({assignModalOpen: true});
+                      this.setState({assignees: data});
+                      this.setState({assignTaskTitle: taskTitle , assignTaskId : taskId});
+                  });
+              }
      }
 
      hideAssignModal = (e) =>{
@@ -350,7 +351,7 @@ class TaskList extends React.Component {
          //all good
          var payload= { type:"ASSIGN_TO_SOMEONE" , assigneeName : this.state.selectedAssignee }
          api.performTaskAction(this.state.assignTaskId, payload ).then((data) =>{
-             this.refreshTasksList(this.state.searchKeyword , this.state.searchTypeCode );
+             this.refreshTasksList(this.state.searchKeyword , this.state.searchTypeCode, this.state.quickLinkType );
              this.hideAssignModal();
        })
       }
@@ -388,7 +389,7 @@ class TaskList extends React.Component {
 
   render() {
 
-    const actions = [
+    const assignTaskModalActions = [
       <FlatButton
         label="Cancel"
         primary={false}
@@ -415,7 +416,11 @@ class TaskList extends React.Component {
              <Messages success={this.state.success} error={this.state.error}/>
 
              {this.state.showQuickLinks &&
-               <QuickLinks setTaskDataOnParent={this.setTaskDataOnParent} prepareTasksRelatedMessage={this.prepareTasksRelatedMessage} toggleQuickLink={this.toggleQuickLink}/>
+               <QuickLinks   ref={quicklinksRef => this.quicklinksRef = quicklinksRef}
+                     setTaskDataOnParent={this.setTaskDataOnParent}
+                     prepareTasksRelatedMessage={this.prepareTasksRelatedMessage}
+                     toggleQuickLink={this.toggleQuickLink}
+                     launchQuickLinkType={this.state.launchQuickLinkType} />
              }
 
 
@@ -524,6 +529,7 @@ class TaskList extends React.Component {
                           onChange={this.onChange}
                           searchKeyword = {this.props.searchKeyword}
                           searchTypeCode = {this.props.searchTypeCode}
+                          quickLinkType = {this.props.quickLinkType}
                           taskAssigneeGroups = {task.taskAssigneeGroups}
                           showAssignModal = {this.showAssignModal(task.taskAssigneeGroups, task.title, task.taskId)}
                         />
@@ -537,7 +543,7 @@ class TaskList extends React.Component {
 
              <Dialog
                title= {"Assign task  (" + this.state.assignTaskTitle + ")"}
-               actions={actions}
+               actions={assignTaskModalActions}
                modal={true}
                open={this.state.assignModalOpen}
              >
