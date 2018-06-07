@@ -95,3 +95,6 @@
 
 .showMore-ArrowDown {
   background-image: url("./arrow-down-circle.svg"); }
+
+.btn-group.outcome {
+  float: right; }
