@@ -241,43 +241,37 @@ class TaskDetail  extends React.Component {
 
            {  !this.state.messagesSectionOpened  &&
 
-                <div className="task uikit-grid">
+              <div className="task uikit-grid">
+                  <div className="row task-detail-body">
+                    <div className="col-md-12" style={{'backgroundColor': '#fafafa', 'padding-left':'20px', 'padding-right':'20px', }}>
+                      <div dangerouslySetInnerHTML={{__html: this.state.task.payloadHtml}}></div>
+                    </div>
+                  </div>
 
-                      <div className="row task-detail-body">
-                        <div className="col-md-12" style={{'backgroundColor': '#fafafa', 'padding-left':'20px', 'padding-right':'20px', }}>
-                          <div dangerouslySetInnerHTML={{__html: this.state.task.payloadHtml}}></div>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-md-7"></div>
-                        <div className="col-md-5 btn-group">
-                          { this.state.task.taskPossibleOutcomes &&
-                            this.state.task.state != 'COMPLETED' &&
-                            this.state.task.taskPossibleOutcomes.sort((a, b)=>{
-                              if(b.name === 'APPROVE') return 1;
-                              return -1;
-                           }).map((outcome) => (
-                              <div key={count++} style={{float: 'left'}}>
-                                {outcome.name === 'APPROVE' &&
-                                  <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
-                                  {outcome.name}
-                                  </button>
-                                }
-                                {outcome.name !== 'APPROVE' &&
-                                  <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.handleTaskActionButtonClick( outcome )}>
-                                  {outcome.name}
-                                  </button>
-                                }
-                              </div>
-                            ))
+                  <div className="btn-group outcome">
+                    { this.state.task.taskPossibleOutcomes &&
+                      this.state.task.state != 'COMPLETED' &&
+                      this.state.task.taskPossibleOutcomes.sort((a, b)=>{
+                        if(b.name === 'APPROVE' || b.name.toLowerCase().indexOf('reprint') > -1) return 1;
+                        return -1;
+                     }).map((outcome) => (
+                        <div key={count++} style={{float: 'left'}}>
+                          {(outcome.name === 'APPROVE' || outcome.name.toLowerCase().indexOf('reprint') > -1 )&&
+                            <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
+                            {outcome.name}
+                            </button>
+                          }
+                          {(outcome.name !== 'APPROVE' && outcome.name.toLowerCase().indexOf('reprint') === -1) &&
+                            <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.handleTaskActionButtonClick( outcome )}>
+                            {outcome.name}
+                            </button>
                           }
                         </div>
-                      </div>
-
-
-                    </div>
-                 }
+                      ))
+                    }
+                  </div>
+                </div>
+             }
 
 
         </LoadableSection>
