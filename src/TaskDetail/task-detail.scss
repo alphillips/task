@@ -1,6 +1,5 @@
 .task-detail {
-
-  // margin-top: 2em;
+  clear:both;
 
   .comment-detail-textarea{
     width: 100%
@@ -13,7 +12,7 @@
   .task-detail-body{
 
     // border-bottom: solid 1px #e8e8ee;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
     border-top: solid 1px #e8e8ee;
     padding-top: 1em;
 
@@ -126,10 +125,6 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.taskApproved {
-
-}
-
 .showMore-ArrowUp {
   background-image: url("./arrow-up-circle.svg");
 }
@@ -141,5 +136,6 @@
 .btn-group {
   &.outcome {
     float:right;
+    margin-bottom: 1em;
   }
 }
