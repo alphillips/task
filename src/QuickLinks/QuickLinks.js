@@ -93,7 +93,7 @@ class QuickLinks extends React.Component {
       api.getTasksByQuickLink(quickLinkType ).then((data) =>{
             this.props.prepareTasksRelatedMessage(data, quickLinkLabel);
             this.props.setTaskDataOnParent(data);
-            let url = "tasks/quickLink/"+quickLinkType;
+            let url = "tasks/quick-link/"+quickLinkType;
             hashHistory.push(url);
       })
   }

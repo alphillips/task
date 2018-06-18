@@ -226,7 +226,7 @@ class TaskDetail  extends React.Component {
                     <div className="row">
                        <div className="col-md-12">
                          <div className="task-date"><strong>Last updated by</strong>: {this.state.task.updatedBy}</div>
-                         <div className="task-date"><strong>Task action outcome </strong>: {this.state.task.statusLabel}</div>
+                         <div className="task-date"><strong>Task action outcome </strong>: {this.state.task.outcomeLabel}</div>
                          <div className="task-date"><strong>Task action  reason </strong> : {this.state.task.taskCustomAttributes.taskActionReason == null ? ' Nill ' : ''}  </div>
                          <div className="task-date"> {this.state.task.taskCustomAttributes.taskActionReason} </div>
                        </div>
