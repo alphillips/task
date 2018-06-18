@@ -1,6 +1,6 @@
 {
   "name": "@react-ag-components/task",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Task component",
   "main": "lib/index.js",
   "module": "es/index.js",
