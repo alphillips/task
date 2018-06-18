@@ -18,6 +18,8 @@ import {List, ListItem} from 'material-ui/List';
 
 import QuickLinks from './../QuickLinks/QuickLinks';
 import SvgIcon from 'material-ui/SvgIcon';
+import {CSVLink, CSVDownload} from 'react-csv';
+
 
 const searchOptions = [
   { value: "ASSIGNEDTOME",label: "Assigned to me" },
@@ -34,29 +36,33 @@ const searchOptions = [
 class TaskList extends React.Component {
 
   constructor(props) {
-      super(props)
+      super(props);
+      console.log(props);
       this.state = {
         searchTypeCode :  props.searchTypeCode || "ASSIGNED",
-        searchKeyword: props.searchKeyword || null,
+        searchKeyword: ( props.searchKeyword && props.searchTypeCode && !props.searchTypeCode.includes("DATE")) ? props.searchKeyword :  null,
+        searchDate: (props.searchKeyword && props.searchTypeCode && props.searchTypeCode.includes("DATE")) ? props.searchKeyword :  null,
         quickLinkType: props.quickLinkType || null,
         tasks:[],
         success:props.success,
         error:props.error,
       }
-
   }
 
+
   componentDidMount () {
-     if(this.props.searchKeyword && this.props.searchKeyword){
+     if(this.props.searchKeyword && this.props.searchTypeCode && !this.props.searchTypeCode.includes("DATE")){
         this.setState({searchKeyword: this.props.searchKeyword})
      }
 
-     if(this.props.searchTypeCode && this.props.searchTypeCode.includes("DATE")){
-        this.setStateKeyVal('searchDate', this.props.searchKeyword  );
+     if(this.props.searchKeyword && this.props.searchTypeCode && this.props.searchTypeCode.includes("DATE")){
+        this.setState({ searchDate : this.props.searchKeyword }  );
+        this.searchDate = this.props.searchKeyword;
      }
 
+
      if(this.props.quickLinkType && this.props.quickLinkType.length>0){
-        this.setStateKeyVal('quickLinkType' , this.props.quickLinkType );
+        this.setState( { quickLinkType :  this.props.quickLinkType } );
      }
 
      this.refreshTasksList(this.state.searchKeyword , this.state.searchTypeCode , this.state.quickLinkType);
@@ -141,6 +147,17 @@ class TaskList extends React.Component {
   }
 
   searchByDate = () =>{
+
+    if( !this.searchDate || Date.parse(this.searchDate)==NaN ){
+       console.log("Invalid date supplied");
+       console.log(this.searchDate);
+       this.setStateKeyVal( 'error', 'Date required to search');
+       this.prepareTasksRelatedMessage(null);
+       return;
+    }else{
+       this.setStateKeyVal( 'error', '');
+    }
+
     let state;
     let searchType;
 
@@ -160,12 +177,12 @@ class TaskList extends React.Component {
       searchType = "SEARCH_FOR_TASKS_COMPLETED_BEFORE_SUPPLIED_DATE";
     }
 
-    api.getTasksBySearch(state, searchType, this.state.searchDate ).then((data) =>{
+    api.getTasksBySearch(state, searchType, this.searchDate ).then((data) =>{
       this.setStateKeyVal('tasks', data)
 
       this.prepareTasksRelatedMessage(data);
 
-      let url = "tasks/state/"+this.state.searchTypeCode+"/keyword/"+this.state.searchDate;
+      let url = "tasks/state/"+this.state.searchTypeCode+"/keyword/"+this.searchDate;
       hashHistory.push(url);
     })
 
@@ -202,14 +219,16 @@ class TaskList extends React.Component {
   prepareTasksRelatedMessage = (tasks, quicklinkTypeLabel) => {
     let message = null;
     let quickLinkMessageTxt = "";
+    let downloadDataLink = "" ;
+
     if( quicklinkTypeLabel &&  quicklinkTypeLabel.length>0){
        quickLinkMessageTxt = " ( Quick links / "+quicklinkTypeLabel +" ) ";
     }
 
     if(tasks !=null && tasks.length==25 ){
-       message = " Showing the first 25 results "+ quickLinkMessageTxt ;
+       message = " Showing the first 25 results "+ quickLinkMessageTxt  + " "+ downloadDataLink ;
      }else if(tasks !=null){
-       message = " Showing "+tasks.length+" results "+ quickLinkMessageTxt ;
+       message = " Showing "+tasks.length+" results "+ quickLinkMessageTxt + " "+ downloadDataLink ;
      }else {
          message = "  Showing 0 results "+ quickLinkMessageTxt ;
      }
@@ -272,6 +291,10 @@ class TaskList extends React.Component {
             selectFieldClassName: "medium-width"
           }));
 
+          // if(searchOptions[index].value && searchOptions[index].value.includes("DATE")){
+          //     this.setState( {searchKeyword : null});
+          // }
+
           this.prepareTasksRelatedMessage();
     };
 
@@ -310,6 +333,7 @@ class TaskList extends React.Component {
              this.setState((prevState, props) => ({
                searchDate: date
              }))
+             this.searchDate = date;
      }
 
 
@@ -388,6 +412,18 @@ class TaskList extends React.Component {
  // }
 
   render() {
+
+    const headers = [
+      {label: 'Title', key: 'title'},
+      {label: 'Task ID', key: 'taskId'},
+      {label: 'Priority', key: 'priority'},
+      {label: 'Created Date', key: 'createdDate'},
+      {label: 'Last Updated By', key: 'updatedBy'},
+      {label: 'Updated Date', key: 'updatedDate'},
+      {label: 'Status', key: 'statusLabel'},
+      {label: 'Outcome', key: 'outcomeLabel'},
+
+    ];
 
     const assignTaskModalActions = [
       <FlatButton
@@ -502,8 +538,19 @@ class TaskList extends React.Component {
             }
 
             { this.state.tasksSearchResultMessage!=null &&
-                    <div style={{ paddingBottom:"10px"}}> {this.state.tasksSearchResultMessage} </div>
+                     <div style={{ paddingBottom:"20px"}}>
+                         {this.state.tasksSearchResultMessage}
+                         { this.state.tasks &&   this.state.tasks.length>0 &&
+                           <CSVLink
+                              filename={'tasks-results.csv'}
+                              data={this.state.tasks}
+                              headers={headers}>
+                              ( Download results )
+                            </CSVLink>
+                         }
+                     </div>
             }
+
 
              <ul className="task-list">
                { this.state.tasks &&
