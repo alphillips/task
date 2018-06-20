@@ -417,9 +417,9 @@ class TaskList extends React.Component {
       {label: 'Title', key: 'title'},
       {label: 'Task ID', key: 'taskId'},
       {label: 'Priority', key: 'priority'},
-      {label: 'Created Date', key: 'createdDate'},
+      {label: 'Created Date', key: 'createdDateFormatted'},
       {label: 'Last Updated By', key: 'updatedBy'},
-      {label: 'Updated Date', key: 'updatedDate'},
+      {label: 'Updated Date', key: 'updatedDateFormatted'},
       {label: 'Status', key: 'statusLabel'},
       {label: 'Outcome', key: 'outcomeLabel'},
 
@@ -483,11 +483,11 @@ class TaskList extends React.Component {
              {this.props.showSearch !== false &&
              <div>
 
-             <div className="task">
+             <div>
 
                <div className="row">
 
-                 <div className="col-md-4">
+                 <div className="col-md-5">
                          <SelectField
                           floatingLabelText="Show tasks"
                           onChange={this.setSearchTypeCode}
@@ -502,7 +502,7 @@ class TaskList extends React.Component {
                           )}
                         </SelectField>
                  </div>
-                 <div className="col-md-6">
+                 <div className="col-md-5">
                          { this.state.searchTypeCode && this.isMatchingSearchOptionFound(this.state.searchTypeCode, 'text') &&
                            <Input
                              label={"keyword"}
@@ -538,14 +538,14 @@ class TaskList extends React.Component {
             }
 
             { this.state.tasksSearchResultMessage!=null &&
-                     <div style={{ paddingBottom:"20px"}}>
+                     <div style={{ paddingBottom:"30px",  paddingTop:"20px"}}>
                          {this.state.tasksSearchResultMessage}
                          { this.state.tasks &&   this.state.tasks.length>0 &&
-                           <CSVLink
+                          <CSVLink
                               filename={'tasks-results.csv'}
                               data={this.state.tasks}
                               headers={headers}>
-                              ( Download results )
+                              (Download results)
                             </CSVLink>
                          }
                      </div>
