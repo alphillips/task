@@ -264,8 +264,8 @@ const actions = [
           </div>
 
         }
-
-        <Dialog
+{
+   /*  <Dialog
           title="Dialog With Actions"
           actions={actions}
           modal={true}
@@ -279,7 +279,8 @@ const actions = [
               </List>
             }
         </Dialog>
-
+   */
+}
       </div>
     )
   }
