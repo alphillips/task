@@ -37,7 +37,7 @@ class TaskList extends React.Component {
 
   constructor(props) {
       super(props);
-      console.log(props);
+
       this.state = {
         searchTypeCode :  props.searchTypeCode || "ASSIGNED",
         searchKeyword: ( props.searchKeyword && props.searchTypeCode && !props.searchTypeCode.includes("DATE")) ? props.searchKeyword :  null,
@@ -291,11 +291,9 @@ class TaskList extends React.Component {
             selectFieldClassName: "medium-width"
           }));
 
-          // if(searchOptions[index].value && searchOptions[index].value.includes("DATE")){
-          //     this.setState( {searchKeyword : null});
-          // }
-
           this.prepareTasksRelatedMessage();
+
+          this.setStateKeyVal( 'error', '');
     };
 
     onEnter = () => {
@@ -398,31 +396,19 @@ class TaskList extends React.Component {
     }
 
 
- //   rect = (props)=> {
- //       const {ctx, x, y, width, height} = props;
- //       ctx.fillRect(x, y, width, height);
- //   }
- //
- //   updateCanvas = () => {
- //     const ctx = this.refs.canvas.getContext('2d');
- //     ctx.clearRect(0,0, 300, 300);
- //     // draw children “components”
- //     this.rect({ctx, x: 10, y: 10, width: 50, height: 50});
- //     this.rect({ctx, x: 110, y: 110, width: 50, height: 50});
- // }
-
   render() {
 
     const headers = [
       {label: 'Title', key: 'title'},
-      {label: 'Task ID', key: 'taskId'},
+      {label: 'Created Date', key: 'createdDateFormatted_for_display_on_excel'},
       {label: 'Priority', key: 'priority'},
-      {label: 'Created Date', key: 'createdDateFormatted'},
-      {label: 'Last Updated By', key: 'updatedBy'},
-      {label: 'Updated Date', key: 'updatedDateFormatted'},
+      {label: 'Updated Date', key: 'updatedDateFormatted_for_display_on_excel'},
       {label: 'Status', key: 'statusLabel'},
       {label: 'Outcome', key: 'outcomeLabel'},
-
+      {label: 'Assignees', key: 'taskAssignees_for_display_on_excel'},
+      {label: 'Last Updated By', key: 'updatedBy'},
+      {label: 'Comments Count ', key: 'taskCommentsCount_for_display_on_excel'},
+      {label: 'External Messages Count ', key: 'taskExternalMessagesCount_for_display_on_excel'},
     ];
 
     const assignTaskModalActions = [
@@ -466,12 +452,7 @@ class TaskList extends React.Component {
                  {!this.state.showQuickLinks &&
                     <div className="col-md-1">
                          <a href="#" onClick={this.toggleQuickLink()}>Quick Links</a>
-                    {
-                       // <SvgIcon>
-                       //     <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z" />
-                       //   </SvgIcon>
-                       }
-                      </div>
+                    </div>
                   }
 
              </div>
