@@ -256,16 +256,26 @@ class TaskDetail  extends React.Component {
                         return -1;
                      }).map((outcome) => (
                         <div key={count++} style={{float: 'left'}}>
-                          {(outcome.name === 'APPROVE' || outcome.name.toLowerCase().indexOf('reprint') > -1 )&&
+
+                          {this.state.task.taskPossibleOutcomes.length ===1 &&
                             <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
                             {outcome.name}
                             </button>
                           }
-                          {(outcome.name !== 'APPROVE' && outcome.name.toLowerCase().indexOf('reprint') === -1) &&
-                            <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.handleTaskActionButtonClick( outcome )}>
-                            {outcome.name}
-                            </button>
-                          }
+                          {this.state.task.taskPossibleOutcomes.length >1 &&
+                          <div>
+                            {(outcome.name === 'APPROVE' || outcome.name.toLowerCase().indexOf('reprint') > -1 )&&
+                              <button className="uikit-btn main-btn" onClick={() =>this.performApproveOrRejectTaskAction( outcome )}>
+                              {outcome.name}
+                              </button>
+                            }
+                            {(outcome.name !== 'APPROVE' && outcome.name.toLowerCase().indexOf('reprint') === -1) &&
+                              <button className="uikit-btn uikit-btn--tertiary" onClick={() =>this.handleTaskActionButtonClick( outcome )}>
+                              {outcome.name}
+                              </button>
+                            }
+                          </div>
+                        }
                         </div>
                       ))
                     }
