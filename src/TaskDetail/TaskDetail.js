@@ -41,6 +41,10 @@ class TaskDetail  extends React.Component {
         newcomment:[],
         loading:false,
         showMore: false,
+        attachments:[],
+        error:'',
+        warning:'',
+        success: ''
       }
 
       this.taskid = props.taskid || null
@@ -61,14 +65,20 @@ class TaskDetail  extends React.Component {
 
   readTaskDetailsById = () => {
 
-      this.setState({loading : true})
+      this.setState({loading : true});
 
       if(this.props.taskid) {
             api.fetchTaskDetailsById(this.props.taskid).then((data) => {
               this.setState({ task : data})
               this.setState({ comments : data.comments==null?[]:data.comments})
               this.setState({ loading : false})
-          })
+          });
+          api.fetchAttachmentsByTaskId(this.props.taskid).then((data) => {
+              this.setState({
+                  attachments : data.documents,
+                  validationMessages : data.validationMessages
+              })
+          });
       }
   }
 
@@ -196,7 +206,7 @@ class TaskDetail  extends React.Component {
 
        {  !this.state.messagesSectionOpened  &&
           <div>
-            <Messages success={this.state.success}  error={this.state.error}/>
+            <Messages success={this.state.success}  error={this.state.error} warning={this.state.warning}/>
             <BackButton />
           </div>
        }
@@ -285,7 +295,18 @@ class TaskDetail  extends React.Component {
 
 
         </LoadableSection>
-
+          {window.IS_STAFF && this.state.task && this.state.task.serviceRequestId && this.state.task.serviceRequestId.length > 0 && this.state.attachments && this.state.attachments.length > 0 &&
+              this.state.attachments.map(attachment => (
+                  <li key={attachment.documentAuthERN}>
+                      <a className="attachment-link"
+                         href={"#/document/contents/authorised-id/" + attachment.documentAuthERN}>
+                          {attachment.name && (<strong><span>{attachment.name}</span></strong>)}
+                          {attachment.mimeType && (<span> {" "} - {attachment.mimeType} </span>)}
+                          {attachment.contentLength && (<span> {" "} - {attachment.contentLength} </span>)}
+                      </a>
+                  </li>
+              ))
+          }
 
 
           { window.IS_STAFF && this.state.task && this.state.task.serviceRequestId &&  this.state.task.serviceRequestId.length>0 &&

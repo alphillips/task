@@ -22,6 +22,10 @@ export function fetchTaskDetailsById(taskid) {
        return get('/task-service-rest/api/taskservice/v1/tasks/'+taskid+'/detail')
 }
 
+export function fetchAttachmentsByTaskId(serviceRequestId) {
+    return get('/service-request-data-service-rs-ui/api/v1/servicerequest/attachments/'+serviceRequestId)
+}
+
 export function addComment(taskid,comment) {
       // return get(URL_BASE + 'v1/user/context')
       // /task-service-rest/api/taskservice/v1/tasks comments/add
