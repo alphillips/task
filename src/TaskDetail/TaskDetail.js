@@ -73,7 +73,7 @@ class TaskDetail  extends React.Component {
               this.setState({ comments : data.comments==null?[]:data.comments})
               this.setState({ loading : false})
           });
-          api.fetchAttachmentsByTaskId(this.props.taskid).then((data) => {
+          api.fetchAttachmentsByTaskId(this.state.task.serviceRequestId).then((data) => {
               this.setState({
                   attachments : data.documents,
                   validationMessages : data.validationMessages
@@ -201,11 +201,11 @@ class TaskDetail  extends React.Component {
 
       <div className="task-detail">
 
-
-
-
        {  !this.state.messagesSectionOpened  &&
           <div>
+              {this.state.validationMessages.map(message => (
+              message.unformattedMessage && <Messages warning={message.unformattedMessage}/>
+              ))}
             <Messages success={this.state.success}  error={this.state.error} warning={this.state.warning}/>
             <BackButton />
           </div>
