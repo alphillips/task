@@ -296,18 +296,21 @@ class TaskDetail  extends React.Component {
 
         </LoadableSection>
           {window.IS_STAFF && this.state.task && this.state.task.serviceRequestId && this.state.task.serviceRequestId.length > 0 && this.state.attachments && this.state.attachments.length > 0 &&
+              <div className="row">
+              <h3>Attachments</h3>
               this.state.attachments.map(attachment => (
                   <li key={attachment.documentAuthERN}>
                       <a className="attachment-link"
-                         href={"#/document/contents/authorised-id/" + attachment.documentAuthERN}>
+                          href={"/DocumentRS/resources/internal/v2/document/contents/authorised-id/" + attachment.documentAuthERN}
+                          download={attachment.name}>
                           {attachment.name && (<strong><span>{attachment.name}</span></strong>)}
                           {attachment.mimeType && (<span> {" "} - {attachment.mimeType} </span>)}
                           {attachment.contentLength && (<span> {" "} - {attachment.contentLength} </span>)}
                       </a>
                   </li>
               ))
+              </div>
           }
-
 
           { window.IS_STAFF && this.state.task && this.state.task.serviceRequestId &&  this.state.task.serviceRequestId.length>0 &&
             <TaskCorrespondences task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId}  callbackOpenParentTask={this.callbackOpenParentTask}  callbackCloseParentTask={this.callbackCloseParentTask}  callbackShowMessage={this.callbackShowMessage} />
