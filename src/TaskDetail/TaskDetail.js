@@ -59,30 +59,36 @@ class TaskDetail  extends React.Component {
   }
 
   componentDidMount() {
+      this.readTaskDetailsById();
 
-      this.readTaskDetailsById()
   }
 
   readTaskDetailsById = () => {
-
       this.setState({loading : true});
-
       if(this.props.taskid) {
             api.fetchTaskDetailsById(this.props.taskid).then((data) => {
-              this.setState({ task : data})
-              this.setState({ comments : data.comments==null?[]:data.comments})
-              this.setState({ loading : false})
+                this.setState({
+                    task : data,
+                    comments : data.comments == null ? [] : data.comments,
+                    loading : false
+                }, () => {
+                    this.getAttachments();
+                })
+
           });
-          api.fetchAttachmentsByTaskId(this.state.task.serviceRequestId).then((data) => {
+      }
+  };
+
+  getAttachments =() =>{
+      if (this.state.task.serviceRequestId && this.state.task.serviceRequestId.length > 0) {
+          api.fetchAttachmentsByServiceId(this.state.task.serviceRequestId).then((data) => {
               this.setState({
-                  attachments : data.documents,
-                  validationMessages : data.validationMessages
+                  attachments: data.documents,
+                  validationMessages: data.validationMessages
               })
           });
       }
-  }
-
-
+  };
 
   handleTaskActionButtonClick = (outcome) => {
 
@@ -203,7 +209,7 @@ class TaskDetail  extends React.Component {
 
        {  !this.state.messagesSectionOpened  &&
           <div>
-              {this.state.validationMessages.map(message => (
+              {this.state.validationMessages && this.state.validationMessages.map(message => (
               message.unformattedMessage && <Messages warning={message.unformattedMessage}/>
               ))}
             <Messages success={this.state.success}  error={this.state.error} warning={this.state.warning}/>
@@ -293,21 +299,23 @@ class TaskDetail  extends React.Component {
                 </div>
              }
 
-
         </LoadableSection>
           {window.IS_STAFF && this.state.task && this.state.task.serviceRequestId && this.state.task.serviceRequestId.length > 0 && this.state.attachments && this.state.attachments.length > 0 &&
-              this.state.attachments.map(attachment => (
+              <div className="row">
+              <h2>Attachments</h2>
+                  {this.state.attachments.map(attachment => (
                   <li key={attachment.documentAuthERN}>
                       <a className="attachment-link"
-                         href={"#/document/contents/authorised-id/" + attachment.documentAuthERN}>
+                          href={"/DocumentRS/resources/internal/v2/document/contents/authorised-id/" + attachment.documentAuthERN}
+                          download={attachment.name}>
                           {attachment.name && (<strong><span>{attachment.name}</span></strong>)}
                           {attachment.mimeType && (<span> {" "} - {attachment.mimeType} </span>)}
                           {attachment.contentLength && (<span> {" "} - {attachment.contentLength} </span>)}
                       </a>
                   </li>
-              ))
+              ))}
+              </div>
           }
-
 
           { window.IS_STAFF && this.state.task && this.state.task.serviceRequestId &&  this.state.task.serviceRequestId.length>0 &&
             <TaskCorrespondences task={this.state.task} taskid={this.taskid } serviceRequestId={this.state.task.serviceRequestId}  callbackOpenParentTask={this.callbackOpenParentTask}  callbackCloseParentTask={this.callbackCloseParentTask}  callbackShowMessage={this.callbackShowMessage} />
