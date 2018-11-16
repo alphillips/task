@@ -306,7 +306,7 @@ class TaskDetail  extends React.Component {
                   {this.state.attachments.map(attachment => (
                   <li key={attachment.documentAuthERN}>
                       <a className="attachment-link"
-                          href={"/DocumentRS/resources/internal/v2/document/contents/authorised-id/" + attachment.documentAuthERN}
+                          href={"/document-service-rs/resources/internal/v2/document/contents/authorised-id/" + attachment.documentAuthERN}
                           download={attachment.name}>
                           {attachment.name && (<strong><span>{attachment.name}</span></strong>)}
                           {attachment.mimeType && (<span> {" "} - {attachment.mimeType} </span>)}
