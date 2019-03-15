@@ -1,0 +1,172 @@
+$inbox-unread: #1B7991;
+$inbox-border: darken(whitesmoke, 20%);
+
+.mail-link{
+  display: inline-block;
+
+  // border: 1px solid #1B7991;
+  // padding: 2px 5px 2px 5px;
+
+  &::before {
+    content: ' ';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 0 0.4em -6px 0.16em;
+    background-image: url(mail.svg);
+    background-repeat: no-repeat;
+  }
+
+}
+
+.nexdoc-inbox {
+  position: relative;
+
+  .btn-archived {
+    display: block;
+    right: 0;
+    position: absolute;
+    top: 39px;
+    // padding: 10px 15px;
+    background-color: white;
+    cursor: pointer;
+    border: 0;
+    opacity: 0.6;
+    font: 11px system-ui;
+    &::before {
+      background-image:url('./archived.svg');
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 .4em -8px 0;
+      background-repeat: no-repeat;
+      background-size: auto 22px;
+      pointer-events: none;
+      content:'';
+    }
+    &:hover {
+      color: #333;
+      opacity: 0.9;
+      background-color: transparent;
+    }
+  }
+
+  .inbox {
+    padding-bottom: 10px;
+
+    @media screen and (min-width: 992px){
+      padding-bottom: 0;
+    }
+    a {
+      width: 87%!important;
+      padding: 1em 1.5em!important;
+      @media screen and (min-width: 992px){
+        width: 94.3%!important;
+      }
+      &:after {
+        display: none;
+      }
+    }
+    span {
+      display: block;
+      margin-bottom: 0!important;
+    }
+    .inbox-date {
+      position: absolute;
+      right: 24px;
+      top: 38%;
+      opacity: 0.7;
+      font-size: 90%;
+    }
+    .inbox-attachment{
+      position: absolute;
+      right: 24px;
+      top: 60%;
+      opacity: 0.7;
+
+      &::before {
+        content: " ";
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin: 0 .4em -8px 0;
+        background-repeat: no-repeat;
+        background-size: auto 15px;
+        pointer-events: none;
+        background-image: url('./attach.svg');
+      }
+    }
+
+    .inbox-archive {
+      position: absolute;
+      right: 24px;
+      top: 20px;
+      background-image:url('./archive.svg');
+      border: 0;
+      background-color: transparent;
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 .4em -8px 0;
+      background-repeat: no-repeat;
+      background-size: auto 15px;
+      content:'';
+      opacity: 0.7;
+      z-index: 100;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .inbox-listing{
+      border-color: $inbox-border!important;
+      position: relative!important;
+      cursor: pointer;
+    }
+
+
+
+    .unread {
+      position: relative;
+      .border-unread {
+        height: 98%;
+        background-color: $inbox-unread;
+        width: 5px;
+        position: absolute;
+        top: 1px;
+        content: '';
+        z-index: 100;
+      }
+      .inbox-subject {
+        font-weight: 600;
+        width: 80%;
+        color: $inbox-unread;
+      }
+      .inbox-date {
+        color: $inbox-unread;
+        opacity: 1;
+      }
+    }
+
+    .inbox-body {
+      margin-bottom: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 80%;
+      white-space: nowrap;
+      opacity: 0.7;
+    }
+  }
+
+  .inbox.archived {
+    .inbox-archive {
+      background-image: url("./unarchive.svg");
+    }
+    .border-unread {
+      display: none;
+    }
+  }
+
+}
