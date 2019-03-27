@@ -4,22 +4,21 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import * as api from './../api';
-import './quick-links.css';
+import React from "react";
+import * as api from "./../api";
+import "./quick-links.css";
 import { hashHistory } from "react-router";
-import Chip from 'material-ui/Chip';
-import { cyan50 } from 'material-ui/styles/colors';
-import Paper from 'material-ui/Paper';
+import Chip from "material-ui/Chip";
+import { cyan50 } from "material-ui/styles/colors";
 
 var styles = {
   chip: {
     margin: 4,
-    color: '#888'
+    color: "#888"
   },
   wrapper: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    display: "flex",
+    flexWrap: "wrap"
   }
 };
 
@@ -42,7 +41,6 @@ var QuickLinks = function (_React$Component) {
     };
 
     _this.extractQuickLinkLabelByType = function (quickLinkType) {
-
       var quickLinkLabelObject = quickLinksOptions_Pending.filter(function (obj) {
         return obj.value == quickLinkType;
       });
@@ -61,7 +59,6 @@ var QuickLinks = function (_React$Component) {
     };
 
     _this.openQuicklink = function (quickLinkType) {
-
       var quickLinkLabel = _this.extractQuickLinkLabelByType(quickLinkType);
 
       api.getTasksByQuickLink(quickLinkType).then(function (data) {
@@ -102,38 +99,35 @@ var QuickLinks = function (_React$Component) {
     var _this2 = this;
 
     return React.createElement(
-      'div',
-      { className: 'uikit-grid main-paper', style: { padding: 9 } },
+      "div",
+      { className: "uikit-grid main-paper", style: { padding: 9 } },
       React.createElement(
-        'div',
-        { className: 'row' },
+        "div",
+        { className: "row" },
         React.createElement(
-          'div',
-          { className: 'col-md-2' },
+          "div",
+          { className: "col-md-2" },
           React.createElement(
-            'div',
-            { style: { 'color': '#777', 'display': 'inline' } },
+            "div",
+            { style: { color: "#777", display: "inline" } },
             React.createElement(
-              'strong',
+              "strong",
               null,
-              'Quick links'
+              "Quick links"
             )
           )
         ),
         React.createElement(
-          'div',
-          { className: 'col-md-10', style: styles.wrapper },
+          "div",
+          { className: "col-md-10", style: styles.wrapper },
           quickLinksOptions_Pending.map(function (quickLink) {
             return React.createElement(
               Chip,
-              {
-                backgroundColor: cyan50,
-                onClick: _this2.handleClick(quickLink.value),
-                style: styles.chip },
+              { backgroundColor: cyan50, onClick: _this2.handleClick(quickLink.value), style: styles.chip },
               React.createElement(
-                'a',
-                { href: '#' },
-                ' ',
+                "a",
+                { href: "#" },
+                " ",
                 quickLink.label
               )
             );
@@ -141,13 +135,11 @@ var QuickLinks = function (_React$Component) {
           quickLinksOptions_Completed.map(function (quickLink) {
             return React.createElement(
               Chip,
-              {
-                onClick: _this2.handleClick(quickLink.value),
-                style: styles.chip },
+              { onClick: _this2.handleClick(quickLink.value), style: styles.chip },
               React.createElement(
-                'a',
-                { href: '#' },
-                ' ',
+                "a",
+                { href: "#" },
+                " ",
                 quickLink.label
               )
             );
@@ -155,19 +147,19 @@ var QuickLinks = function (_React$Component) {
         )
       ),
       React.createElement(
-        'div',
-        { className: 'row' },
-        React.createElement('div', { className: 'col-md-11' }),
+        "div",
+        { className: "row" },
+        React.createElement("div", { className: "col-md-11" }),
         React.createElement(
-          'div',
-          { className: 'col-md-1' },
-          '   ',
+          "div",
+          { className: "col-md-1" },
+          " ",
           React.createElement(
-            'a',
-            { href: '#', onClick: this.props.toggleQuickLink() },
-            'close'
+            "a",
+            { href: "#", onClick: this.props.toggleQuickLink() },
+            "close"
           ),
-          ' '
+          " "
         )
       )
     );

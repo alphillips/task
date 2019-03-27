@@ -4,27 +4,25 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
+import React from "react";
 
-import TaskSummaryCard from './../TaskSummaryCard';
-import Input from '@react-ag-components/input';
-import * as api from './../api';
-import './task-list.css';
+import TaskSummaryCard from "./../TaskSummaryCard";
+import Input from "@react-ag-components/input";
+import * as api from "./../api";
+import "./task-list.css";
 
-import Messages from '@react-ag-components/messages';
-import LoadableSection from '@react-ag-components/core/lib/LoadableSection';
-import MenuItem from 'material-ui/MenuItem';
+import Messages from "@react-ag-components/messages";
+import LoadableSection from "@react-ag-components/core/lib/LoadableSection";
+import MenuItem from "material-ui/MenuItem";
 import SelectField from "material-ui/SelectField";
 import { hashHistory } from "react-router";
-import DateInput from '@react-ag-components/date-input';
+import DateInput from "@react-ag-components/date-input";
 
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { List, ListItem } from 'material-ui/List';
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
 
-import QuickLinks from './../QuickLinks/QuickLinks';
-import SvgIcon from 'material-ui/SvgIcon';
-import { CSVLink, CSVDownload } from 'react-csv';
+import QuickLinks from "./../QuickLinks/QuickLinks";
+import { CSVLink } from "react-csv";
 
 var searchOptions = [{ value: "ASSIGNEDTOME", label: "Assigned to me" }, { value: "COMPLETED", label: "Completed", type: "text" }, { value: "DATE_COMPLETED_AFTER", label: "Completed On or After", type: "date" }, { value: "DATE_COMPLETED_BEFORE", label: "Completed On or Before", type: "date" }, { value: "ASSIGNED", label: "Pending", type: "text" }, { value: "DATE_ASSIGNED_AFTER", label: "Pending - Received On or After", type: "date" }, { value: "DATE_ASSIGNED_BEFORE", label: "Pending - Received On or Before", type: "date" }];
 
@@ -92,11 +90,11 @@ var TaskList = function (_React$Component) {
     };
 
     _this.searchTasksByKeywordsInTitle = function () {
-      _this.setStateKeyVal('tasks', []);
+      _this.setStateKeyVal("tasks", []);
 
-      if (_this.state.searchTypeCode == 'DATE_COMPLETED_AFTER' || _this.state.searchTypeCode == 'DATE_COMPLETED_BEFORE' || _this.state.searchTypeCode == 'DATE_ASSIGNED_AFTER' || _this.state.searchTypeCode == 'DATE_ASSIGNED_BEFORE') {
+      if (_this.state.searchTypeCode == "DATE_COMPLETED_AFTER" || _this.state.searchTypeCode == "DATE_COMPLETED_BEFORE" || _this.state.searchTypeCode == "DATE_ASSIGNED_AFTER" || _this.state.searchTypeCode == "DATE_ASSIGNED_BEFORE") {
         _this.searchByDate();
-      } else if (_this.state.searchTypeCode == 'ASSIGNEDTOME' || !_this.state.searchKeyword) {
+      } else if (_this.state.searchTypeCode == "ASSIGNEDTOME" || !_this.state.searchKeyword) {
         _this.readTasksList();
         var url = "tasks/state/" + _this.state.searchTypeCode;
         hashHistory.push(url);
@@ -109,44 +107,43 @@ var TaskList = function (_React$Component) {
 
     _this.search = function () {
       api.performSearchByTitleKeyword(_this.state.searchKeyword, _this.state.searchTypeCode).then(function (data) {
-        _this.setStateKeyVal('tasks', data);
+        _this.setStateKeyVal("tasks", data);
         _this.prepareTasksRelatedMessage(data);
       });
     };
 
     _this.searchByDate = function () {
-
       if (!_this.searchDate || Date.parse(_this.searchDate) == NaN) {
         console.log("Invalid date supplied");
         console.log(_this.searchDate);
-        _this.setStateKeyVal('error', 'Date required to search');
+        _this.setStateKeyVal("error", "Date required to search");
         _this.prepareTasksRelatedMessage(null);
         return;
       } else {
-        _this.setStateKeyVal('error', '');
+        _this.setStateKeyVal("error", "");
       }
 
       var state = void 0;
       var searchType = void 0;
 
-      if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes('ASSIGNED')) {
+      if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes("ASSIGNED")) {
         state = "ASSIGNED";
       } else {
         state = "COMPLETED";
       }
 
-      if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes('DATE_ASSIGNED_AFTER')) {
+      if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes("DATE_ASSIGNED_AFTER")) {
         searchType = "SEARCH_FOR_TASKS_ASSIGNED_AFTER_SUPPLIED_DATE";
-      } else if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes('DATE_ASSIGNED_BEFORE')) {
+      } else if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes("DATE_ASSIGNED_BEFORE")) {
         searchType = "SEARCH_FOR_TASKS_ASSIGNED_BEFORE_SUPPLIED_DATE";
-      } else if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes('DATE_COMPLETED_AFTER')) {
+      } else if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes("DATE_COMPLETED_AFTER")) {
         searchType = "SEARCH_FOR_TASKS_COMPLETED_AFTER_SUPPLIED_DATE";
-      } else if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes('DATE_COMPLETED_BEFORE')) {
+      } else if (_this.state.searchTypeCode && _this.state.searchTypeCode.includes("DATE_COMPLETED_BEFORE")) {
         searchType = "SEARCH_FOR_TASKS_COMPLETED_BEFORE_SUPPLIED_DATE";
       }
 
       api.getTasksBySearch(state, searchType, _this.searchDate).then(function (data) {
-        _this.setStateKeyVal('tasks', data);
+        _this.setStateKeyVal("tasks", data);
 
         _this.prepareTasksRelatedMessage(data);
 
@@ -156,9 +153,7 @@ var TaskList = function (_React$Component) {
     };
 
     _this.readTasksList = function () {
-
       api.fetchUserTasksList(_this.state.searchTypeCode).then(function (data) {
-
         if (_this.props.assignedToUser) {
           data = data.filter(function (d) {
             if (d.taskAssignees) {
@@ -203,9 +198,8 @@ var TaskList = function (_React$Component) {
     };
 
     _this.calculateCommentsButtonLabel = function (task) {
-
       if (task.taskCustomAttributes.taskCommentsCount > 0) {
-        return 'Staff notes (' + task.taskCustomAttributes.taskCommentsCount + ')';
+        return "Staff notes (" + task.taskCustomAttributes.taskCommentsCount + ")";
       } else if (task.taskCustomAttributes.taskCommentsCount == 0 && task.state == "COMPLETED") {
         return "";
       } else if (task.taskCustomAttributes.taskCommentsCount == 0 && task.state != "COMPLETED") {
@@ -214,9 +208,8 @@ var TaskList = function (_React$Component) {
     };
 
     _this.calculateExternalMessagesButtonLabel = function (task) {
-
       if (task.taskCustomAttributes.taskExternalMessagesCount > 0) {
-        return 'External messages (' + task.taskCustomAttributes.taskExternalMessagesCount + ')';
+        return "External messages (" + task.taskCustomAttributes.taskExternalMessagesCount + ")";
       } else if (task.taskCustomAttributes.taskExternalMessagesCount == 0 && task.state == "COMPLETED") {
         return "";
       } else if (task.taskCustomAttributes.taskExternalMessagesCount == 0 && task.state != "COMPLETED") {
@@ -262,7 +255,7 @@ var TaskList = function (_React$Component) {
 
       _this.prepareTasksRelatedMessage();
 
-      _this.setStateKeyVal('error', '');
+      _this.setStateKeyVal("error", "");
     };
 
     _this.onEnter = function () {
@@ -280,7 +273,6 @@ var TaskList = function (_React$Component) {
     };
 
     _this.isMatchingSearchOptionFound = function (searchType, fieldType) {
-
       for (var i = 0; i < searchOptions.length; i++) {
         if (searchOptions[i].value == searchType && searchOptions[i].type == fieldType) {
           return true;
@@ -321,12 +313,10 @@ var TaskList = function (_React$Component) {
     };
 
     _this.handleAssigneeChange = function (event, index, value) {
-
       _this.setState({ selectedAssignee: value });
     };
 
     _this.assignTaskToSomeone = function (e) {
-
       e.preventDefault();
       if (!_this.state.assignTaskId) {
         //throw error
@@ -352,7 +342,7 @@ var TaskList = function (_React$Component) {
 
     _this.setTaskDataOnParent = function (data) {
       //return(e)=>{
-      _this.setStateKeyVal('tasks', data);
+      _this.setStateKeyVal("tasks", data);
       //}
     };
 
@@ -388,57 +378,51 @@ var TaskList = function (_React$Component) {
   TaskList.prototype.render = function render() {
     var _this2 = this;
 
-    var headers = [{ label: 'Title', key: 'title' }, { label: 'Created Date', key: 'createdDateFormatted_for_display_on_excel' }, { label: 'Priority', key: 'priority' }, { label: 'Updated Date', key: 'updatedDateFormatted_for_display_on_excel' }, { label: 'Status', key: 'statusLabel' }, { label: 'Outcome', key: 'outcomeLabel' }, { label: 'Assignees', key: 'taskAssignees_for_display_on_excel' }, { label: 'Last Updated By', key: 'updatedBy' }, { label: 'Comments Count ', key: 'taskCommentsCount_for_display_on_excel' }, { label: 'External Messages Count ', key: 'taskExternalMessagesCount_for_display_on_excel' }];
+    var headers = [{ label: "Title", key: "title" }, { label: "Created Date", key: "createdDateFormatted_for_display_on_excel" }, { label: "Priority", key: "priority" }, { label: "Updated Date", key: "updatedDateFormatted_for_display_on_excel" }, { label: "Status", key: "statusLabel" }, { label: "Outcome", key: "outcomeLabel" }, { label: "Assignees", key: "taskAssignees_for_display_on_excel" }, { label: "Last Updated By", key: "updatedBy" }, { label: "Comments Count ", key: "taskCommentsCount_for_display_on_excel" }, { label: "External Messages Count ", key: "taskExternalMessagesCount_for_display_on_excel" }];
 
-    var assignTaskModalActions = [React.createElement(FlatButton, {
-      label: 'Cancel',
-      primary: false,
-      onClick: this.hideAssignModal
-    }), React.createElement(FlatButton, {
-      label: 'Submit',
-      primary: true,
-      onClick: this.assignTaskToSomeone
-    })];
+    var assignTaskModalActions = [React.createElement(FlatButton, { label: "Cancel", primary: false, onClick: this.hideAssignModal }), React.createElement(FlatButton, { label: "Submit", primary: true, onClick: this.assignTaskToSomeone })];
 
     var selectFieldStyle = {
       width: "100%",
-      'color': '#999'
+      color: "#999"
     };
 
     var taskCount = 0;
 
     return React.createElement(
-      'div',
-      { className: 'task-list-page uikit-grid' },
+      "div",
+      { className: "task-list-page uikit-grid" },
       React.createElement(Messages, { success: this.state.success, error: this.state.error }),
-      this.state.showQuickLinks && React.createElement(QuickLinks, { ref: function ref(quicklinksRef) {
+      this.state.showQuickLinks && React.createElement(QuickLinks, {
+        ref: function ref(quicklinksRef) {
           return _this2.quicklinksRef = quicklinksRef;
         },
         setTaskDataOnParent: this.setTaskDataOnParent,
         prepareTasksRelatedMessage: this.prepareTasksRelatedMessage,
         toggleQuickLink: this.toggleQuickLink,
-        launchQuickLinkType: this.state.launchQuickLinkType }),
+        launchQuickLinkType: this.state.launchQuickLinkType
+      }),
       React.createElement(
-        'div',
-        { className: 'row' },
+        "div",
+        { className: "row" },
         React.createElement(
-          'div',
-          { className: 'col-md-11' },
-          '  ',
+          "div",
+          { className: "col-md-11" },
+          " ",
           React.createElement(
-            'h1',
+            "h1",
             null,
-            this.props.heading || 'Tasks'
+            this.props.heading || "Tasks"
           ),
-          ' '
+          " "
         ),
         !this.state.showQuickLinks && React.createElement(
-          'div',
-          { className: 'col-md-1' },
+          "div",
+          { className: "col-md-1" },
           React.createElement(
-            'a',
-            { href: '#', onClick: this.toggleQuickLink() },
-            'Quick Links'
+            "a",
+            { href: "#", onClick: this.toggleQuickLink() },
+            "Quick Links"
           )
         )
       ),
@@ -446,26 +430,26 @@ var TaskList = function (_React$Component) {
         LoadableSection,
         null,
         this.props.showSearch !== false && React.createElement(
-          'div',
+          "div",
           null,
           React.createElement(
-            'div',
+            "div",
             null,
             React.createElement(
-              'div',
-              { className: 'row' },
+              "div",
+              { className: "row" },
               React.createElement(
-                'div',
-                { className: 'col-md-5' },
+                "div",
+                { className: "col-md-5" },
                 React.createElement(
                   SelectField,
                   {
-                    floatingLabelText: 'Show tasks',
+                    floatingLabelText: "Show tasks",
                     onChange: this.setSearchTypeCode,
                     value: this.state.searchTypeCode,
                     style: selectFieldStyle,
                     floatingLabelStyle: selectFieldStyle,
-                    className: 'search custom-width',
+                    className: "search custom-width",
                     onEnter: this.onEnter
                   },
                   searchOptions.map(function (searchOption) {
@@ -474,34 +458,28 @@ var TaskList = function (_React$Component) {
                 )
               ),
               React.createElement(
-                'div',
-                { className: 'col-md-5' },
-                this.state.searchTypeCode && this.isMatchingSearchOptionFound(this.state.searchTypeCode, 'text') && React.createElement(Input, {
+                "div",
+                { className: "col-md-5" },
+                this.state.searchTypeCode && this.isMatchingSearchOptionFound(this.state.searchTypeCode, "text") && React.createElement(Input, {
                   label: "keyword",
-                  id: 'search',
+                  id: "search",
                   value: this.state.searchKeyword,
-                  onChange: this.onSearchFieldChange('searchKeyword'),
-                  placeholder: 'keyword',
+                  onChange: this.onSearchFieldChange("searchKeyword"),
+                  placeholder: "keyword",
                   onEnter: this.onEnter
                 }),
-                this.state.searchTypeCode && this.isMatchingSearchOptionFound(this.state.searchTypeCode, 'date') && React.createElement(DateInput, {
-                  label: 'Date',
-                  id: 'date',
-                  value: this.state.searchDate,
-                  placeholder: 'Date',
-                  handle: this.handleDateSelection,
-                  type: 'date' })
+                this.state.searchTypeCode && this.isMatchingSearchOptionFound(this.state.searchTypeCode, "date") && React.createElement(DateInput, { label: "Date", id: "date", value: this.state.searchDate, placeholder: "Date", handle: this.handleDateSelection, type: "date" })
               ),
               React.createElement(
-                'div',
-                { className: 'col-md-2' },
+                "div",
+                { className: "col-md-2" },
                 React.createElement(
-                  'div',
+                  "div",
                   null,
                   React.createElement(
-                    'button',
-                    { className: 'uikit-btn main-btn', id: 'task-list-search-btn', onClick: this.searchTasksByKeywordsInTitle },
-                    'Search'
+                    "button",
+                    { className: "uikit-btn main-btn", id: "task-list-search-btn", onClick: this.searchTasksByKeywordsInTitle },
+                    "Search"
                   )
                 )
               )
@@ -509,24 +487,21 @@ var TaskList = function (_React$Component) {
           )
         ),
         this.state.tasksSearchResultMessage != null && React.createElement(
-          'div',
+          "div",
           { style: { paddingBottom: "30px", paddingTop: "20px" } },
           this.state.tasksSearchResultMessage,
           this.state.tasks && this.state.tasks.length > 0 && React.createElement(
             CSVLink,
-            {
-              filename: 'tasks-results.csv',
-              data: this.state.tasks,
-              headers: headers },
-            '(Download results)'
+            { filename: "tasks-results.csv", data: this.state.tasks, headers: headers },
+            "(Download results)"
           )
         ),
         React.createElement(
-          'ul',
-          { className: 'task-list' },
+          "ul",
+          { className: "task-list" },
           this.state.tasks && this.state.tasks.map(function (task) {
             return React.createElement(
-              'li',
+              "li",
               { key: taskCount++ },
               React.createElement(TaskSummaryCard, {
                 task: task,
@@ -558,21 +533,16 @@ var TaskList = function (_React$Component) {
       ),
       React.createElement(
         Dialog,
-        {
-          title: "Assign task  (" + this.state.assignTaskTitle + ")",
-          actions: assignTaskModalActions,
-          modal: true,
-          open: this.state.assignModalOpen
-        },
+        { title: "Assign task  (" + this.state.assignTaskTitle + ")", actions: assignTaskModalActions, modal: true, open: this.state.assignModalOpen },
         this.state.assignees && this.state.assignees.length > 0 && React.createElement(
           SelectField,
           {
-            floatingLabelText: 'Choose an assignee',
-            hintText: 'Select a name',
+            floatingLabelText: "Choose an assignee",
+            hintText: "Select a name",
             value: this.state.selectedAssignee,
             autoWidth: true,
             onChange: this.handleAssigneeChange,
-            style: { width: '100%' }
+            style: { width: "100%" }
           },
           this.state.assignees.map(function (assignee) {
             return React.createElement(MenuItem, { key: assignee, value: assignee, primaryText: assignee });

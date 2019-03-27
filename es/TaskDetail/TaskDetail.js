@@ -4,37 +4,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import { hashHistory } from 'react-router';
+import React from "react";
 
-import Input from '@react-ag-components/input';
-import BackButton from '@react-ag-components/back-button';
-import * as api from './../api';
-import './task-detail.css';
+import Input from "@react-ag-components/input";
+import BackButton from "@react-ag-components/back-button";
+import * as api from "./../api";
+import "./task-detail.css";
 // import { Grid, Row, Col } from 'react-flexbox-grid'
-import LoadableSection from '@react-ag-components/core/lib/LoadableSection';
-import Messages from '@react-ag-components/messages';
+import LoadableSection from "@react-ag-components/core/lib/LoadableSection";
+import Messages from "@react-ag-components/messages";
 
-import TaskCorrespondences from './../TaskCorrespondences/TaskCorrespondences';
-import TaskComments from './../TaskComments/TaskComments';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import { Link } from "react-router";
-import moment from 'moment';
-import Modal from 'react-aria-modal';
-import Dialog from 'material-ui/Dialog';
-
-var style = {
-  height: 100,
-  width: 100,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block'
-};
-
-var style2 = {
-  margin: 12
-};
+import TaskCorrespondences from "./../TaskCorrespondences/TaskCorrespondences";
+import TaskComments from "./../TaskComments/TaskComments";
+import Dialog from "material-ui/Dialog";
 
 var TaskDetail = function (_React$Component) {
   _inherits(TaskDetail, _React$Component);
@@ -58,6 +40,24 @@ var TaskDetail = function (_React$Component) {
       _this.setState({ loading: true });
       if (_this.props.taskid) {
         api.fetchTaskDetailsById(_this.props.taskid).then(function (data) {
+          // cleanup button labels, replace underscores with spaces
+          if (data.taskPossibleOutcomes) {
+            var reg = new RegExp("_", "g");
+            for (var i = 0; i < data.taskPossibleOutcomes.length; i++) {
+              data.taskPossibleOutcomes[i].label = data.taskPossibleOutcomes[i].name.replace(reg, " ");
+            }
+          }
+
+          _this.setState({ task: data });
+
+          // add review button to nexdoc document review
+          if (data.taskDefinitionId && data.taskDefinitionId.indexOf("nexdoc.exports.request.DocumentReview") > 0) {
+            var startURL = data.payloadHtml.indexOf('id="url" type="hidden" value="') + 30;
+            var endURL = data.payloadHtml.indexOf('"', startURL);
+            var url = data.payloadHtml.substring(startURL, endURL);
+            _this.setState({ showReviewButton: true, reviewURL: url, reviewLabel: "REVIEW REX" });
+          }
+
           _this.setState({
             task: data,
             comments: data.comments == null ? [] : data.comments,
@@ -81,11 +81,10 @@ var TaskDetail = function (_React$Component) {
     };
 
     _this.handleTaskActionButtonClick = function (outcome) {
-
       _this.setState(function (prevState, props) {
         return {
           showModal: true,
-          taskActionReason: '',
+          taskActionReason: "",
           outcome: outcome,
           taskActionReasonNotSupplied: false
         };
@@ -93,7 +92,6 @@ var TaskDetail = function (_React$Component) {
     };
 
     _this.handleTaskAction = function () {
-
       if (_this.state.taskActionReason && _this.state.taskActionReason.trim().length > 0 && _this.state.outcome) {
         _this.performApproveOrRejectTaskAction(_this.state.outcome);
         _this.setState({ showModal: false, outcome: null });
@@ -103,7 +101,6 @@ var TaskDetail = function (_React$Component) {
     };
 
     _this.performApproveOrRejectTaskAction = function (outcome) {
-
       if (_this.props.taskid && outcome) {
         _this.setState({ loading: true });
         _this.setState({ task: [] });
@@ -111,7 +108,7 @@ var TaskDetail = function (_React$Component) {
         api.performTaskAction(_this.props.taskid, payload).then(function (data) {
           // this.readTaskDetailsById();
           // this.setStateKeyVal('loading', false)
-          var message = 'Task ' + (outcome.name === 'APPROVE' ? 'approved' : 'rejected');
+          var message = "Task " + (outcome.name === "APPROVE" ? "approved" : "rejected");
 
           // APPROVE
           // hashHistory.push('/tasks')
@@ -168,14 +165,22 @@ var TaskDetail = function (_React$Component) {
     };
 
     _this.chooseDisplayLabel = function (taskStatusLabel) {
-
-      if (taskStatusLabel == 'APPROVED') {
+      if (taskStatusLabel == "APPROVED") {
         return "approved-status";
-      } else if (taskStatusLabel == 'REJECTED') {
+      } else if (taskStatusLabel == "REJECTED") {
         return "rejected-status";
       } else {
         return "task-status";
       }
+    };
+
+    _this.hideReviewButton = function (e) {
+      _this.setState(function (prevState, props) {
+        return {
+          showReviewButton: false
+        };
+      });
+      window.open(_this.state.reviewURL);
     };
 
     _this.toggleShowMore = function (e) {
@@ -196,16 +201,19 @@ var TaskDetail = function (_React$Component) {
     };
 
     _this.state = {
-      task: '',
-      selectedAction: '',
+      task: "",
+      selectedAction: "",
       comments: [],
       newcomment: [],
       loading: false,
       showMore: false,
       attachments: [],
-      error: '',
-      warning: '',
-      success: ''
+      error: "",
+      warning: "",
+      success: "",
+      showReviewButton: false,
+      reviewURL: null,
+      reviewLabel: null
     };
 
     _this.taskid = props.taskid || null;
@@ -223,10 +231,10 @@ var TaskDetail = function (_React$Component) {
     var commentCount = 0;
 
     return React.createElement(
-      'div',
-      { className: 'task-detail' },
+      "div",
+      { className: "task-detail" },
       !this.state.messagesSectionOpened && React.createElement(
-        'div',
+        "div",
         null,
         this.state.validationMessages && this.state.validationMessages.map(function (message) {
           return message.unformattedMessage && React.createElement(Messages, { warning: message.unformattedMessage });
@@ -238,169 +246,180 @@ var TaskDetail = function (_React$Component) {
         LoadableSection,
         null,
         !this.state.messagesSectionOpened && React.createElement(
-          'div',
-          { className: 'task uikit-grid' },
+          "div",
+          { className: "task uikit-grid" },
           React.createElement(
-            'div',
-            { className: 'row' },
+            "div",
+            { className: "row" },
             React.createElement(
-              'div',
-              { className: 'col-md-8' },
+              "div",
+              { className: "col-md-8" },
               React.createElement(
-                'h2',
-                { className: 'uikit-display-2' },
+                "h2",
+                { className: "uikit-display-2" },
                 this.state.task.title
               )
             ),
             React.createElement(
-              'div',
-              { className: 'col-md-4' },
+              "div",
+              { className: "col-md-4" },
               React.createElement(
-                'div',
+                "div",
                 { className: this.chooseDisplayLabel(this.state.task.statusLabel) },
                 this.state.task.statusLabel
               ),
               React.createElement(
-                'div',
-                { className: 'task-date' },
+                "div",
+                { className: "task-date" },
                 React.createElement(
-                  'strong',
+                  "strong",
                   null,
-                  'Priority'
+                  "Priority"
                 ),
-                ': ',
+                ": ",
                 this.state.task.priority
               ),
               React.createElement(
-                'div',
-                { className: 'task-date' },
+                "div",
+                { className: "task-date" },
                 React.createElement(
-                  'strong',
+                  "strong",
                   null,
-                  'Created on'
+                  "Created on"
                 ),
-                ': ',
+                ": ",
                 this.getCreatedDateDisplayString(this.state.task.createdDate)
               ),
               React.createElement(
-                'div',
-                { className: 'task-date' },
+                "div",
+                { className: "task-date" },
                 React.createElement(
-                  'strong',
+                  "strong",
                   null,
-                  'Last updated on'
+                  "Last updated on"
                 ),
-                ': ',
+                ": ",
                 this.getCreatedDateDisplayString(this.state.task.updatedDate)
               )
             )
           ),
           window.IS_STAFF && this.state.task.state == "COMPLETED" && this.state.showMore && React.createElement(
-            'div',
-            { className: 'row' },
+            "div",
+            { className: "row" },
             React.createElement(
-              'div',
-              { className: 'col-md-12' },
+              "div",
+              { className: "col-md-12" },
               React.createElement(
-                'div',
-                { className: 'task-date' },
+                "div",
+                { className: "task-date" },
                 React.createElement(
-                  'strong',
+                  "strong",
                   null,
-                  'Last updated by'
+                  "Last updated by"
                 ),
-                ': ',
+                ": ",
                 this.state.task.updatedBy
               ),
               React.createElement(
-                'div',
-                { className: 'task-date' },
+                "div",
+                { className: "task-date" },
                 React.createElement(
-                  'strong',
+                  "strong",
                   null,
-                  'Task action outcome '
+                  "Task action outcome "
                 ),
-                ': ',
+                ": ",
                 this.state.task.outcomeLabel
               ),
               React.createElement(
-                'div',
-                { className: 'task-date' },
+                "div",
+                { className: "task-date" },
                 React.createElement(
-                  'strong',
+                  "strong",
                   null,
-                  'Task action  reason '
+                  "Task action reason "
                 ),
-                ' : ',
-                this.state.task.taskCustomAttributes.taskActionReason == null ? ' Nill ' : '',
-                '  '
+                " : ",
+                this.state.task.taskCustomAttributes.taskActionReason == null ? " Nill " : "",
+                " "
               ),
               React.createElement(
-                'div',
-                { className: 'task-date' },
-                ' ',
+                "div",
+                { className: "task-date" },
+                " ",
                 this.state.task.taskCustomAttributes.taskActionReason,
-                ' '
+                " "
               )
             )
           ),
           window.IS_STAFF && this.state.task.state == "COMPLETED" && React.createElement(
-            'div',
-            { className: 'task-date' },
-            ' ',
+            "div",
+            { className: "task-date" },
+            " ",
             React.createElement(
-              'a',
-              { href: '#', onClick: this.toggleShowMore, title: !this.state.showMore ? " Show more " : " hide " },
-              ' ',
+              "a",
+              { href: "#", onClick: this.toggleShowMore, title: !this.state.showMore ? " Show more " : " hide " },
+              " ",
               !this.state.showMore ? " (+) " : " (-) "
             )
           )
         ),
         !this.state.messagesSectionOpened && React.createElement(
-          'div',
-          { className: 'task uikit-grid' },
+          "div",
+          { className: "task uikit-grid" },
           React.createElement(
-            'div',
-            { className: 'row task-detail-body' },
+            "div",
+            { className: "row task-detail-body" },
             React.createElement(
-              'div',
-              { className: 'col-md-12', style: { 'backgroundColor': '#fafafa', 'padding-left': '20px', 'padding-right': '20px' } },
-              React.createElement('div', { dangerouslySetInnerHTML: { __html: this.state.task.payloadHtml } })
+              "div",
+              { className: "col-md-12", style: { backgroundColor: "#fafafa", "padding-left": "20px", "padding-right": "20px" } },
+              React.createElement("div", { dangerouslySetInnerHTML: { __html: this.state.task.payloadHtml } })
             )
           ),
-          React.createElement(
-            'div',
-            { className: 'btn-group outcome' },
-            this.state.task.taskPossibleOutcomes && this.state.task.state != 'COMPLETED' && this.state.task.taskPossibleOutcomes.sort(function (a, b) {
-              if (b.name === 'APPROVE' || b.name.toLowerCase().indexOf('reprint') > -1) return 1;
+          this.state.showReviewButton && React.createElement(
+            "div",
+            { className: "btn-group outcome" },
+            React.createElement(
+              "button",
+              { className: "uikit-btn main-btn", onClick: function onClick() {
+                  return _this2.hideReviewButton();
+                } },
+              this.state.reviewLabel
+            )
+          ),
+          !this.state.showReviewButton && React.createElement(
+            "div",
+            { className: "btn-group outcome" },
+            this.state.task.taskPossibleOutcomes && this.state.task.state != "COMPLETED" && this.state.task.taskPossibleOutcomes.sort(function (a, b) {
+              if (b.name === "APPROVE" || b.name.toLowerCase().indexOf("reprint") > -1) return 1;
               return -1;
             }).map(function (outcome) {
               return React.createElement(
-                'div',
-                { key: count++, style: { float: 'left' } },
+                "div",
+                { key: count++, style: { float: "left" } },
                 _this2.state.task.taskPossibleOutcomes.length === 1 && React.createElement(
-                  'button',
-                  { className: 'uikit-btn main-btn', onClick: function onClick() {
+                  "button",
+                  { className: "uikit-btn main-btn", onClick: function onClick() {
                       return _this2.performApproveOrRejectTaskAction(outcome);
                     } },
-                  outcome.name
+                  outcome.label
                 ),
                 _this2.state.task.taskPossibleOutcomes.length > 1 && React.createElement(
-                  'div',
+                  "div",
                   null,
-                  (outcome.name === 'APPROVE' || outcome.name.toLowerCase().indexOf('reprint') > -1) && React.createElement(
-                    'button',
-                    { className: 'uikit-btn main-btn', onClick: function onClick() {
+                  (outcome.name === "APPROVE" || outcome.name.toLowerCase().indexOf("reprint") > -1) && React.createElement(
+                    "button",
+                    { className: "uikit-btn main-btn", onClick: function onClick() {
                         return _this2.performApproveOrRejectTaskAction(outcome);
                       } },
-                    outcome.name
+                    outcome.label
                   ),
-                  outcome.name !== 'APPROVE' && outcome.name.toLowerCase().indexOf('reprint') === -1 && React.createElement(
-                    'button',
-                    { className: 'uikit-btn uikit-btn--tertiary', onClick: function onClick() {
+                  outcome.name !== "APPROVE" && outcome.name.toLowerCase().indexOf("reprint") === -1 && React.createElement(
+                    "button",
+                    { className: "uikit-btn uikit-btn--tertiary", onClick: function onClick() {
                         return _this2.handleTaskActionButtonClick(outcome);
                       } },
-                    outcome.name
+                    outcome.label
                   )
                 )
               );
@@ -409,89 +428,81 @@ var TaskDetail = function (_React$Component) {
         )
       ),
       window.IS_STAFF && this.state.task && this.state.task.serviceRequestId && this.state.task.serviceRequestId.length > 0 && this.state.attachments && this.state.attachments.length > 0 && React.createElement(
-        'div',
-        { className: 'row' },
+        "div",
+        { className: "row" },
         React.createElement(
-          'h2',
+          "h2",
           null,
-          'Attachments'
+          "Attachments"
         ),
         this.state.attachments.map(function (attachment) {
           return React.createElement(
-            'li',
+            "li",
             { key: attachment.documentAuthERN },
             React.createElement(
-              'a',
-              { className: 'attachment-link',
+              "a",
+              {
+                className: "attachment-link",
                 href: "/document-service-rs/resources/internal/v2/document/contents/authorised-id/" + attachment.documentAuthERN,
-                download: attachment.name },
+                download: attachment.name
+              },
               attachment.name && React.createElement(
-                'strong',
+                "strong",
                 null,
                 React.createElement(
-                  'span',
+                  "span",
                   null,
                   attachment.name
                 )
               ),
               attachment.mimeType && React.createElement(
-                'span',
+                "span",
                 null,
-                ' ',
-                " ",
-                ' - ',
+                " - ",
                 attachment.mimeType,
-                ' '
+                " "
               ),
               attachment.contentLength && React.createElement(
-                'span',
+                "span",
                 null,
-                ' ',
-                " ",
-                ' - ',
+                " - ",
                 attachment.contentLength,
-                ' '
+                " "
               )
             )
           );
         })
       ),
-      window.IS_STAFF && this.state.task && this.state.task.serviceRequestId && this.state.task.serviceRequestId.length > 0 && React.createElement(TaskCorrespondences, { task: this.state.task, taskid: this.taskid, serviceRequestId: this.state.task.serviceRequestId, callbackOpenParentTask: this.callbackOpenParentTask, callbackCloseParentTask: this.callbackCloseParentTask, callbackShowMessage: this.callbackShowMessage }),
+      window.IS_STAFF && this.state.task && this.state.task.serviceRequestId && this.state.task.serviceRequestId.length > 0 && React.createElement(TaskCorrespondences, {
+        task: this.state.task,
+        taskid: this.taskid,
+        serviceRequestId: this.state.task.serviceRequestId,
+        callbackOpenParentTask: this.callbackOpenParentTask,
+        callbackCloseParentTask: this.callbackCloseParentTask,
+        callbackShowMessage: this.callbackShowMessage
+      }),
       window.IS_STAFF && this.state.task && !this.state.messagesSectionOpened && React.createElement(TaskComments, { task: this.state.task, taskid: this.taskid, serviceRequestId: this.state.task.serviceRequestId, callbackShowMessage: this.callbackShowMessage }),
       React.createElement(
         Dialog,
-        {
-          title: 'Please provide a reason for your decision before this action can be executed',
-          modal: true,
-          open: this.state.showModal,
-          onRequestClose: this.cancelDisable
-        },
+        { title: "Please provide a reason for your decision before this action can be executed", modal: true, open: this.state.showModal, onRequestClose: this.cancelDisable },
         this.state.taskActionReasonNotSupplied && React.createElement(
-          'p',
-          { style: { color: 'red' } },
-          ' Please provide the reason for your decision '
+          "p",
+          { style: { color: "red" } },
+          " Please provide the reason for your decision "
         ),
-        React.createElement(Input, {
-          label: 'Reason',
-          value: this.state.taskActionReason,
-          onChange: this.onChange('taskActionReason'),
-          rows: 2,
-          multiLine: true,
-          maxlength: '1900',
-          id: 'taskActionReason'
-        }),
+        React.createElement(Input, { label: "Reason", value: this.state.taskActionReason, onChange: this.onChange("taskActionReason"), rows: 2, multiLine: true, maxlength: "1900", id: "taskActionReason" }),
         React.createElement(
-          'div',
-          { className: 'btn-group' },
+          "div",
+          { className: "btn-group" },
           React.createElement(
-            'button',
-            { className: 'uikit-btn ', onClick: this.handleTaskAction },
-            'SUBMIT'
+            "button",
+            { className: "uikit-btn ", onClick: this.handleTaskAction },
+            "SUBMIT"
           ),
           React.createElement(
-            'button',
-            { className: 'uikit-btn uikit-btn--tertiary main-btn', onClick: this.cancelDisable },
-            'CANCEL'
+            "button",
+            { className: "uikit-btn uikit-btn--tertiary main-btn", onClick: this.cancelDisable },
+            "CANCEL"
           )
         )
       )

@@ -4,33 +4,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import { hashHistory } from 'react-router';
+import React from "react";
 
-import Input from '@react-ag-components/input';
-import BackButton from '@react-ag-components/back-button';
-import * as api from './../api';
-import './task-comments.css';
+import Input from "@react-ag-components/input";
+import * as api from "./../api";
+import "./task-comments.css";
 
-import LoadableSection from '@react-ag-components/core/lib/LoadableSection';
-import Messages from '@react-ag-components/messages';
-
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import { Link } from "react-router";
 import moment from "moment";
-
-var style = {
-  height: 100,
-  width: 100,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block'
-};
-
-var style2 = {
-  margin: 12
-};
 
 var TaskComments = function (_React$Component) {
   _inherits(TaskComments, _React$Component);
@@ -59,7 +39,6 @@ var TaskComments = function (_React$Component) {
     };
 
     _this.addComment = function () {
-
       if (_this.props.taskid && _this.state.commentInputText && _this.state.commentInputText.trim().length > 0) {
         var payload = { comment: _this.state.commentInputText };
         api.addComment(_this.props.taskid, payload).then(function (data) {
@@ -75,7 +54,6 @@ var TaskComments = function (_React$Component) {
     };
 
     _this.getCommentDisplayText = function (commentJSONStr) {
-
       var commentJSON = JSON.parse(commentJSONStr);
 
       if (commentJSON) {
@@ -142,7 +120,7 @@ var TaskComments = function (_React$Component) {
 
     _this.state = {
       task: _this.props.task,
-      selectedAction: '',
+      selectedAction: "",
       addCommentSectionVisible: true,
       comments: [],
       newcomment: [],
@@ -154,7 +132,8 @@ var TaskComments = function (_React$Component) {
   }
 
   TaskComments.prototype.componentDidMount = function componentDidMount() {
-    this.setState({ comments: this.state.task == null || this.state.task.comments == null ? [] : this.state.task.comments,
+    this.setState({
+      comments: this.state.task == null || this.state.task.comments == null ? [] : this.state.task.comments,
       addCommentSectionVisible: this.state.task == null || this.state.task.state == null || this.state.task.state == "COMPLETED" ? false : true
     });
   };
@@ -166,57 +145,57 @@ var TaskComments = function (_React$Component) {
     var commentCount = 0;
 
     return React.createElement(
-      'div',
+      "div",
       null,
       React.createElement(
-        'div',
-        { style: { border: 'solid 0px #e8e8ee' }, className: ' uikit-grid' },
+        "div",
+        { style: { border: "solid 0px #e8e8ee" }, className: " uikit-grid" },
         React.createElement(
-          'div',
-          { style: { paddingTop: '1em' } },
+          "div",
+          { style: { paddingTop: "1em" } },
           React.createElement(
-            'div',
-            { className: 'row' },
+            "div",
+            { className: "row" },
             React.createElement(
-              'div',
-              { className: 'col-md-6' },
+              "div",
+              { className: "col-md-6" },
               React.createElement(
-                'span',
-                { style: { 'fontSize': '1.2em', 'fontWeight': 'bold' } },
-                'Staff Notes  ',
-                React.createElement('span', { className: 'comment-link' }),
-                ' (',
+                "span",
+                { style: { fontSize: "1.2em", fontWeight: "bold" } },
+                "Staff Notes ",
+                React.createElement("span", { className: "comment-link" }),
+                " (",
                 this.state.comments && this.state.comments.length,
-                ')'
+                ")"
               )
             ),
-            React.createElement('div', { className: 'col-md-6' })
+            React.createElement("div", { className: "col-md-6" })
           ),
-          React.createElement('br', null),
+          React.createElement("br", null),
           this.state.comments && this.state.comments.length > 0 && React.createElement(
-            'div',
-            { className: 'task-detail-comments' },
+            "div",
+            { className: "task-detail-comments" },
             React.createElement(
-              'ul',
+              "ul",
               null,
               this.state.comments.sort(function (a, b) {
                 return new Date(a.createDate) - new Date(b.createDate);
               }).map(function (comment) {
                 return React.createElement(
-                  'li',
+                  "li",
                   { key: commentCount++ },
                   React.createElement(
-                    'div',
-                    { className: 'user' },
+                    "div",
+                    { className: "user" },
                     comment.createdBy
                   ),
                   React.createElement(
-                    'div',
-                    { className: 'task-date' },
+                    "div",
+                    { className: "task-date" },
                     _this2.formatDateToString(comment.createDate)
                   ),
                   React.createElement(
-                    'div',
+                    "div",
                     null,
                     comment.comment
                   )
@@ -225,32 +204,32 @@ var TaskComments = function (_React$Component) {
             )
           ),
           this.state.addCommentSectionVisible && React.createElement(
-            'div',
-            { className: 'row' },
+            "div",
+            { className: "row" },
             React.createElement(
-              'div',
-              { className: 'col-md-6' },
+              "div",
+              { className: "col-md-6" },
               React.createElement(Input, {
-                label: 'Add a note',
+                label: "Add a note",
                 value: this.state.commentInputText,
                 onChange: this.onCommentTextChange,
                 onKeyPress: this.onCommentKeyPress,
                 rows: 2,
                 multiLine: true,
-                maxlength: '1900'
+                maxlength: "1900"
               }),
               React.createElement(
-                'button',
-                { className: 'uikit-btn uikit-btn--tertiary comment-btn ', onClick: function onClick() {
+                "button",
+                { className: "uikit-btn uikit-btn--tertiary comment-btn ", onClick: function onClick() {
                     return _this2.addComment();
                   } },
-                'Add'
+                "Add"
               )
             ),
             React.createElement(
-              'div',
-              { className: 'col-md-6' },
-              ' '
+              "div",
+              { className: "col-md-6" },
+              " "
             )
           )
         )

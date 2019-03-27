@@ -80,7 +80,7 @@
   -webkit-transform: scale(1) translateY(0); }
 
 .underlay {
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0);
   transition: all 0.3s linear;
   -webkit-transition: all 0.3s linear; }
 

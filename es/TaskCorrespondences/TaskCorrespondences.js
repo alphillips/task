@@ -4,21 +4,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import { hashHistory } from 'react-router';
-
-import Input from '@react-ag-components/input';
-import BackButton from '@react-ag-components/back-button';
-import * as api from './../api';
-import './task-correspondences.css';
-
-import LoadableSection from '@react-ag-components/core/lib/LoadableSection';
-import Messages from '@react-ag-components/messages';
-
-import { Link } from "react-router";
+import React from "react";
+import * as api from "./../api";
+import "./task-correspondences.css";
 
 //import Mail from "./../Mail";
-import Mail from "@react-ag-components/inbox/lib/Mail";
 import MailsList from "./MailsList";
 
 var TaskCorrespondences = function (_React$Component) {
@@ -30,7 +20,6 @@ var TaskCorrespondences = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
 
     _this.readAllCorrespondenceThreads = function () {
-
       _this.setState({ loading: true });
 
       if (_this.props.serviceRequestId) {
@@ -69,25 +58,29 @@ var TaskCorrespondences = function (_React$Component) {
   }
 
   TaskCorrespondences.prototype.componentDidMount = function componentDidMount() {
-
     this.readAllCorrespondenceThreads();
   };
 
   TaskCorrespondences.prototype.render = function render() {
-
     var mailsListNode = null;
     if (this.state.mailsListVisible && this.props.serviceRequestId && this.state.messageThreads && this.props.task) {
-      mailsListNode = React.createElement(MailsList, { task: this.props.task, messageThreads: this.state.messageThreads, serviceRequestId: this.props.serviceRequestId,
-        callbackCloseSelf: this.callbackCloseSelf, callbackOpenParentTask: this.props.callbackOpenParentTask,
-        callbackCloseParentTask: this.props.callbackCloseParentTask, callbackShowMessage: this.props.callbackShowMessage,
-        taskid: this.props.taskid });
+      mailsListNode = React.createElement(MailsList, {
+        task: this.props.task,
+        messageThreads: this.state.messageThreads,
+        serviceRequestId: this.props.serviceRequestId,
+        callbackCloseSelf: this.callbackCloseSelf,
+        callbackOpenParentTask: this.props.callbackOpenParentTask,
+        callbackCloseParentTask: this.props.callbackCloseParentTask,
+        callbackShowMessage: this.props.callbackShowMessage,
+        taskid: this.props.taskid
+      });
     }
 
     return React.createElement(
-      'div',
-      { style: { border: 'solid 0px #e8e8ee' }, className: ' uikit-grid' },
+      "div",
+      { style: { border: "solid 0px #e8e8ee" }, className: " uikit-grid" },
       React.createElement(
-        'div',
+        "div",
         null,
         mailsListNode
       )
