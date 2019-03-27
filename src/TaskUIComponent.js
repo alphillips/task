@@ -1,74 +1,63 @@
-import React from 'react'
+import React from "react";
 
-import BackButton from '@react-ag-components/back-button'
-
-import TaskList from './TaskList/TaskList'
-import TaskDetail from './TaskDetail/TaskDetail'
-import Messages from '@react-ag-components/messages'
+import TaskList from "./TaskList/TaskList";
+import TaskDetail from "./TaskDetail/TaskDetail";
 
 class TaskUIComponent extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      id:props.id || null
-    }
+      id: props.id || null,
+    };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     this.setState((prevState, props) => ({
-      id:nextProps.id || null
-    }))
+      id: nextProps.id || null,
+    }));
   }
 
   goBack = () => {
-    this.props.onChange(null)
-  }
+    this.props.onChange(null);
+  };
 
-  onTaskClick = (id) => {
-    if(id){
-      this.setMessage(null)
+  onTaskClick = id => {
+    if (id) {
+      this.setMessage(null);
     }
-    this.props.onChange(id)
-  }
+    this.props.onChange(id);
+  };
 
-  setMessage = (message) => {
-    this.setState({success:message})
-  }
+  setMessage = message => {
+    this.setState({ success: message });
+  };
 
   render() {
     return (
       <div>
-
-        {!this.state.id &&
+        {!this.state.id && (
           <div>
-
             <TaskList
               onChange={this.onTaskClick}
               showSearch={this.props.showSearch}
               assignedToUser={this.props.assignedToUser}
               taskCount={this.props.taskCount}
               heading={this.props.heading}
-              searchTypeCode = {this.props.searchTypeCode}
-              searchKeyword = {this.props.searchKeyword}
-              quickLinkType = {this.props.quickLinkType}
+              searchTypeCode={this.props.searchTypeCode}
+              searchKeyword={this.props.searchKeyword}
+              quickLinkType={this.props.quickLinkType}
             />
           </div>
-        }
+        )}
 
-        {this.state.id &&
+        {this.state.id && (
           <div>
-            <TaskDetail
-              taskid={this.state.id}
-              setMessage={this.setMessage}
-              onChange={this.onTaskClick}
-            />
+            <TaskDetail taskid={this.state.id} setMessage={this.setMessage} onChange={this.onTaskClick} />
           </div>
-        }
-
+        )}
       </div>
-    )
+    );
   }
 }
 
-export default TaskUIComponent
+export default TaskUIComponent;

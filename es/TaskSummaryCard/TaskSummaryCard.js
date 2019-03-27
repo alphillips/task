@@ -4,16 +4,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import { hashHistory } from 'react-router';
+import React from "react";
 
-import * as api from './../api';
-import './task.css';
-import Spinner from 'react-spinner-material';
-import Input from '@react-ag-components/input';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { List, ListItem } from 'material-ui/List';
+import * as api from "./../api";
+import "./task.css";
+import Input from "@react-ag-components/input";
+import FlatButton from "material-ui/FlatButton";
 
 var TaskSummaryCard = function (_React$Component) {
   _inherits(TaskSummaryCard, _React$Component);
@@ -36,7 +32,6 @@ var TaskSummaryCard = function (_React$Component) {
     };
 
     _this.showAssignModal = function () {
-
       return function (e) {
         if (_this.refs.root) {
           e.preventDefault();
@@ -81,7 +76,7 @@ var TaskSummaryCard = function (_React$Component) {
     };
 
     _this.onCommentKeyPress = function (e) {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         _this.addComment();
       }
     };
@@ -95,10 +90,9 @@ var TaskSummaryCard = function (_React$Component) {
     };
 
     _this.chooseDisplayLabel = function (taskStatusLabel) {
-
-      if (taskStatusLabel == 'APPROVED') {
+      if (taskStatusLabel == "APPROVED") {
         return "approved-status";
-      } else if (taskStatusLabel == 'REJECTED') {
+      } else if (taskStatusLabel == "REJECTED") {
         return "rejected-status";
       } else {
         return "task-status";
@@ -125,190 +119,182 @@ var TaskSummaryCard = function (_React$Component) {
     _this.state = {
       comments: props.comments || [],
       taskid: props.taskid || null,
-      commentInputText: '',
+      commentInputText: "",
       assignModalOpen: false,
       assignees: []
     };
     return _this;
   }
   /*
-    assignTaskToMe = (e) =>{
-  
+  assignTaskToMe = (e) =>{
       return(e) => {
-            e.preventDefault();
-            if( this.props.taskid ){
-                  var payload= { type:"ASSIGN_TO_ME" }
-                  api.performTaskAction(this.props.taskid, payload ).then((data) =>{
-                    if(this.props.refreshTasksList){
-                      this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode, this.props.quickLinkType)
-                    }
-                })
-            }
-        }
-    }
+          e.preventDefault();
+          if( this.props.taskid ){
+                var payload= { type:"ASSIGN_TO_ME" }
+                api.performTaskAction(this.props.taskid, payload ).then((data) =>{
+                  if(this.props.refreshTasksList){
+                    this.props.refreshTasksList(this.props.searchKeyword , this.props.searchTypeCode, this.props.quickLinkType)
+                  }
+              })
+          }
+      }
+  }
   */
 
   TaskSummaryCard.prototype.render = function render() {
-
-    var actions = [React.createElement(FlatButton, {
-      label: 'Cancel',
-      primary: true,
-      onClick: this.hideAssignModal
-    }), React.createElement(FlatButton, {
-      label: 'Submit',
-      primary: true,
-      disabled: true,
-      onClick: this.hideAssignModal
-    })];
+    var actions = [React.createElement(FlatButton, { label: "Cancel", primary: true, onClick: this.hideAssignModal }), React.createElement(FlatButton, { label: "Submit", primary: true, disabled: true, onClick: this.hideAssignModal })];
 
     return React.createElement(
-      'div',
-      { className: 'task uikit-grid main-paper', ref: 'root' },
+      "div",
+      { className: "task uikit-grid main-paper", ref: "root" },
       React.createElement(
-        'div',
-        { className: 'row' },
+        "div",
+        { className: "row" },
         React.createElement(
-          'div',
-          { className: 'col-md-10' },
+          "div",
+          { className: "col-md-10" },
           React.createElement(
-            'div',
-            { className: 'task-title' },
+            "div",
+            { className: "task-title" },
             React.createElement(
-              'a',
-              { href: '#', onClick: this.goToTaskDetailsPage },
+              "a",
+              { href: "#", onClick: this.goToTaskDetailsPage },
               this.props.type
             )
           )
         ),
         React.createElement(
-          'div',
-          { className: 'col-md-2' },
+          "div",
+          { className: "col-md-2" },
           React.createElement(
-            'div',
+            "div",
             { className: this.chooseDisplayLabel(this.props.statusLabel) },
             this.props.statusLabel
           )
         )
       ),
       React.createElement(
-        'div',
-        { className: 'row' },
+        "div",
+        { className: "row" },
         React.createElement(
-          'div',
-          { className: 'col-md-6' },
+          "div",
+          { className: "col-md-6" },
           this.props.description
         ),
         React.createElement(
-          'div',
-          { className: 'col-md-6' },
+          "div",
+          { className: "col-md-6" },
           React.createElement(
-            'div',
-            { className: 'task-date' },
+            "div",
+            { className: "task-date" },
             this.props.createdDate
           ),
           React.createElement(
-            'div',
-            { className: 'task-date' },
+            "div",
+            { className: "task-date" },
             this.props.lastUpdatedDate
           ),
           this.props.assigned && React.createElement(
-            'div',
-            { className: 'task-date' },
-            'Assigned: ',
+            "div",
+            { className: "task-date" },
+            "Assigned: ",
             this.props.assigned
           )
         )
       ),
       React.createElement(
-        'div',
-        { className: 'row task-btns' },
+        "div",
+        { className: "row task-btns" },
         window.IS_STAFF && React.createElement(
-          'div',
-          { className: 'col-md-6' },
+          "div",
+          { className: "col-md-6" },
           this.props.hasComments && React.createElement(
-            'a',
-            { href: '#', className: 'message-link', onClick: this.goToTaskDetailsPage },
+            "a",
+            { href: "#", className: "message-link", onClick: this.goToTaskDetailsPage },
             this.props.commentsButtonLabel
           ),
           this.props.hasExternalMessages && React.createElement(
-            'span',
+            "span",
             null,
-            '\xA0  ',
+            "\xA0",
+            " ",
             React.createElement(
-              'a',
-              { href: '#', className: 'mail-link', onClick: this.goToTaskDetailsPage },
+              "a",
+              { href: "#", className: "mail-link", onClick: this.goToTaskDetailsPage },
               this.props.externalMessagesButtonLabel
             ),
-            ' '
+            " "
           ),
           !this.props.hasComments && !this.props.taskCommpleted && React.createElement(
-            'div',
+            "div",
             null,
             React.createElement(Input, {
-              label: 'Add a staff note',
+              label: "Add a staff note",
               value: this.state.commentInputText,
               onChange: this.onCommentTextChange,
               onKeyPress: this.onCommentKeyPress,
               rows: 2,
               multiLine: true,
-              maxlength: '1900'
+              maxlength: "1900"
             })
           )
         ),
         window.IS_STAFF && !this.props.taskCommpleted && React.createElement(
-          'div',
-          { className: 'col-md-6 assign-btns' },
+          "div",
+          { className: "col-md-6 assign-btns" },
           this.props.hasComments && React.createElement(
-            'div',
+            "div",
             null,
             this.props.assigned == null && React.createElement(
-              'div',
+              "div",
               null,
               React.createElement(
-                'a',
-                { href: '#', className: 'assign-link', onClick: this.props.showAssignModal },
-                'Assign '
+                "a",
+                { href: "#", className: "assign-link", onClick: this.props.showAssignModal },
+                "Assign",
+                " "
               )
             ),
             this.props.assigned != null && this.props.task.taskCustomAttributes.taskAssignees && this.props.task.taskCustomAttributes.taskAssignees[0] === this.props.task.currentUserId && React.createElement(
-              'a',
-              { href: '#', className: 'unassign-link', onClick: this.unAssignTaskFromMe },
-              'Unassign'
+              "a",
+              { href: "#", className: "unassign-link", onClick: this.unAssignTaskFromMe },
+              "Unassign"
             )
           )
         )
       ),
       window.IS_STAFF && !this.props.taskCommpleted && React.createElement(
-        'div',
-        { className: 'row' },
+        "div",
+        { className: "row" },
         React.createElement(
-          'div',
-          { className: 'col-md-6' },
+          "div",
+          { className: "col-md-6" },
           !this.props.hasComments && React.createElement(
-            'div',
+            "div",
             null,
             React.createElement(
-              'button',
-              { className: 'uikit-btn uikit-btn--tertiary comment-btn', onClick: this.addComment },
-              'Add'
+              "button",
+              { className: "uikit-btn uikit-btn--tertiary comment-btn", onClick: this.addComment },
+              "Add"
             )
           )
         ),
         React.createElement(
-          'div',
-          { className: 'col-md-6 assign-btns' },
+          "div",
+          { className: "col-md-6 assign-btns" },
           !this.props.hasComments && React.createElement(
-            'div',
+            "div",
             null,
             this.props.assigned == null && React.createElement(
-              'a',
-              { href: '#', className: 'assign-link', onClick: this.props.showAssignModal },
-              'Assign '
+              "a",
+              { href: "#", className: "assign-link", onClick: this.props.showAssignModal },
+              "Assign",
+              " "
             ),
             this.props.assigned != null && this.props.task.taskCustomAttributes.taskAssignees && this.props.task.taskCustomAttributes.taskAssignees[0] === this.props.task.currentUserId && React.createElement(
-              'a',
-              { href: '#', className: 'unassign-link', onClick: this.unAssignTaskFromMe },
-              'Unassign'
+              "a",
+              { href: "#", className: "unassign-link", onClick: this.unAssignTaskFromMe },
+              "Unassign"
             )
           )
         )

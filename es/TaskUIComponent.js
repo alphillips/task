@@ -4,13 +4,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
+import React from "react";
 
-import BackButton from '@react-ag-components/back-button';
-
-import TaskList from './TaskList/TaskList';
-import TaskDetail from './TaskDetail/TaskDetail';
-import Messages from '@react-ag-components/messages';
+import TaskList from "./TaskList/TaskList";
+import TaskDetail from "./TaskDetail/TaskDetail";
 
 var TaskUIComponent = function (_React$Component) {
   _inherits(TaskUIComponent, _React$Component);
@@ -51,10 +48,10 @@ var TaskUIComponent = function (_React$Component) {
 
   TaskUIComponent.prototype.render = function render() {
     return React.createElement(
-      'div',
+      "div",
       null,
       !this.state.id && React.createElement(
-        'div',
+        "div",
         null,
         React.createElement(TaskList, {
           onChange: this.onTaskClick,
@@ -68,13 +65,9 @@ var TaskUIComponent = function (_React$Component) {
         })
       ),
       this.state.id && React.createElement(
-        'div',
+        "div",
         null,
-        React.createElement(TaskDetail, {
-          taskid: this.state.id,
-          setMessage: this.setMessage,
-          onChange: this.onTaskClick
-        })
+        React.createElement(TaskDetail, { taskid: this.state.id, setMessage: this.setMessage, onChange: this.onTaskClick })
       )
     );
   };

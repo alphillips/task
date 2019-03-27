@@ -22,7 +22,16 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "react-csv": "^1.0.14"
+    "@react-ag-components/address": "^0.8.3",
+    "@react-ag-components/back-button": "0.0.3",
+    "@react-ag-components/date-input": "^0.1.5",
+    "@react-ag-components/header": "^1.2.18",
+    "@react-ag-components/messages": "0.0.9",
+    "@react-ag-components/pathway-list": "0.0.2",
+    "moment": "^2.24.0",
+    "react-csv": "^1.0.14",
+    "react-dropzone": "^3.13.4",
+    "react-moment": "^0.8.4"
   },
   "peerDependencies": {
     "@react-ag-components/address": "latest",
@@ -61,7 +70,7 @@
   },
   "devDependencies": {
     "node-sass": "^4.5.3",
-    "nwb": "0.15.x",
+    "nwb": "^0.23.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-router": "^3.0.0"

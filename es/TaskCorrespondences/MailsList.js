@@ -4,20 +4,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import React from 'react';
-import ReactDOM from 'react';
-import { hashHistory } from 'react-router';
+import React from "react";
 
-import Input from '@react-ag-components/input';
-import BackButton from '@react-ag-components/back-button';
-import * as api from './../api';
-import './task-correspondences.css';
+import Input from "@react-ag-components/input";
+import * as api from "./../api";
+import "./task-correspondences.css";
 
-import LoadableSection from '@react-ag-components/core/lib/LoadableSection';
-import Messages from '@react-ag-components/messages';
-
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from "react-router";
 
 import PathwayList from "@react-ag-components/pathway-list";
@@ -26,18 +18,6 @@ import moment from "moment";
 
 import Mail from "./../Mail";
 //import Mail from "@react-ag-components/inbox/lib/Mail";
-
-var style = {
-  height: 100,
-  width: 100,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block'
-};
-
-var style2 = {
-  margin: 12
-};
 
 var MailsList = function (_React$Component) {
   _inherits(MailsList, _React$Component);
@@ -69,7 +49,6 @@ var MailsList = function (_React$Component) {
     };
 
     _this.setupMail = function (id, type, subject) {
-
       _this.setState(function (prevState, props) {
         return {
           messageId: id,
@@ -104,7 +83,6 @@ var MailsList = function (_React$Component) {
     };
 
     _this.readAllCorrespondenceThreads = function () {
-
       _this.setState({ loading: true });
 
       if (_this.props.serviceRequestId) {
@@ -115,9 +93,7 @@ var MailsList = function (_React$Component) {
     };
 
     _this.createNewMessageThread = function () {
-
       if (_this.props.serviceRequestId && _this.state.messageSubject && _this.state.messageText && _this.state.messageSubject.trim().length > 0 && _this.state.messageText.trim().length > 0) {
-
         var payload = {
           serviceRequestId: _this.props.serviceRequestId,
           subject: _this.state.messageSubject,
@@ -125,9 +101,8 @@ var MailsList = function (_React$Component) {
         };
 
         api.createNewCorrespondence(payload).then(function (data) {
-
-          _this.props.callbackShowMessage('success', "New external message  '" + _this.state.messageSubject + "' created");
-          _this.props.callbackShowMessage('error', '');
+          _this.props.callbackShowMessage("success", "New external message  '" + _this.state.messageSubject + "' created");
+          _this.props.callbackShowMessage("error", "");
 
           _this.setState({ messageSubject: "", messageText: "" });
           _this.readAllCorrespondenceThreads();
@@ -138,8 +113,8 @@ var MailsList = function (_React$Component) {
           _this.refs.messageSubject.state.value = "";
         });
       } else {
-        _this.props.callbackShowMessage('error', "Subject and Message are required to create a new external message ");
-        _this.props.callbackShowMessage('success', '');
+        _this.props.callbackShowMessage("error", "Subject and Message are required to create a new external message ");
+        _this.props.callbackShowMessage("success", "");
         window.scrollTo(0, 0);
       }
     };
@@ -169,69 +144,65 @@ var MailsList = function (_React$Component) {
         subject: this.state.subject,
         totalMessagesCount: this.state.totalMessagesCount,
         callbackCloseSelf: this.callbackCloseSelf,
-        callbackShowMessage: this.props.callbackShowMessage });
+        callbackShowMessage: this.props.callbackShowMessage
+      });
     }
 
     return React.createElement(
-      'div',
-      { className: 'task-detail' },
+      "div",
+      { className: "task-detail" },
       !this.state.showMail && React.createElement(
-        'div',
-        { style: { 'paddingTop': '1em' } },
+        "div",
+        { style: { paddingTop: "1em" } },
         React.createElement(
-          'span',
-          { style: { 'fontSize': '1.2em', 'fontWeight': 'bold' }, className: 'notesicon' },
-          'External Messages  ',
-          React.createElement('span', { className: 'mail-link' }),
-          ' ',
+          "span",
+          { style: { fontSize: "1.2em", fontWeight: "bold" }, className: "notesicon" },
+          "External Messages ",
+          React.createElement("span", { className: "mail-link" }),
+          " ",
           React.createElement(
-            'span',
+            "span",
             null,
-            '(',
+            "(",
             this.state.messageThreads && this.state.messageThreads.length,
-            ')'
+            ")"
           ),
-          '  '
+          " "
         ),
         this.state.messageThreads != null && this.state.messageThreads.length > 0 && React.createElement(
-          'div',
-          { className: '  nexdoc-inbox', style: { 'paddingTop': '1.2em' } },
+          "div",
+          { className: "  nexdoc-inbox", style: { paddingTop: "1.2em" } },
           React.createElement(
-            'div',
-            { className: 'inbox' },
+            "div",
+            { className: "inbox" },
             React.createElement(
               PathwayList,
               null,
               this.state.messageThreads.map(function (mail) {
                 return React.createElement(
-                  'li',
-                  {
-                    className: "inbox-listing " + (!mail.read ? "unread" : ""),
-                    key: mail.corroId + mail.notificationId
-                  },
-                  React.createElement('div', { className: 'border-unread' }),
+                  "li",
+                  { className: "inbox-listing " + (!mail.read ? "unread" : ""), key: mail.corroId + mail.notificationId },
+                  React.createElement("div", { className: "border-unread" }),
                   React.createElement(
                     Link,
-                    {
-                      onClick: _this2.setupMail.bind(null, mail.notificationId, mail.type, mail.description)
-                    },
+                    { onClick: _this2.setupMail.bind(null, mail.notificationId, mail.type, mail.description) },
                     React.createElement(
-                      'span',
-                      { className: 'inbox-date' },
+                      "span",
+                      { className: "inbox-date" },
                       _this2.epochSecondToDate(mail.createdTimeStamp.epochSecond)
                     ),
-                    _this2.state.attachment && React.createElement('span', { className: 'inbox-attachment' }),
+                    _this2.state.attachment && React.createElement("span", { className: "inbox-attachment" }),
                     React.createElement(
-                      'span',
-                      { className: 'inbox-from' },
+                      "span",
+                      { className: "inbox-from" },
                       mail.fromParty
                     ),
                     React.createElement(
-                      'span',
-                      { className: 'inbox-subject' },
+                      "span",
+                      { className: "inbox-subject" },
                       mail.description
                     ),
-                    React.createElement('span', { className: 'inbox-body' })
+                    React.createElement("span", { className: "inbox-body" })
                   )
                 );
               })
@@ -239,40 +210,41 @@ var MailsList = function (_React$Component) {
           )
         ),
         !(this.props.task.state == null || this.props.task.state == "COMPLETED") && React.createElement(
-          'div',
-          { className: 'uikit-grid' },
+          "div",
+          { className: "uikit-grid" },
           React.createElement(
-            'div',
-            { className: 'row' },
+            "div",
+            { className: "row" },
             React.createElement(
-              'div',
-              { className: 'col-md-6' },
+              "div",
+              { className: "col-md-6" },
               React.createElement(Input, {
-                label: 'Subject',
+                label: "Subject",
                 value: this.state.messageSubject,
-                onChange: this.onChange('messageSubject'),
+                onChange: this.onChange("messageSubject"),
                 rows: 1,
                 multiLine: true,
-                maxlength: '300',
-                id: 'messageSubject',
-                ref: 'messageSubject'
+                maxlength: "300",
+                id: "messageSubject",
+                ref: "messageSubject"
               }),
-              React.createElement(Input, { ref: 'messageText',
-                label: 'Message',
+              React.createElement(Input, {
+                ref: "messageText",
+                label: "Message",
                 value: this.state.messageText,
-                onChange: this.onChange('messageText'),
+                onChange: this.onChange("messageText"),
                 rows: 2,
                 multiLine: true,
-                maxlength: '10000',
-                id: 'messageText'
+                maxlength: "10000",
+                id: "messageText"
               }),
               React.createElement(
-                'button',
-                { className: 'uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn', onClick: this.createNewMessageThread },
-                'Create'
+                "button",
+                { className: "uikit-btn uikit-btn--tertiary comment-btn comment-detail-btn", onClick: this.createNewMessageThread },
+                "Create"
               )
             ),
-            React.createElement('div', { className: 'col-md-6' })
+            React.createElement("div", { className: "col-md-6" })
           )
         )
       ),
